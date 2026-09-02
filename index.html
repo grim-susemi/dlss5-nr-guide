@@ -30,6 +30,7 @@ body { background: var(--bg); color: var(--tx);
 
 .wrap { max-width: 1180px; padding: 0 0 60px; }
 .tabpage[hidden], .subpage[hidden] { display: none; }
+.subpage { scroll-margin-top: 70px; }
 
 header { text-align: center; padding: 30px 0 26px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
 h1 { font-size: 27px; letter-spacing: -0.02em; }
@@ -556,11 +557,11 @@ function showMain(name) {
   document.querySelectorAll('.mt').forEach(b => { b.classList.toggle('on', b.dataset.main === name); });
   window.scrollTo({ top: 0 });
   mainTab = name;
-  if (name === 'guide') spy();
+  spy();
 }
 document.querySelectorAll('.mt').forEach(b => b.addEventListener('click', () => showMain(b.dataset.main)));
 
-// ===== 설치 가이드: 클릭 이동 + 실시간 스크롤 스파이 =====
+// ===== 설치 가이드: 목차 클릭 → 섹션 이동 =====
 const gLinks = [...document.querySelectorAll('#toc-guide a')];
 const gSecs = gLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
 gLinks.forEach(a => a.addEventListener('click', (e) => {
@@ -568,26 +569,33 @@ gLinks.forEach(a => a.addEventListener('click', (e) => {
   const t = document.getElementById(a.getAttribute('href').slice(1));
   if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', a.getAttribute('href')); }
 }));
+
+// ===== 옵션 상세: 목차 클릭 → 섹션 이동 (서브페이지 전환 아님, 전체 스크롤) =====
+const dLinks = [...document.querySelectorAll('#toc-detail a')];
+const dSecs = dLinks.map(a => document.getElementById('sp-' + a.getAttribute('href').slice(1))).filter(Boolean);
+dLinks.forEach(a => a.addEventListener('click', (e) => {
+  e.preventDefault();
+  const t = document.getElementById('sp-' + a.getAttribute('href').slice(1));
+  if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', a.getAttribute('href')); }
+}));
+
+// ===== 실시간 스크롤 스파이 (양쪽 탭 공통) =====
+const allLinks = [...gLinks, ...dLinks];
+const allSecs = [...gSecs, ...dSecs];
 const spy = () => {
-  if (mainTab !== 'guide' || tocs.guide.hidden) return;
-  let cur = gSecs[0];
-  for (const sec of gSecs) if (sec.getBoundingClientRect().top <= 100) cur = sec;
-  gLinks.forEach(a => { a.classList.toggle('on', a.getAttribute('href') === '#' + cur.id); });
+  let cur = null;
+  for (const sec of allSecs) {
+    const page = sec.closest('.tabpage');
+    if (page && page.hidden) continue;
+    if (sec.getBoundingClientRect().top <= 110) cur = sec;
+  }
+  if (!cur) cur = (mainTab === 'guide' ? gSecs[0] : dSecs[0]);
+  if (!cur) return;
+  const curKey = cur.id.startsWith('sp-') ? cur.id.slice(3) : cur.id;
+  allLinks.forEach(a => { a.classList.toggle('on', a.getAttribute('href') === '#' + curKey); });
 };
 window.addEventListener('scroll', spy, { passive: true });
 spy();
-
-// ===== 옵션 상세: 목차 클릭 → 서브페이지 전환 =====
-const dLinks = [...document.querySelectorAll('#toc-detail a')];
-const subPages = Object.fromEntries(dLinks.map(a => [a.getAttribute('href').slice(1),
-  document.getElementById('sp-' + a.getAttribute('href').slice(1))]));
-function showSub(key) {
-  dLinks.forEach(x => { x.classList.toggle('on', x.getAttribute('href') === '#' + key); });
-  for (const [k, el] of Object.entries(subPages)) el.hidden = (k !== key);
-  window.scrollTo({ top: 0 });
-}
-dLinks.forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); showSub(a.getAttribute('href').slice(1)); }));
-showSub('up');
 </script>
 </body>
 </html>
