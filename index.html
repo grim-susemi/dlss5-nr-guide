@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DLSS 5 Neural Rendering 적용 가이드 — OptiScaler로 누구나 NR 켜기</title>
+<meta name="description" content="OptiScaler DLSSNR 포크로 어떤 DLSS 게임에든 NVIDIA DLSS 5 Neural Rendering을 적용하는 한국어 완전 가이드. 설치, 오버레이 전체 옵션 해설, 문제 해결.">
+<style>
+  :root {
+    --bg: #0b0e14; --panel: #141922; --panel2: #1a2029; --line: #2b3441;
+    --tx: #e8edf4; --mut: #93a0b0; --acc: #6cb2ff; --grn: #46d160;
+    --amb: #e3b341; --red: #ff6b6b; --purple: #b48cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--tx);
+    font-family: "Pretendard","Malgun Gothic",-apple-system,sans-serif; line-height: 1.7; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 22px 100px; }
+  header { text-align: center; padding: 30px 0 26px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
+  h1 { font-size: 27px; letter-spacing: -0.02em; }
+  .sub { color: var(--mut); font-size: 14px; margin-top: 10px; }
+  .badges { margin-top: 14px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .badge { font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px;
+    background: var(--panel2); border: 1px solid var(--line); color: var(--acc); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 22px 0 30px; }
+  nav a { color: var(--acc); text-decoration: none; font-size: 13px;
+    background: var(--panel); border: 1px solid var(--line); padding: 5px 12px; border-radius: 6px; }
+  nav a:hover { border-color: var(--acc); }
+  h2 { font-size: 20px; margin: 44px 0 14px; padding: 10px 14px;
+    background: var(--panel2); border-left: 5px solid var(--acc); border-radius: 8px; }
+  h2 .step { display: inline-block; background: var(--acc); color: #06121f;
+    border-radius: 6px; padding: 0 10px; margin-right: 10px; font-size: 16px; }
+  h3 { font-size: 15.5px; margin: 26px 0 8px; color: var(--acc); }
+  p, li { font-size: 14px; color: #c9d3de; }
+  ul, ol { margin: 8px 0 8px 22px; }
+  li { margin: 4px 0; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 18px 20px; margin: 14px 0; }
+  .card b.t { font-size: 15px; }
+  code { background: var(--panel2); padding: 2px 7px; border-radius: 5px;
+    font-size: 12.5px; color: var(--acc); font-family: Consolas,monospace; }
+  .warn { background: #da363014; border: 1px solid #da363055; border-radius: 10px;
+    padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
+  .warn b { color: var(--red); }
+  .good { background: #23863614; border: 1px solid #23863655; border-radius: 10px;
+    padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
+  .good b { color: var(--grn); }
+  .info { background: #1f6feb14; border: 1px solid #1f6feb55; border-radius: 10px;
+    padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.2px; margin: 12px 0; }
+  th, td { padding: 8px 12px; border: 1px solid var(--line); vertical-align: top; text-align: left; }
+  th { background: var(--panel2); color: var(--tx); font-weight: 700; white-space: nowrap; }
+  td { color: #c9d3de; }
+  .tag { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 1px 8px;
+    border-radius: 20px; white-space: nowrap; }
+  .t-g { background: #23863622; color: var(--grn); border: 1px solid #23863655; }
+  .t-y { background: #bb800922; color: var(--amb); border: 1px solid #bb800955; }
+  .t-r { background: #da363022; color: var(--red); border: 1px solid #da363055; }
+  .t-b { background: #1f6feb22; color: var(--acc); border: 1px solid #1f6feb55; }
+  footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line);
+    color: var(--mut); font-size: 12.5px; text-align: center; }
+  a { color: var(--acc); }
+  @media print { body { background: #fff; color: #000; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>NVIDIA DLSS 5 Neural Rendering<br>게임에 적용하는 완전 가이드</h1>
+  <div class="sub">OptiScaler DLSSNR 포크 기준 · 어떤 DLSS 게임이든 · NVIDIA 공식 지원 전에 미리 누리는 뉴럴 렌더링</div>
+  <div class="badges">
+    <span class="badge">RTX 50 정식 지원</span>
+    <span class="badge">RTX 20/30/40 커뮤니티 패치로 가능</span>
+    <span class="badge">DX12 / DX11 / Vulkan</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#what">NR이 뭐냐</a><a href="#req">요구사항</a><a href="#tools">도구 선별</a><a href="#apis">API 매트릭스</a><a href="#dl">준비물</a>
+  <a href="#install">설치</a><a href="#enable">켜기</a><a href="#options">옵션 해설</a>
+  <a href="#noise">노이즈 조정</a><a href="#trouble">문제 해결</a><a href="#links">링크</a>
+</nav>
+
+<h2 id="what"><span class="step">0</span>DLSS 5 Neural Rendering이 뭔가</h2>
+<p>NVIDIA가 공개한 신세대 기술로, DLSS 업스케일러가 만든 프레임 위에 <b>신경망 모델이 미세 디테일(모공, 천 직조, 금속 표면, 나뭇잎 등)을 다시 합성해 얹는</b> 기능입니다. 공식 지원은 RTX 50 시리즈 + 최신 드라이버이지만, 이 가이드는 <b>OptiScaler 포크</b>를 써서 그 이전 카드에서도 돌리는 방법을 다룹니다.</p>
+<div class="info"><b>한 줄 요약:</b> 업스케일러(DLSS)가 "커다란 그림"을 그리면, NR 모델이 그 위에 "잔손질"을 얹는 겁니다. 프레임을 부드럽게 하는 게 아니라 <b>디테일을 합성</b>하는 기술이라, 효과는 확대하거나 움직임 속에서 더 드러납니다.</div>
+
+<h2 id="req"><span class="step">1</span>요구사항 확인</h2>
+<table>
+  <tr><th>항목</th><th>요구</th><th>비고</th></tr>
+  <tr><td>GPU</td><td>RTX 50 — 그대로 지원<br>RTX 20/30/40 — <b>패치된 모델 DLL 필요</b></td><td>패치 DLL은 커뮤니티 배포(RHI 툴 등에서 다운로드), 공식 지원은 아님을 유의</td></tr>
+  <tr><td>드라이버</td><td>616.56 이상</td><td>nvngx_dlssnr.dll이 드라이버에 포함되기 시작한 버전</td></tr>
+  <tr><td>게임</td><td>DLSS 2+를 쓰는 게임</td><td>DX12 · Vulkan 네이티브, DX11은 브리지 경유(제약 있음)</td></tr>
+  <tr><td>온라인 게임</td><td>❌ 사용 금지</td><td>안티치트 위험 — 싱글/협동 전용</td></tr>
+</table>
+
+<h2 id="dl"><span class="step">2</span>준비물 3가지</h2>
+<div class="card"><b class="t">① OptiScaler_DLSSNR 포크</b>
+<p style="margin-top:6px">공식 OptiScaler에 NR 패스를 통합한 빌드. GitHub <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases">Dagherbou/OptiScaler_DLSSNR · Releases</a>에서 최신 zip 다운로드 (v0.1.2 이상 권장 — 색 매핑 수정 포함).</p></div>
+
+<div class="card"><b class="t">② nvngx_dlssnr.dll — 모델 본체 (~165MB)</b>
+<p style="margin-top:6px">NVIDIA 드라이버 패키지에 들어있는 모델입니다. 배포 금지라 zip에 못 들어있고 <b>직접 구해서 게임 폴더에 넣어야</b> 합니다.</p>
+<ul>
+  <li><b>RTX 50</b>: 드라이버 설치 폴더 또는 게임에서 제공되는 순정 DLL 사용</li>
+  <li><b>RTX 20/30/40</b>: 커뮤니티 패치 빌드 필요 — <a href="https://github.com/RankFTW/rhi-repo/releases">RHI 툴(RankFTW)</a>의 <code>310.8.SF / SF-v2</code>(ShortFuse 빌드, RTX 20~50 전 지원)가 검증된 선택지</li>
+</ul></div>
+
+<div class="card"><b class="t">③ (선택) RHI Commander — 자동 배포 툴</b>
+<p style="margin-top:6px"><a href="https://github.com/RankFTW/RHI">RHI</a>(GPLv3, 별 897 — 생태계 최대 커뮤니티)는 DLSS DLL·애드온·ReShade를 자동으로 내려받아 게임 폴더에 배포하고, 백업/복원, 외부 DLL 스캔을 지원합니다. <b>수동 설치가 부담이면 이걸로.</b> 단, 수동 관리를 병행할 거면 툴의 자동 재배포와 충돌하지 않게 하나만 쓰세요.</p></div>
+
+<h2 id="tools"><span class="step">2½</span>도구 선별 가이드 — 뭘 써야 하나</h2>
+<p>DLSS5 NR을 돌리는 방법은 여러 진영으로 갈립니다. 검증 결과를 신뢰도와 함께 정리합니다(2026-09-02 기준, 전부 <b>오프라인/싱글 전용</b>).</p>
+<table>
+  <tr><th>도구</th><th>소스/커뮤니티</th><th>강점</th><th>판정</th></tr>
+  <tr><td><b>Dagherbou 포크</b><br><span class="tag t-g">권장 ★★★</span></td><td>GPL-3.0 전체 공개<br>별 236, 4일 4회 릴리스 급성장</td><td>DX12 게임 최선. 옵티스케일러 전 기능(FG·업스케일러·오버레이) + NR 일체. OptiScaler 기존 유저면 이것 하나면 끝</td><td>검증됨 — 본 가이드의 주인공</td></tr>
+  <tr><td><b>RHI Commander</b><br><span class="tag t-g">권장(제한부)</span></td><td>GPLv3 앱, 별 897 최대<br>런타임 업스트림 다운로드</td><td>자동 감지·배포·백업·외부 DLL 스캔. DLL 다운로드 허브</td><td>수동 관리와 병행 시 배포 버튼 주의</td></tr>
+  <tr><td><b>dlss5-launcher</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 전체 공개 + 빌드 재현<br>별 2, 신생(7월 생성)</td><td><b>DX9/DX10/32비트 게임 유일 커버</b> — DXVK/dgVoodoo2 변환 + 64비트 헬퍼 프로세스. 게임별 실측 로그 공개</td><td>기술 검증 우수하나 신생. VT 2/65 오탐 이력 자체 문서화</td></tr>
+  <tr><td><b>1-Click-DLSS5</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 스크립트(감사 가능)<br>별 99, 신생, 한국어 UI</td><td>원클릭 편의 최강, 3모드(브리지/직접/Feeder), DX9/OpenGL/32비트 주장</td><td>베타 급변 중. 페이로드 무거움</td></tr>
+  <tr><td><b>dlss5-aio</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 팩, 별 5 신생</td><td>공식 NVIDIA DLL과 커스텀 빌드를 <b>폴더별로 분리 표기</b> — 출처 표기 최선</td><td>Swapper 무서명(SmartScreen)</td></tr>
+</table>
+<p style="font-size:12.5px;color:var(--mut)">상세 근거(각 도구 해시·맬웨어 이력·README 인용)는 이 가이드 저장소의 리포트를 참고. 판정 기준: 소스 공개 + 빌드 재현성 + 커뮤니티 규모. 유튜브 영상은 근거로 채택하지 않습니다.</p>
+
+<h2 id="apis"><span class="step">2¾</span>API·게임 세대별 호환 매트릭스</h2>
+<p>"내 게임은 되나?"에 대한 답입니다. NR 자체는 DLSS가 받는 프레임이 필요하고, DLSS는 DX11/DX12/Vulkan만 지원합니다 — 그래서 오래된 API는 <b>변환 계층</b>이 끼어듭니다.</p>
+<table>
+  <tr><th>게임 API</th><th>Dagherbou 포크</th><th>dlss5-launcher</th><th>1-Click-DLSS5</th><th>비고</th></tr>
+  <tr><td><b>DX12</b> (붉은사막, 사이버펑크 등)</td><td>✅ 네이티브 후처리 패스 — 최선</td><td>✅</td><td>✅ 직접 주입/브리지</td><td>가장 무난한 경로</td></tr>
+  <tr><td><b>DX11</b></td><td>✅ 브리지 경유 — 단 DLSS 업스케일러 교체는 불가(FSR/XeSS w/Dx12 필요)</td><td>✅</td><td>✅</td><td>브리지 제약은 포크 README 명시</td></tr>
+  <tr><td><b>Vulkan</b> (DOOM Eternal, BG3 등)</td><td>✅ v0.1.2 네이티브</td><td>✅ 실측</td><td>✅ Feeder</td><td>v0.1.2 신규 지원</td></tr>
+  <tr><td><b>DX9</b> (옛날 게임)</td><td>❌ 단독 불가</td><td><b>✅ DXVK/dgVoodoo2 변환 + Vulkan 전송 + 64비트 헬퍼</b> — 게임별 실측 로그 공개</td><td>✅ 주장 (Mode 3 + host64)</td><td>NR 직접 입력 불가 → 변환 계층 필수</td></tr>
+  <tr><td><b>DX10</b></td><td>❌</td><td>✅ DXVK 1.10.3 5파일 방식 (Just Cause 2 실측)</td><td>미확인</td><td>유일 지원은 dlss5-launcher</td></tr>
+  <tr><td><b>32비트 게임</b></td><td>❌</td><td>✅ 64비트 헬퍼 프로세스(NT 공유 핸들)</td><td>✅ 주장 (host64)</td><td>DLSS/NGX 자체가 x64 전용</td></tr>
+  <tr><td><b>OpenGL</b></td><td>❌</td><td>✅ (README 명시)</td><td>✅ 주장 (Feeder)</td><td>게임별 상이</td></tr>
+</table>
+
+<div class="card" id="dx9"><b class="t">DX9 게임의 진실 — 어떻게 되는 건가</b>
+<p style="margin-top:6px">DLSS 자체는 DX9 입력을 받지 못합니다(NVIDIA DLSS SDK 공식: D3D11/D3D12/Vulkan만). 그래서 DX9 게임은 <b>DXVK(D3D9→Vulkan) 또는 dgVoodoo2(D3D9→D3D11)로 먼저 번역</b>한 뒤, 번역된 Vulkan/D3D11 프레임에 NR을 얹습니다.</p>
+<ul>
+  <li><b>실측 선례 있음</b>: dlss5-launcher가 DX9 32비트 게임 3종(Bully, Resident Evil Revelations 2 + DXVK — 1800프레임/64fps, Saints Row 2 + dgVoodoo2)에서 NR 구동을 체인 로그로 보고. DX10(Just Cause 2)도 DXVK 1.10.3 특정 구성으로 실측.</li>
+  <li><b>단, 자체 보고</b>: 독립 검증은 부족하고, 같은 게임도 변환기에 따라 크래시가 갈립니다(README에 크래시 비교표 존재). 게임별 시행착오를 각오하세요.</li>
+  <li><b>DXVK는 온라인 게임과 충돌</b> — DX9 경로는 싱글 구작용이라는 뜻이기도 합니다.</li>
+  <li>RTX 20/30은 패치 DLL의 FP16 경로라 비용이 큽니다 — UI가 미리 알려주는 게 정상입니다.</li>
+</ul></div>
+
+<h2 id="install"><span class="step">3</span>설치 (10분)</h2>
+<ol>
+  <li><b>게임 폴더 찾기</b> — 실행 파일(.exe)이 있는 폴더. Steam이면 <code>.../steamapps/common/게임이름/bin64</code> 같은 하위 폴더일 수 있음 (exe 옆이 정답).</li>
+  <li><b>포크 zip 전부 추출</b> — 위 ①의 zip을 그 폴더에 풉니다. <code>OptiScaler.dll</code>, <code>nvngx.dll_dlssnr.dll</code>(포워더), <code>OptiScaler/</code> 폴더, <code>setup_windows.bat</code>가 보이면 OK.</li>
+  <li><b>로더 이름 선택</b> — <code>setup_windows.bat</code> 실행 → 안내에 따라 이름 선택:
+    <ul>
+      <li>보통 DX12 게임: <b>dxgi.dll</b> (기본값)</li>
+      <li>같은 폴더에 <b>ReShade(dxgi.dll)가 이미 있으면</b>: <b>version.dll</b> 선택 (ReShade와 공존하는 공식 방법)</li>
+    </ul></li>
+  <li><b>모델 DLL 복사</b> — 준비한 <code>nvngx_dlssnr.dll</code>(~165MB)을 같은 폴더에 넣기. 파일 하나 차이 주의: <code>nvngx.dll_dlssnr.dll</code>(110KB 포워더, zip에 포함)과 헷갈리지 말 것.</li>
+  <li><b>게임 실행 → Insert 키</b> → OptiScaler 오버레이 → <b>DLSS Neural Rendering → Enable</b> 체크 → <span style="color:var(--grn);font-weight:700">"Running — X ms per frame"</span> 초록 글자 확인.</li>
+</ol>
+<div class="warn"><b>setup_windows.bat 주의:</b> 이미 OptiScaler가 설치된 게임 폴더에서 실행하면 "구버전 발견 → 삭제?" 질문이 나옵니다. 지우고 싶지 않으면 <b>No</b>를 누르거나, 수동으로 <code>OptiScaler.dll</code>을 원하는 이름(version.dll 등)으로 바꾸고 bat을 건너뛰어도 됩니다. 바꾼 이름이 정답입니다.</div>
+
+<h2 id="enable"><span class="step">4</span>켜고 확인하기</h2>
+<ul>
+  <li>오버레이: <b>Insert</b> (기본) → DLSS Neural Rendering → <b>Enable Neural Rendering</b> 체크</li>
+  <li><b>Running</b> 표시 = 가동 중. 경고 문구가 보이면: "model would not initialise" = 카드/드라이버/DLL 문제, "not found" = 파일 위치 문제</li>
+  <li><b>Keybinds</b>에서 "Neural Rendering" 키를 지정해두면 오버레이 없이 게임 중 토글 가능 — <b>강력 추천</b></li>
+  <li>효과 확인은 <b>Compare (Side by side / Wipe)</b> + <b>Zoom 2.5~3배</b>로 하세요. 풀프레임 육안 비교로는 차이가 잘 안 보이는 게 정상입니다</li>
+</ul>
+
+<h2 id="options"><span class="step">5</span>오버레이 옵션 전체 해설</h2>
+<p>OptiScaler NR 섹션의 모든 슬라이더를 "현재 기본값 · 하는 일 · 언제 만지는지" 순으로 정리했습니다.</p>
+
+<table>
+  <tr><th style="width:200px">옵션</th><th style="width:90px">기본</th><th>설명</th></tr>
+  <tr><td><b>Model resolution</b></td><td>100%</td><td>모델 연산 해상도 비율. 프레임은 안 줄고 비용만 줄어듦(비용=비율²). 프레임 부족 시 80%까지</td></tr>
+  <tr><td><b>Detail strength</b></td><td>1.0</td><td>모델 그림으로 갈아타는 양. 0=원본, 1=모델 그대로, 2 이상=과잉. <b>디테일 체감의 핵심 레버</b></td></tr>
+  <tr><td><b>Colour strength</b></td><td>1.0</td><td>색 채용도. 0=밝기 판정만 반영(효과 절반 손실), 1=풀컬러</td></tr>
+  <tr><td><b>Intensity</b></td><td>1.0</td><td>모델 내부 강도(0~2). <b>어두운 화면 노이즈 1차 조절판</b> — 자글거림 심하면 0.5~0.7</td></tr>
+  <tr><td>Local structure / Local tone</td><td>1.0</td><td>구조/톤 세부 강도. 기본 유지</td></tr>
+  <tr><td>Skin structure · Auto mask</td><td>-1 · ON</td><td>피부 전용 구조(-1=Local 따름)와 자동 피부 마스크</td></tr>
+  <tr><td>Preset / Style</td><td>Default</td><td>모델 프로파일. Style: Default(콘트라스트 강조)/Natural(톤 보존)/Cinematic(과처리 억제). <b>변경 시 모델 재빌드(잠깐 끊김)</b></td></tr>
+  <tr><td><b>Paper white</b></td><td>1.0x</td><td>모델에게 보여줄 밝기 해석 배율. <b>어두운 화면 노이즈 2차 레버</b> — 0.8~1.2 탐색</td></tr>
+  <tr><td>Highlight guard</td><td>2.0x</td><td>픽셀 최대 밝기 상한(어두워짐 무제한). 불빛 색 깨짐 방지</td></tr>
+  <tr><td>Compare</td><td>Off</td><td>Before/After 분할 비교(Split/Wipe), 라벨 표시 지원</td></tr>
+  <tr><td>Debug view</td><td>0</td><td>0끔/1모델 입력/2모델 출력/3변화량 20배 — 평평한 회색이면 모델이 안 돌고 있는 것</td></tr>
+  <tr><td>Capture 8 frames</td><td>—</td><td>전/후 프레임 8장을 <code>dlssnr-capture</code> 폴더에 저장</td></tr>
+</table>
+
+<div class="warn"><b>Save Settings 주의:</b> 슬라이더는 즉시 적용되지만 저장은 "Save Settings" 버튼입니다. 안 누르면 재시작 시 초기화. 또한 저장 시 프레임 생성(FG) 관련 드롭다운 상태도 같이 저장되니, FG를 쓰는 게임이라면 저장 전 FG 설정이 안전한지 확인하세요(게임마다 다름 — 아래 문제 해결 참고).</div>
+
+<h2 id="noise"><span class="step">6</span>어두운 화면 노이즈 잡기 (실전 순서)</h2>
+<div class="card">
+<ol>
+  <li><b>Keybinds에서 NR 토글 키 지정</b> → 끄고/켜고 빠르게 비교</li>
+  <li><b>Compare → Split</b> 켜서 좌우 대조 (가장 정확한 판정)</li>
+  <li><b>Intensity 1.0 → 0.7 → 0.5</b> 단계적으로 하향 (즉시 적용)</li>
+  <li>그래도 심하면 <b>Paper white 0.8 ↔ 1.2</b> 탐색</li>
+  <li>스타일이 과하면 <b>Style → Natural / Cinematic</b></li>
+  <li>디테일이 죽었다 싶으면 <b>Detail strength 0.8~0.9</b></li>
+  <li>마음에 드는 값 찾으면 <b>Save Settings 필수</b></li>
+</ol>
+</div>
+<div class="info"><b>참고:</b> NR에는 전용 디노이즈 노브가 없습니다(코어링·시간축 누적은 시도 후 제거됨). 노이즈는 위 레버 조합으로만 관리합니다. 게임이 HDR로 렌더링하는 경우 v0.1.2부터 exposure texture를 읽어 색이 맞춰지므로, <b>v0.1.2 이상 사용을 권장</b>합니다.</div>
+
+<h2 id="trouble"><span class="step">7</span>문제 해결</h2>
+
+<div class="warn"><b>"the model would not initialise"</b><br>
+모델 DLL이 카드에 맞지 않음. RTX 20/30/40이면 패치 빌드(SF-v2 등)인지 확인 — 순정 310.8.0.0은 RTX 50 전용이며 Ada에서 FAIL_PlatformError가 납니다.</div>
+
+<div class="warn"><b>"nvngx_dlssnr.dll was not found"</b><br>
+모델 DLL이 게임 실행 파일과 같은 폴더에 없는 것. 한 글자 차이 주의: <code>nvngx.dll_dlssnr.dll</code>(포워더, 110KB)와 <code>nvngx_dlssnr.dll</code>(모델, 165MB)을 착각하기 쉽습니다.</div>
+
+<div class="warn"><b>화면이 통째로 초록색</b><br>
+구버전(v0.1.1 이하)의 HDR 색 변환 문제. <b>v0.1.2 이상으로 업데이트</b>하세요. (HDR 모니터 유무와 무관하게 게임의 프레임버퍼 방식이 변수입니다)</div>
+
+<div class="warn"><b>프레임 생성(FG) 켠 뒤 부팅 크래시</b><br>
+오버레이 저장 시 FG Input/Output 조합이 게임과 맞지 않으면 크래시가 날 수 있습니다. 저장 전 FG 설정이 정상 부팅되던 조합인지 확인, 크래시 시 OptiScaler.ini의 <code>[FrameGen]</code> 섹션을 직접 수정(원래 값으로)하면 복구됩니다.</div>
+
+<div class="warn"><b>ReShade와 같이 쓰기</b><br>
+ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설치(공식 권장 조합)하면 공존됩니다. ReShade 애드온(RenoDX DLSS5 등)과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
+
+<h2 id="links"><span class="step">7</span>링크 모음</h2>
+<table>
+  <tr><th>자원</th><th>주소</th></tr>
+  <tr><td>OptiScaler_DLSSNR 포크 (다운로드)</td><td><a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases">github.com/Dagherbou/OptiScaler_DLSSNR/releases</a></td></tr>
+  <tr><td>공식 OptiScaler</td><td><a href="https://github.com/optiscaler/OptiScaler">github.com/optiscaler/OptiScaler</a> · <a href="https://discord.gg/wEyd9w4hG5">공식 Discord</a></td></tr>
+  <tr><td>패치된 모델 DLL / 배포 툴 (RTX 20~40)</td><td><a href="https://github.com/RankFTW/rhi-repo/releases">RHI (RankFTW)</a></td></tr>
+  <tr><td>OptiScaler 위키 (호환 목록)</td><td><a href="https://github.com/optiscaler/OptiScaler/wiki">github.com/optiscaler/OptiScaler/wiki</a></td></tr>
+</table>
+
+<footer>
+  이 가이드는 커뮤니티 검증 정보와 포크 소스 기반으로 작성되었습니다. OptiScaler는 GPL-3.0 오픈소스이며 NVIDIA 공식 제품이 아닙니다.<br>
+  RTX 20/30/40 시리즈의 NR 사용은 커뮤니티 패치에 의존하므로 본인 책임 하에 사용하세요. 온라인 게임에는 절대 사용 금지.
+</footer>
+
+</div>
+</body>
+</html>
