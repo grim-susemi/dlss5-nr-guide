@@ -40,7 +40,8 @@ h1 { font-size: 27px; letter-spacing: -0.02em; }
   background: var(--panel2); border: 1px solid var(--line); color: var(--acc); }
 h2 { scroll-margin-top: 70px; font-size: 20px; margin: 40px 0 14px; padding: 10px 14px;
   background: var(--panel2); border-left: 5px solid var(--acc); border-radius: 8px; }
-.subpage h2 { margin-top: 6px; }
+.subpage h2 { margin-top: 42px; }
+.subpage:first-of-type h2 { margin-top: 8px; }
 h2 .step { display: inline-block; background: var(--acc); color: #06121f;
   border-radius: 6px; padding: 0 10px; margin-right: 10px; font-size: 16px; }
 h3 { font-size: 15.5px; margin: 26px 0 8px; color: var(--acc); }
@@ -82,8 +83,8 @@ td { color: #c9d3de; }
 .toc { position: sticky; top: 76px; max-height: calc(100vh - 92px); overflow-y: auto;
   background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; }
 .toc b { display: block; font-size: 12px; color: var(--mut); margin: 0 0 8px 6px; }
-.toc a { display: block; color: var(--mut); text-decoration: none; font-size: 13px;
-  padding: 5px 10px; border-radius: 6px; border-left: 2px solid transparent; cursor: pointer; }
+.toc a { display: block; color: var(--mut); text-decoration: none; font-size: 13px; line-height: 1.55;
+  padding: 7px 11px; margin: 3px 0; border-radius: 6px; border-left: 2px solid transparent; cursor: pointer; }
 .toc a:hover { color: var(--tx); background: var(--panel2); }
 .toc a.on { color: var(--acc); border-left-color: var(--acc); background: #1f6feb14; font-weight: 700; }
 @media (max-width: 1080px) {
@@ -137,12 +138,12 @@ a { color: var(--acc); }
 <a href="#links">12. 링크 모음</a>
 </div>
 <div id="toc-detail" hidden>
-<a href="#up">업스케일러 · DLSS</a>
-<a href="#fg">프레임 생성</a>
-<a href="#sharp">Sharpness · 플래그</a>
-<a href="#nr">★ Neural Rendering</a>
-<a href="#extra">하단 메뉴</a>
-<a href="#key">Keybinds</a>
+<a href="#up">1. 업스케일러 · DLSS</a>
+<a href="#fg">2. 프레임 생성</a>
+<a href="#sharp">3. Sharpness · 플래그</a>
+<a href="#nr">4. ★ Neural Rendering</a>
+<a href="#extra">5. 하단 메뉴</a>
+<a href="#key">6. Keybinds</a>
 </div>
 </aside>
 <div class="content">
@@ -319,7 +320,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 <div id="tab-detail" class="tabpage" hidden>
 
 <div class="subpage" id="sp-up">
-<h2>업스케일러 · DLSS</h2>
+<h2><span class="step">1</span>업스케일러 · DLSS</h2>
 <div class="optgrid">
 
 <div class="opt" id="d-upscaler">
@@ -350,7 +351,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </div>
 
 <div class="subpage" id="sp-fg">
-<h2>프레임 생성 (FG)</h2>
+<h2><span class="step">2</span>프레임 생성 (FG)</h2>
 <div class="optgrid">
 
 <div class="opt" id="d-fginput">
@@ -391,7 +392,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </div>
 
 <div class="subpage" id="sp-sharp">
-<h2>Sharpness · 플래그</h2>
+<h2><span class="step">3</span>Sharpness · 플래그</h2>
 <div class="optgrid">
 
 <div class="opt" id="s-sharpoverride">
@@ -423,7 +424,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </div>
 
 <div class="subpage" id="sp-nr">
-<h2>★ Neural Rendering</h2>
+<h2><span class="step">4</span>★ Neural Rendering</h2>
 <div class="optgrid">
 
 <div class="opt" id="d-nrenable">
@@ -505,7 +506,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </div>
 
 <div class="subpage" id="sp-extra">
-<h2>하단 메뉴</h2>
+<h2><span class="step">5</span>하단 메뉴</h2>
 <div class="optgrid">
 
 <div class="opt" id="d-magnifier"><div class="b"><span class="lbl">Magnifier</span> 돋보기. 커서 따라다니는 확대경(크기 15%, 줌 4~20x, 테두리, 고정 위치 모드 지원). NR 디테일 확인에 유용. Enabled=ON이면 메뉴가 열렸을 때만 보입니다.</div></div>
@@ -528,7 +529,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </div>
 
 <div class="subpage" id="sp-key">
-<h2>Keybinds</h2>
+<h2><span class="step">6</span>Keybinds</h2>
 <div class="optgrid">
 
 <div class="opt" id="d-keybinds"><div class="b"><span class="lbl">단축키 목록</span> Menu(=0xBB '='), FG 토글(=0xDD ']'), FPS 표시, Neural Rendering(NR 토글 — 지정 추천), FpsCycle 등. 오버레이에서 클릭 후 원하는 키 입력으로 지정합니다.</div></div>
