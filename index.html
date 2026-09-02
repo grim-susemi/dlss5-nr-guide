@@ -81,16 +81,16 @@ h2 { scroll-margin-top: 18px; }
 <body>
 <div class="shell">
 <aside class="toc"><b>📑 목차</b>
-<a href="#what">0. NR이 뭐냐</a>
-<a href="#req">1. 요구사항</a>
-<a href="#tools">2½. 도구 선별</a>
-<a href="#apis">2¾. API 호환 매트릭스</a>
-<a href="#dl">2. 준비물</a>
-<a href="#install">3. 설치</a>
+<a href="#what">1. NR이 뭐냐</a>
+<a href="#req">2. 요구사항</a>
+<a href="#tools">3. 어떤 도구 쓸까</a>
+<a href="#apis">4. 내 게임 되나?</a>
+<a href="#dl">5. 준비물</a>
+<a href="#install">6. 설치</a>
 <a href="#enable">4. 켌고 확인</a>
-<a href="#options">5. 옵션 해설</a>
-<a href="#noise">6. 노이즈 조정</a>
-<a href="#trouble">7. 문제 해결</a>
+<a href="#options">8. 옵션 해설</a>
+<a href="#noise">9. 노이즈 조정</a>
+<a href="#trouble">10. 문제 해결</a>
 <a href="#links">8. 링크 모읍</a>
 </aside>
 <div class="content">
@@ -120,16 +120,16 @@ h2 { scroll-margin-top: 18px; }
   <tr><td>온라인 게임</td><td>❌ 사용 금지</td><td>안티치트 위험 — 싱글/협동 전용</td></tr>
 </table>
 
-<h2 id="dl"><span class="step">2</span>준비물 3가지</h2>
+<h2 id="dl"><span class="step">5</span>준비물 3가지</h2>
 <div class="card"><b class="t">① OptiScaler_DLSSNR 포크</b>
-<p style="margin-top:6px">공식 OptiScaler에 NR 패스를 통합한 빌드. GitHub <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases">Dagherbou/OptiScaler_DLSSNR · Releases</a>에서 최신 zip 다운로드 (v0.1.2 이상 권장 — 색 매핑 수정 포함).</p></div>
+<p style="margin-top:6px">공식 OptiScaler에 NR 패스를 통합한 빌드. GitHub <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">Dagherbou/OptiScaler_DLSSNR · Releases</a>에서 최신 zip 다운로드 (v0.1.2 이상 권장 — 색 매핑 수정 포함).</p></div>
 
 <div class="card"><b class="t">② nvngx_dlssnr.dll — 모델 본체 (~165MB)</b>
 <p style="margin-top:6px">NVIDIA 드라이버 패키지에 들어있는 모델입니다. 배포 금지라 zip에 못 들어있고 <b>직접 구해서 게임 폴더에 넣어야</b> 합니다. NVIDIA 공식 GitHub 배포처는 없습니다(공식 DLSS SDK 저장소에는 NR 미포함) — 아래가 사실상 유일한 최신 획득 경로입니다.</p>
 <table style="margin-top:10px">
   <tr><th>내 GPU</th><th>받는 곳</th><th>방법</th></tr>
   <tr><td><b>RTX 50</b></td><td>드라이버 자체 포함</td><td>드라이버 설치 폴더 또는 아래 런처가 자동 처리</td></tr>
-  <tr><td><b>RTX 40 / 30 / 20</b></td><td><a href="https://github.com/RankFTW/rhi-repo/releases/tag/dlssnr-310.8.SF-v2">RHI · dlssnr-310.8.SF-v2</a> <span class="tag t-g">커뮤니티 표준 (다운로드 6.3만회)</span></td><td>zip 다운로드 → 압축 풀면 나오는 <code>nvngx_dlssnr.dll</code>을 게임 폴더에 복사. 최신 패치 확인은 <a href="https://github.com/RankFTW/rhi-repo/releases">rhi-repo Releases</a> 페이지에서</td></tr>
+  <tr><td><b>RTX 40 / 30 / 20</b></td><td><a href="https://github.com/RankFTW/rhi-repo/releases/tag/dlssnr-310.8.SF-v2" target="_blank" rel="noopener">RHI · dlssnr-310.8.SF-v2</a> <span class="tag t-g">커뮤니티 표준 (다운로드 6.3만회)</span></td><td>zip 다운로드 → 압축 풀면 나오는 <code>nvngx_dlssnr.dll</code>을 게임 폴더에 복사. 최신 패치 확인은 <a href="https://github.com/RankFTW/rhi-repo/releases" target="_blank" rel="noopener">rhi-repo Releases</a> 페이지에서</td></tr>
 </table>
 <p style="margin-top:8px;font-size:12.5px;color:var(--mut)">💡 가장 쉬운 방법: 아래 ③의 런처 두 개는 <b>모델 DLL을 카드에 맞는 것으로 자동 다운로드</b>합니다 — 수동 구할 필요가 없어요. 수동으로 받을 때는 zip 안의 <code>nvngx_dlssnr.dll</code>만 꺼내면 됩니다.</p></div>
 
@@ -137,27 +137,33 @@ h2 { scroll-margin-top: 18px; }
 <p style="margin-top:6px">RHI 툴은 강력하지만 사용법이 어렵고 잔버그가 있습니다. <b>더 쉬운 대안 2개</b> — 둘 다 카드를 자동 감지해서 알맞은 모델 DLL을 알아서 내려받습니다:</p>
 <table style="margin-top:10px">
   <tr><th>도구</th><th>모델 DLL 처리</th><th>이런 분께</th></tr>
-  <tr><td><b><a href="https://github.com/xdzleo/dlss5-launcher/releases">dlss5-launcher</a></b></td><td>RTX 50=순정 / 20·30·40=SF 패치 빌드 <b>자동 선택·다운로드·SHA-256 검증</b>. 설치 전 --check로 계획 미리보기 가능</td><td>게임 폴더만 지정하면 끝내고 싶은 분. DX9/32비트 게임도 지원</td></tr>
-  <tr><td><b><a href="https://github.com/reiluisii/1-Click-DLSS5/releases">1-Click-DLSS5</a></b></td><td>zip에 모델 DLL <b>이미 동봉</b>(381MB) — 별도 다운로드 자체가 없음. 한국어 UI</td><td>다운로드 한 번으로 전부 끝내고 싶은 분</td></tr>
+  <tr><td><b><a href="https://github.com/xdzleo/dlss5-launcher/releases" target="_blank" rel="noopener">dlss5-launcher</a></b></td><td>RTX 50=순정 / 20·30·40=SF 패치 빌드 <b>자동 선택·다운로드·SHA-256 검증</b>. 설치 전 --check로 계획 미리보기 가능</td><td>게임 폴더만 지정하면 끝내고 싶은 분. DX9/32비트 게임도 지원</td></tr>
+  <tr><td><b><a href="https://github.com/reiluisii/1-Click-DLSS5/releases" target="_blank" rel="noopener">1-Click-DLSS5</a></b></td><td>zip에 모델 DLL <b>이미 동봉</b>(381MB) — 별도 다운로드 자체가 없음. 한국어 UI</td><td>다운로드 한 번으로 전부 끝내고 싶은 분</td></tr>
 </table>
 <p style="margin-top:8px;font-size:12.5px;color:var(--mut)">"공식 NVIDIA 배포처는 없나?" → 없습니다. NR 모델은 드라이버 내장/리크 기원이라 공식 채널이 없고, <b>rhi-repo Releases가 커뮤니티 표준 배포처</b>입니다(위 ②의 링크). 위 런처들도 내부적으로는 같은 출처를 씁니다. 다만 어떤 도구도 NVIDIA 공식이 아니므로, 받은 DLL은 시그니처 검증 도구로 해시를 확인하면 더 안전합니다.</p></div>
 
-<h2 id="tools"><span class="step">2½</span>도구 선별 가이드 — 뭘 써야 하나</h2>
+<h2 id="tools"><span class="step">3</span>어떤 도구를 쓸까 — 옵티스케일러를 우선하세요</h2>
+<div class="good"><b>결론부터: DX12 게임이면 옵티스케일러 NR 하나로 시작하세요.</b> 실제 사용 기준 성능 체감이 가장 좋았던 조합이고, 프레임 생성·업스케일러·오버레이까지 전부 하나에 들어 있습니다. DX12가 아닌 게임도 대부분 옵티스케일러를 <b>유지·혼합</b>해서 쓸 수 있습니다 — 방법은 아래 4번 섹션에 있습니다.</div>
 <p>DLSS5 NR을 돌리는 방법은 여러 진영으로 갈립니다. 검증 결과를 신뢰도와 함께 정리합니다(2026-09-02 기준, 전부 <b>오프라인/싱글 전용</b>).</p>
 <table>
   <tr><th>도구</th><th>소스/커뮤니티</th><th>강점</th><th>판정</th></tr>
-  <tr><td><b>Dagherbou 포크</b><br><span class="tag t-g">권장 ★★★</span></td><td>GPL-3.0 전체 공개<br>별 236, 4일 4회 릴리스 급성장</td><td>DX12 게임 최선. 옵티스케일러 전 기능(FG·업스케일러·오버레이) + NR 일체. OptiScaler 기존 유저면 이것 하나면 끝</td><td>검증됨 — 본 가이드의 주인공<br><a href="https://github.com/Dagherbou/OptiScaler_DLSSNR">저장소</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases">다운로드</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/issues">이슈(사례: #5)</a></td></tr>
-  <tr><td><b>RHI Commander</b><br><span class="tag t-g">권장(제한부)</span></td><td>GPLv3 앱, 별 897 최대<br>런타임 업스트림 다운로드</td><td>자동 감지·배포·백업·외부 DLL 스캔. DLL 다운로드 허브</td><td>수동 관리와 병행 시 배포 버튼 주의<br><a href="https://github.com/RankFTW/RHI">저장소</a> · <a href="https://github.com/RankFTW/rhi-repo/releases">다운로드(DLL/애드온)</a> · <a href="https://github.com/RankFTW/RHI/blob/main/PatchNotes.md">패치노트</a></td></tr>
-  <tr><td><b>dlss5-launcher</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 전체 공개 + 빌드 재현<br>별 2, 신생(7월 생성)</td><td><b>DX9/DX10/32비트 게임 유일 커버</b> — DXVK/dgVoodoo2 변환 + 64비트 헬퍼 프로세스. 게임별 실측 로그 공개</td><td>기술 검증 우수하나 신생. VT 2/65 오탐 이력 자체 문서화<br><a href="https://github.com/xdzleo/dlss5-launcher">저장소</a> · <a href="https://github.com/xdzleo/dlss5-launcher/releases">다운로드</a> · <a href="https://github.com/xdzleo/dlss5-launcher/blob/master/docs/antivirus.md">안티바이러스 문서</a></td></tr>
-  <tr><td><b>1-Click-DLSS5</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 스크립트(감사 가능)<br>별 99, 신생, 한국어 UI</td><td>원클릭 편의 최강, 3모드(브리지/직접/Feeder), DX9/OpenGL/32비트 주장</td><td>베타 급변 중. 페이로드 무거움<br><a href="https://github.com/reiluisii/1-Click-DLSS5">저장소</a> · <a href="https://github.com/reiluisii/1-Click-DLSS5/releases">다운로드</a> · <a href="https://github.com/reiluisii/1-Click-DLSS5/blob/main/core/payload/PAYLOAD-INFO.txt">페이로드 명세</a></td></tr>
-  <tr><td><b>dlss5-aio</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 팩, 별 5 신생</td><td>공식 NVIDIA DLL과 커스텀 빌드를 <b>폴더별로 분리 표기</b> — 출처 표기 최선</td><td>Swapper 무서명(SmartScreen)<br><a href="https://github.com/ShugokiFable/dlss5-aio">저장소</a> · <a href="https://github.com/ShugokiFable/dlss5-aio/releases">다운로드</a></td></tr>
+  <tr><td><b>옵티스케일러 NR</b><br><span style="font-size:10.5px;color:var(--mut)">(OptiScaler_DLSSNR 포크)</span><br><span class="tag t-g">권장 ★★★</span></td><td>GPL-3.0 전체 공개<br>별 236, 4일 4회 릴리스 급성장</td><td>DX12 게임 최선. 옵티스케일러 전 기능(FG·업스케일러·오버레이) + NR 일체. OptiScaler 기존 유저면 이것 하나면 끝</td><td>검증됨 — 본 가이드의 주인공<br><a href="https://github.com/Dagherbou/OptiScaler_DLSSNR" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">다운로드</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/issues" target="_blank" rel="noopener">이슈(사례: #5)</a></td></tr>
+  <tr><td><b>RHI Commander</b><br><span class="tag t-g">권장(제한부)</span></td><td>GPLv3 앱, 별 897 최대<br>런타임 업스트림 다운로드</td><td>자동 감지·배포·백업·외부 DLL 스캔. DLL 다운로드 허브</td><td>수동 관리와 병행 시 배포 버튼 주의<br><a href="https://github.com/RankFTW/RHI" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/RankFTW/rhi-repo/releases" target="_blank" rel="noopener">다운로드(DLL/애드온)</a> · <a href="https://github.com/RankFTW/RHI/blob/main/PatchNotes.md" target="_blank" rel="noopener">패치노트</a></td></tr>
+  <tr><td><b>dlss5-launcher</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 전체 공개 + 빌드 재현<br>별 2, 신생(7월 생성)</td><td><b>DX9/DX10/32비트 게임 유일 커버</b> — DXVK/dgVoodoo2 변환 + 64비트 헬퍼 프로세스. 게임별 실측 로그 공개</td><td>기술 검증 우수하나 신생. VT 2/65 오탐 이력 자체 문서화<br><a href="https://github.com/xdzleo/dlss5-launcher" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/xdzleo/dlss5-launcher/releases" target="_blank" rel="noopener">다운로드</a> · <a href="https://github.com/xdzleo/dlss5-launcher/blob/master/docs/antivirus.md" target="_blank" rel="noopener">안티바이러스 문서</a></td></tr>
+  <tr><td><b>1-Click-DLSS5</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 스크립트(감사 가능)<br>별 99, 신생, 한국어 UI</td><td>원클릭 편의 최강, 3모드(브리지/직접/Feeder), DX9/OpenGL/32비트 주장</td><td>베타 급변 중. 페이로드 무거움<br><a href="https://github.com/reiluisii/1-Click-DLSS5" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/reiluisii/1-Click-DLSS5/releases" target="_blank" rel="noopener">다운로드</a> · <a href="https://github.com/reiluisii/1-Click-DLSS5/blob/main/core/payload/PAYLOAD-INFO.txt" target="_blank" rel="noopener">페이로드 명세</a></td></tr>
+  <tr><td><b>dlss5-aio</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 팩, 별 5 신생</td><td>공식 NVIDIA DLL과 커스텀 빌드를 <b>폴더별로 분리 표기</b> — 출처 표기 최선</td><td>Swapper 무서명(SmartScreen)<br><a href="https://github.com/ShugokiFable/dlss5-aio" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/ShugokiFable/dlss5-aio/releases" target="_blank" rel="noopener">다운로드</a></td></tr>
 </table>
 <p style="font-size:12.5px;color:var(--mut)">상세 근거(각 도구 해시·맬웨어 이력·README 인용)는 이 가이드 저장소의 리포트를 참고. 판정 기준: 소스 공개 + 빌드 재현성 + 커뮤니티 규모. 유튜브 영상은 근거로 채택하지 않습니다.</p>
 
-<h2 id="apis"><span class="step">2¾</span>API·게임 세대별 호환 매트릭스</h2>
+<h2 id="apis"><span class="step">4</span>내 게임에서 DLSS5가 되나? — API별 옵티스케일러 사용법</h2>
+<div class="good"><b>추천 원칙: 되는 한 옵티스케일러를 끝까지 쓰세요.</b> 게임 API가 달라져도 대부분 옵티스케일러를 유지할 수 있고, 설정이나 도구만 바꾸면 됩니다.<br><br>
+<b>✅ DX12</b> — 설치 그대로, NR 켜기. 추가 작업 없음 (체감 최고 조합).<br>
+<b>✅ Vulkan</b> — v0.1.2부터 네이티브 지원. 설치 그대로, NR 켜기.<br>
+<b>⚠️ DX11</b> — 옵티스케일러 유지 + 오버레이 왼쪽 위 업스케일러를 <b>"FSR 3.X w/Dx12"</b>(또는 XeSS w/Dx12)로 변경해야 NR이 켜집니다. DLSS를 브리지로 통과시킬 수는 없어서입니다.<br>
+<b>❌ DX9 / DX10 / 32비트</b> — 옵티스케일러 단독으로는 불가 → <b>dlss5-launcher</b>가 DXVK 등 변환기를 자동 구성해 NR을 돌립니다(이때는 옵티스케일러를 제거해 충돌을 피하세요).</div>
 <p>"내 게임은 되나?"에 대한 답입니다. NR 자체는 DLSS가 받는 프레임이 필요하고, DLSS는 DX11/DX12/Vulkan만 지원합니다 — 그래서 오래된 API는 <b>변환 계층</b>이 끼어듭니다.</p>
 <table>
-  <tr><th>게임 API</th><th>Dagherbou 포크</th><th>dlss5-launcher</th><th>1-Click-DLSS5</th><th>비고</th></tr>
+  <tr><th>게임 API</th><th>옵티스케일러 NR<br><span style="font-size:10px;color:var(--mut);font-weight:400">(OptiScaler_DLSSNR 포크)</span></th><th>dlss5-launcher</th><th>1-Click-DLSS5</th><th>비고</th></tr>
   <tr><td><b>DX12</b> (붉은사막, 사이버펑크 등)</td><td>✅ 네이티브 후처리 패스 — 최선</td><td>✅</td><td>✅ 직접 주입/브리지</td><td>가장 무난한 경로</td></tr>
   <tr><td><b>DX11</b></td><td>✅ 브리지 경유 — 단 DLSS 업스케일러 교체는 불가(FSR/XeSS w/Dx12 필요)</td><td>✅</td><td>✅</td><td>브리지 제약은 포크 README 명시</td></tr>
   <tr><td><b>Vulkan</b> (DOOM Eternal, BG3 등)</td><td>✅ v0.1.2 네이티브</td><td>✅ 실측</td><td>✅ Feeder</td><td>v0.1.2 신규 지원</td></tr>
@@ -176,7 +182,7 @@ h2 { scroll-margin-top: 18px; }
   <li>RTX 20/30은 패치 DLL의 FP16 경로라 비용이 큽니다 — UI가 미리 알려주는 게 정상입니다.</li>
 </ul></div>
 
-<h2 id="install"><span class="step">3</span>설치 (10분)</h2>
+<h2 id="install"><span class="step">6</span>설치 (10분)</h2>
 <ol>
   <li><b>게임 폴더 찾기</b> — 실행 파일(.exe)이 있는 폴더. Steam이면 <code>.../steamapps/common/게임이름/bin64</code> 같은 하위 폴더일 수 있음 (exe 옆이 정답).</li>
   <li><b>포크 zip 전부 추출</b> — 위 ①의 zip을 그 폴더에 풉니다. <code>OptiScaler.dll</code>, <code>nvngx.dll_dlssnr.dll</code>(포워더), <code>OptiScaler/</code> 폴더, <code>setup_windows.bat</code>가 보이면 OK.</li>
@@ -190,7 +196,7 @@ h2 { scroll-margin-top: 18px; }
 </ol>
 <div class="warn"><b>setup_windows.bat 주의:</b> 이미 OptiScaler가 설치된 게임 폴더에서 실행하면 "구버전 발견 → 삭제?" 질문이 나옵니다. 지우고 싶지 않으면 <b>No</b>를 누르거나, 수동으로 <code>OptiScaler.dll</code>을 원하는 이름(version.dll 등)으로 바꾸고 bat을 건너뛰어도 됩니다. 바꾼 이름이 정답입니다.</div>
 
-<h2 id="enable"><span class="step">4</span>켜고 확인하기</h2>
+<h2 id="enable"><span class="step">7</span>켜고 확인하기</h2>
 <ul>
   <li>오버레이: <b>Insert</b> (기본) → DLSS Neural Rendering → <b>Enable Neural Rendering</b> 체크</li>
   <li><b>Running</b> 표시 = 가동 중. 경고 문구가 보이면: "model would not initialise" = 카드/드라이버/DLL 문제, "not found" = 파일 위치 문제</li>
@@ -198,7 +204,7 @@ h2 { scroll-margin-top: 18px; }
   <li>효과 확인은 <b>Compare (Side by side / Wipe)</b> + <b>Zoom 2.5~3배</b>로 하세요. 풀프레임 육안 비교로는 차이가 잘 안 보이는 게 정상입니다</li>
 </ul>
 
-<h2 id="options"><span class="step">5</span>오버레이 옵션 전체 해설</h2>
+<h2 id="options"><span class="step">8</span>오버레이 옵션 전체 해설</h2>
 <p>OptiScaler NR 섹션의 모든 슬라이더를 "현재 기본값 · 하는 일 · 언제 만지는지" 순으로 정리했습니다.</p>
 
 <table>
@@ -219,7 +225,7 @@ h2 { scroll-margin-top: 18px; }
 
 <div class="warn"><b>Save Settings 주의:</b> 슬라이더는 즉시 적용되지만 저장은 "Save Settings" 버튼입니다. 안 누르면 재시작 시 초기화. 또한 저장 시 프레임 생성(FG) 관련 드롭다운 상태도 같이 저장되니, FG를 쓰는 게임이라면 저장 전 FG 설정이 안전한지 확인하세요(게임마다 다름 — 아래 문제 해결 참고).</div>
 
-<h2 id="noise"><span class="step">6</span>어두운 화면 노이즈 잡기 (실전 순서)</h2>
+<h2 id="noise"><span class="step">9</span>어두운 화면 노이즈 잡기 (실전 순서)</h2>
 <div class="card">
 <ol>
   <li><b>Keybinds에서 NR 토글 키 지정</b> → 끄고/켜고 빠르게 비교</li>
@@ -233,7 +239,7 @@ h2 { scroll-margin-top: 18px; }
 </div>
 <div class="info"><b>참고:</b> NR에는 전용 디노이즈 노브가 없습니다(코어링·시간축 누적은 시도 후 제거됨). 노이즈는 위 레버 조합으로만 관리합니다. 게임이 HDR로 렌더링하는 경우 v0.1.2부터 exposure texture를 읽어 색이 맞춰지므로, <b>v0.1.2 이상 사용을 권장</b>합니다.</div>
 
-<h2 id="trouble"><span class="step">7</span>문제 해결</h2>
+<h2 id="trouble"><span class="step">10</span>문제 해결</h2>
 
 <div class="warn"><b>"the model would not initialise"</b><br>
 모델 DLL이 카드에 맞지 않음. RTX 20/30/40이면 패치 빌드(SF-v2 등)인지 확인 — 순정 310.8.0.0은 RTX 50 전용이며 Ada에서 FAIL_PlatformError가 납니다.</div>
@@ -250,21 +256,21 @@ h2 { scroll-margin-top: 18px; }
 <div class="warn"><b>ReShade와 같이 쓰기</b><br>
 ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설치(공식 권장 조합)하면 공존됩니다. ReShade 애드온(RenoDX DLSS5 등)과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
 
-<h2 id="links"><span class="step">7</span>링크 모음 — 전부</h2>
+<h2 id="links"><span class="step">11</span>링크 모음 — 전부</h2>
 <table>
   <tr><th>자원</th><th>주소</th></tr>
-  <tr><td><b>OptiScaler_DLSSNR 포크</b> (저장소 / 다운로드 / 이슈)</td><td><a href="https://github.com/Dagherbou/OptiScaler_DLSSNR">저장소</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases">Releases</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/issues">Issues</a></td></tr>
-  <tr><td><b>공식 OptiScaler</b> (저장소 / 위키 / Discord)</td><td><a href="https://github.com/optiscaler/OptiScaler">저장소</a> · <a href="https://github.com/optiscaler/OptiScaler/wiki">위키·호환 목록</a> · <a href="https://discord.gg/wEyd9w4hG5">공식 Discord</a></td></tr>
-  <tr><td><b>dlss5-launcher</b> (DX9/32비트 런처)</td><td><a href="https://github.com/xdzleo/dlss5-launcher">저장소</a> · <a href="https://github.com/xdzleo/dlss5-launcher/releases">Releases</a></td></tr>
-  <tr><td><b>1-Click-DLSS5</b> (원클릭 인젝터)</td><td><a href="https://github.com/reiluisii/1-Click-DLSS5">저장소</a> · <a href="https://github.com/reiluisii/1-Click-DLSS5/releases">Releases</a></td></tr>
-  <tr><td><b>dlss5-aio</b> (DLL 통합 팩)</td><td><a href="https://github.com/ShugokiFable/dlss5-aio">저장소</a> · <a href="https://github.com/ShugokiFable/dlss5-aio/releases">Releases</a></td></tr>
-  <tr><td><b>RHI</b> (매니저 / DLL·애드온 배포)</td><td><a href="https://github.com/RankFTW/RHI">저장소</a> · <a href="https://github.com/RankFTW/rhi-repo/releases">Releases(DLL·애드온)</a></td></tr>
-  <tr><td><b>DLSS5-Feeder</b> (무DLSS/32비트 게임용)</td><td><a href="https://github.com/jlrouzies-fr/DLSS5-Feeder">저장소</a></td></tr>
-  <tr><td><b>dlssnr-ada-patcher</b> (Ada 패처·소스)</td><td><a href="https://github.com/dev-camo/dlssnr-ada-patcher">저장소</a></td></tr>
-  <tr><td><b>dlssnr-signature-repair</b> (DLL 해시 검증)</td><td><a href="https://github.com/kayle2203/dlssnr-signature-repair">저장소</a></td></tr>
-  <tr><td><b>NVIDIA DLSS SDK</b> (API 지원 근거)</td><td><a href="https://github.com/NVIDIA/DLSS">저장소</a></td></tr>
-  <tr><td><b>DXVK</b> (DX9/DX10→Vulkan 변환)</td><td><a href="https://github.com/doitsujin/dxvk">저장소</a></td></tr>
-  <tr><td><b>dgVoodoo2</b> (DX9→D3D11 변환)</td><td><a href="http://dege.freeweb.hu/dgVoodoo2/">공식 사이트</a></td></tr>
+  <tr><td><b>OptiScaler_DLSSNR 포크</b> (저장소 / 다운로드 / 이슈)</td><td><a href="https://github.com/Dagherbou/OptiScaler_DLSSNR" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">Releases</a> · <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/issues" target="_blank" rel="noopener">Issues</a></td></tr>
+  <tr><td><b>공식 OptiScaler</b> (저장소 / 위키 / Discord)</td><td><a href="https://github.com/optiscaler/OptiScaler" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/optiscaler/OptiScaler/wiki" target="_blank" rel="noopener">위키·호환 목록</a> · <a href="https://discord.gg/wEyd9w4hG5" target="_blank" rel="noopener">공식 Discord</a></td></tr>
+  <tr><td><b>dlss5-launcher</b> (DX9/32비트 런처)</td><td><a href="https://github.com/xdzleo/dlss5-launcher" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/xdzleo/dlss5-launcher/releases" target="_blank" rel="noopener">Releases</a></td></tr>
+  <tr><td><b>1-Click-DLSS5</b> (원클릭 인젝터)</td><td><a href="https://github.com/reiluisii/1-Click-DLSS5" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/reiluisii/1-Click-DLSS5/releases" target="_blank" rel="noopener">Releases</a></td></tr>
+  <tr><td><b>dlss5-aio</b> (DLL 통합 팩)</td><td><a href="https://github.com/ShugokiFable/dlss5-aio" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/ShugokiFable/dlss5-aio/releases" target="_blank" rel="noopener">Releases</a></td></tr>
+  <tr><td><b>RHI</b> (매니저 / DLL·애드온 배포)</td><td><a href="https://github.com/RankFTW/RHI" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/RankFTW/rhi-repo/releases" target="_blank" rel="noopener">Releases(DLL·애드온)</a></td></tr>
+  <tr><td><b>DLSS5-Feeder</b> (무DLSS/32비트 게임용)</td><td><a href="https://github.com/jlrouzies-fr/DLSS5-Feeder" target="_blank" rel="noopener">저장소</a></td></tr>
+  <tr><td><b>dlssnr-ada-patcher</b> (Ada 패처·소스)</td><td><a href="https://github.com/dev-camo/dlssnr-ada-patcher" target="_blank" rel="noopener">저장소</a></td></tr>
+  <tr><td><b>dlssnr-signature-repair</b> (DLL 해시 검증)</td><td><a href="https://github.com/kayle2203/dlssnr-signature-repair" target="_blank" rel="noopener">저장소</a></td></tr>
+  <tr><td><b>NVIDIA DLSS SDK</b> (API 지원 근거)</td><td><a href="https://github.com/NVIDIA/DLSS" target="_blank" rel="noopener">저장소</a></td></tr>
+  <tr><td><b>DXVK</b> (DX9/DX10→Vulkan 변환)</td><td><a href="https://github.com/doitsujin/dxvk" target="_blank" rel="noopener">저장소</a></td></tr>
+  <tr><td><b>dgVoodoo2</b> (DX9→D3D11 변환)</td><td><a href="http://dege.freeweb.hu/dgVoodoo2/" target="_blank" rel="noopener">공식 사이트</a></td></tr>
 </table>
 
 <footer>
