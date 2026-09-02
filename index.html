@@ -6,140 +6,135 @@
 <title>DLSS 5 Neural Rendering 가이드 — 설치 · 옵션 상세 (Crimson Desert)</title>
 <meta name="description" content="OptiScaler DLSSNR 포크로 DLSS 5 Neural Rendering을 적용하는 한국어 완전 가이드. 설치 절차와 옵션별 상세 설명, API 호환 매트릭스, 문제 해결.">
 <style>
-
-  :root {
-    --bg: #0b0e14; --panel: #141922; --panel2: #1a2029; --line: #2b3441;
-    --tx: #e8edf4; --mut: #93a0b0; --acc: #6cb2ff; --grn: #46d160;
-    --amb: #e3b341; --red: #ff6b6b; --purple: #b48cff;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--tx);
-    font-family: "Pretendard","Malgun Gothic",-apple-system,sans-serif; line-height: 1.7; }
-  .shell { display: grid; grid-template-columns: 252px minmax(0,1fr); max-width: 1680px;
-  margin: 0 auto; gap: 26px; padding: 24px 20px 100px; }
-.toc { position: sticky; top: 14px; align-self: start; max-height: calc(100vh - 28px);
-  overflow-y: auto; background: var(--panel); border: 1px solid var(--line);
-  border-radius: 10px; padding: 14px 12px; }
-.toc b { display: block; font-size: 12px; color: var(--mut); margin: 0 0 8px 6px; }
-.toc a { display: block; color: var(--mut); text-decoration: none; font-size: 13px;
-  padding: 5px 10px; border-radius: 6px; border-left: 2px solid transparent; }
-.toc a:hover { color: var(--tx); background: var(--panel2); }
-.toc a.on { color: var(--acc); border-left-color: var(--acc); background: #1f6feb14; font-weight: 700; }
-.wrap { padding: 0 4px 90px; }
-h2 { scroll-margin-top: 18px; }
-@media (max-width: 1080px) {
-  .shell { grid-template-columns: 1fr; }
-  .toc { position: static; max-height: none; }
-  .toc a { display: inline-block; border-left: none; border: 1px solid var(--line); margin: 2px; padding: 3px 9px; }
+:root {
+  --bg: #0b0e14; --panel: #141922; --panel2: #1a2029; --line: #2b3441;
+  --tx: #e8edf4; --mut: #93a0b0; --acc: #6cb2ff; --grn: #46d160;
+  --amb: #e3b341; --red: #ff6b6b; --purple: #b48cff;
 }
-  header { text-align: center; padding: 30px 0 26px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
-  h1 { font-size: 27px; letter-spacing: -0.02em; }
-  .sub { color: var(--mut); font-size: 14px; margin-top: 10px; }
-  .badges { margin-top: 14px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-  .badge { font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px;
-    background: var(--panel2); border: 1px solid var(--line); color: var(--acc); }
-  nav { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 22px 0 30px; }
-  nav a { color: var(--acc); text-decoration: none; font-size: 13px;
-    background: var(--panel); border: 1px solid var(--line); padding: 5px 12px; border-radius: 6px; }
-  nav a:hover { border-color: var(--acc); }
-  h2 { font-size: 20px; margin: 44px 0 14px; padding: 10px 14px;
-    background: var(--panel2); border-left: 5px solid var(--acc); border-radius: 8px; }
-  h2 .step { display: inline-block; background: var(--acc); color: #06121f;
-    border-radius: 6px; padding: 0 10px; margin-right: 10px; font-size: 16px; }
-  h3 { font-size: 15.5px; margin: 26px 0 8px; color: var(--acc); }
-  p, li { font-size: 14px; color: #c9d3de; }
-  ul, ol { margin: 8px 0 8px 22px; }
-  li { margin: 4px 0; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
-    padding: 18px 20px; margin: 14px 0; }
-  .card b.t { font-size: 15px; }
-  code { background: var(--panel2); padding: 2px 7px; border-radius: 5px;
-    font-size: 12.5px; color: var(--acc); font-family: Consolas,monospace; }
-  .warn { background: #da363014; border: 1px solid #da363055; border-radius: 10px;
-    padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
-  .warn b { color: var(--red); }
-  .good { background: #23863614; border: 1px solid #23863655; border-radius: 10px;
-    padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
-  .good b { color: var(--grn); }
-  .info { background: #1f6feb14; border: 1px solid #1f6feb55; border-radius: 10px;
-    padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
-  table { width: 100%; border-collapse: collapse; font-size: 13.2px; margin: 12px 0; }
-  th, td { padding: 8px 12px; border: 1px solid var(--line); vertical-align: top; text-align: left; }
-  th { background: var(--panel2); color: var(--tx); font-weight: 700; white-space: nowrap; }
-  td { color: #c9d3de; }
-  .tag { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 1px 8px;
-    border-radius: 20px; white-space: nowrap; }
-  .t-g { background: #23863622; color: var(--grn); border: 1px solid #23863655; }
-  .t-y { background: #bb800922; color: var(--amb); border: 1px solid #bb800955; }
-  .t-r { background: #da363022; color: var(--red); border: 1px solid #da363055; }
-  .t-b { background: #1f6feb22; color: var(--acc); border: 1px solid #1f6feb55; }
-  footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line);
-    color: var(--mut); font-size: 12.5px; text-align: center; }
-  a { color: var(--acc); }
-  @media print { body { background: #fff; color: #000; } }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--tx);
+  font-family: "Pretendard","Malgun Gothic",-apple-system,sans-serif; line-height: 1.7; }
 
-
-/* ===== 탭 + 사이드바 개편 ===== */
-.tabs { display: flex; gap: 8px; margin: 18px 0 22px; }
-.tabs button { font: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+/* ===== 고정 탑바 + 칩 목차 ===== */
+.topbar { position: sticky; top: 0; z-index: 100;
+  background: rgba(11,14,20,.93); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line); padding: 10px 20px 9px; }
+.topbar .row, .chips { max-width: 1500px; margin: 0 auto; }
+.topbar .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.topbar .title { font-weight: 800; font-size: 15px; }
+.btns { display: flex; gap: 8px; }
+.topbar .mt { font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
   background: var(--panel); color: var(--mut); border: 1px solid var(--line);
-  padding: 9px 20px; border-radius: 8px; }
-.tabs button.on { background: var(--acc); color: #06121f; border-color: var(--acc); }
-.tabpage[hidden] { display: none; }
-.toc .grp { display: block; font-size: 11px; color: var(--purple); font-weight: 700;
-  margin: 10px 0 4px 6px; }
-.toc a { display: block; color: var(--mut); text-decoration: none; font-size: 12.5px;
-  padding: 4px 10px; border-radius: 6px; border-left: 2px solid transparent; }
-.toc a:hover { color: var(--tx); background: var(--panel2); }
-.toc a.on { color: var(--acc); border-left-color: var(--acc); background: #1f6feb14; font-weight: 700; }
-.toc a.dim { opacity: .45; }
-h2, .opt, .sec { scroll-margin-top: 18px; }
+  padding: 7px 16px; border-radius: 8px; }
+.topbar .mt.on { background: var(--acc); color: #06121f; border-color: var(--acc); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+.chips button { font: inherit; font-size: 12px; cursor: pointer; background: var(--panel);
+  color: var(--mut); border: 1px solid var(--line); padding: 4px 12px; border-radius: 20px; }
+.chips button:hover { color: var(--tx); border-color: var(--acc); }
+.chips button.on { background: #b48cff26; color: var(--purple); border-color: #b48cff66; font-weight: 700; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 26px 20px 90px; }
+.tabpage[hidden], .subpage[hidden] { display: none; }
+
+header { text-align: center; padding: 30px 0 26px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
+h1 { font-size: 27px; letter-spacing: -0.02em; }
+.sub { color: var(--mut); font-size: 14px; margin-top: 10px; }
+.badges { margin-top: 14px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.badge { font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px;
+  background: var(--panel2); border: 1px solid var(--line); color: var(--acc); }
+h2 { scroll-margin-top: 120px; font-size: 20px; margin: 40px 0 14px; padding: 10px 14px;
+  background: var(--panel2); border-left: 5px solid var(--acc); border-radius: 8px; }
+.subpage h2 { margin-top: 6px; }
+h2 .step { display: inline-block; background: var(--acc); color: #06121f;
+  border-radius: 6px; padding: 0 10px; margin-right: 10px; font-size: 16px; }
+h3 { font-size: 15.5px; margin: 26px 0 8px; color: var(--acc); }
+p, li { font-size: 14px; color: #c9d3de; }
+ul, ol { margin: 8px 0 8px 22px; }
+li { margin: 4px 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 18px 20px; margin: 14px 0; }
+.card b.t { font-size: 15px; }
+code { background: var(--panel2); padding: 2px 7px; border-radius: 5px;
+  font-size: 12.5px; color: var(--acc); font-family: Consolas,monospace; }
+.warn { background: #da363014; border: 1px solid #da363055; border-radius: 10px;
+  padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
+.warn b { color: var(--red); }
+.good { background: #23863614; border: 1px solid #23863655; border-radius: 10px;
+  padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
+.good b { color: var(--grn); }
+.info { background: #1f6feb14; border: 1px solid #1f6feb55; border-radius: 10px;
+  padding: 14px 18px; margin: 14px 0; font-size: 13.5px; }
+table { width: 100%; border-collapse: collapse; font-size: 13.2px; margin: 12px 0; }
+th, td { padding: 8px 12px; border: 1px solid var(--line); vertical-align: top; text-align: left; }
+th { background: var(--panel2); color: var(--tx); font-weight: 700; white-space: nowrap; }
+td { color: #c9d3de; }
+.tag { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 1px 8px;
+  border-radius: 20px; white-space: nowrap; }
+.t-g { background: #23863622; color: var(--grn); border: 1px solid #23863655; }
+.t-y { background: #bb800922; color: var(--amb); border: 1px solid #bb800955; }
+.t-r { background: #da363022; color: var(--red); border: 1px solid #da363055; }
+.t-b { background: #1f6feb22; color: var(--acc); border: 1px solid #1f6feb55; }
+.t-new { background: #8957e522; color: var(--purple); border: 1px solid #8957e555; }
+.t-tune { background: #bb800922; color: var(--amb); border: 1px solid #bb800955; }
+.warnline { color: var(--red); font-weight: 700; }
+
+/* ===== 옵션 상세 카드 ===== */
+.optgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(430px, 1fr)); gap: 14px; }
+@media (max-width: 980px) { .optgrid { grid-template-columns: 1fr; } }
+.opt { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 15px 17px; }
+.opt .b { color: #c9d3de; font-size: 13.5px; }
+.opt .b .lbl { color: var(--amb); font-weight: 700; font-size: 13.5px; margin-right: 6px; }
+.opt .k { color: var(--mut); font-size: 11.5px; font-family: Consolas,monospace; }
+.opt .desc { font-size: 13.5px; color: #c9d3de; margin-top: 8px; }
+.opt ul { margin: 8px 0 0 20px; }
+.opt li { font-size: 13px; }
+
+footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--line);
+  color: var(--mut); font-size: 12.5px; text-align: center; }
+a { color: var(--acc); }
+@media print { body { background: #fff; color: #000; } }
 </style>
 </head>
 <body>
-<div class="shell">
-<aside class="toc"><b>📑 목차</b>
-<span class="grp">설치 가이드</span>
-<a href="#what" data-tab="guide">1. NR이 뭐냐</a>
-<a href="#req" data-tab="guide">2. 요구사항</a>
-<a href="#tools" data-tab="guide">3. 어떤 도구 쓸까</a>
-<a href="#apis" data-tab="guide">4. 내 게임 되나?</a>
-<a href="#dl" data-tab="guide">5. 준비물</a>
-<a href="#install" data-tab="guide">6. 설치</a>
-<a href="#enable" data-tab="guide">7. 켜고 확인</a>
-<a href="#noise" data-tab="guide">8. 노이즈 조정</a>
-<a href="#trouble" data-tab="guide">9. 문제 해결</a>
-<span class="grp">옵션 상세 설명</span>
-<a href="#d-left" data-tab="detail">왼쪽 열 전체</a>
-<a href="#d-upscaler" data-tab="detail">Upscaler</a>
-<a href="#d-presets" data-tab="detail">Render Presets</a>
-<a href="#d-fginput" data-tab="detail">FG Input · Nvngx</a>
-<a href="#d-nrenable" data-tab="detail">★ Enable NR</a>
-<a href="#d-transfer" data-tab="detail">Detail strength</a>
-<a href="#d-colour" data-tab="detail">Colour strength</a>
-<a href="#d-intensity" data-tab="detail">Intensity</a>
-<a href="#d-takewhitepoint" data-tab="detail">White point from game</a>
-<a href="#d-paperwhite" data-tab="detail">Paper white</a>
-<a href="#d-maxratio" data-tab="detail">Highlight guard</a>
-<a href="#d-compare" data-tab="detail">Compare·Debug</a>
-<a href="#d-advset" data-tab="detail">하단 메뉴 8종</a>
-<a href="#d-keybinds" data-tab="detail">Keybinds</a>
-</aside>
-<div class="content">
-
-<div class="tabs">
-<button class="on" data-tabbtn="guide">📖 설치 가이드</button>
-<button data-tabbtn="detail">🎛 옵션 상세 설명</button>
+<div class="topbar"><div class="row">
+<span class="title">DLSS 5 NR 가이드</span>
+<div class="btns">
+<button class="mt on" data-main="guide">📖 설치 가이드</button>
+<button class="mt" data-main="detail">🎛 옵션 상세</button>
+</div>
+</div>
+<div class="chips" id="chips-guide">
+<button data-sec="what">DLSS 5 Neural Rendering이 뭔가</button>
+<button data-sec="req">요구사항 확인</button>
+<button data-sec="tools">어떤 도구를 쓸까</button>
+<button data-sec="apis">내 게임에서 DLSS5가 되나?</button>
+<button data-sec="dl">준비물 3가지</button>
+<button data-sec="install">설치</button>
+<button data-sec="enable">켜고 확인하기</button>
+<button data-sec="options">오버레이 옵션 요약표</button>
+<button data-sec="noise">어두운 화면 노이즈 잡기</button>
+<button data-sec="trouble">문제 해결</button>
+<button data-sec="ext">선택: iMMERSE 셰이더 팩</button>
+<button data-sec="links">링크 모음</button>
+</div>
+<div class="chips" id="chips-detail" hidden>
+<button data-sec="up">업스케일러 · DLSS</button>
+<button data-sec="fg">프레임 생성 (FG)</button>
+<button data-sec="sharp">Sharpness · 플래그</button>
+<button data-sec="nr">★ Neural Rendering</button>
+<button data-sec="extra">하단 메뉴</button>
+<button data-sec="key">Keybinds</button>
+</div>
 </div>
 
-
+<div class="wrap">
 
 <div id="tab-guide" class="tabpage">
-<h2 id="what"><span class="step">0</span>DLSS 5 Neural Rendering이 뭔가</h2>
+<h2 id="what"><span class="step">1</span>DLSS 5 Neural Rendering이 뭔가</h2>
 <p>NVIDIA가 공개한 신세대 기술로, DLSS 업스케일러가 만든 프레임 위에 <b>신경망 모델이 미세 디테일(모공, 천 직조, 금속 표면, 나뭇잎 등)을 다시 합성해 얹는</b> 기능입니다. 공식 지원은 RTX 50 시리즈 + 최신 드라이버이지만, 이 가이드는 <b>OptiScaler 포크</b>를 써서 그 이전 카드에서도 돌리는 방법을 다룹니다.</p>
 <div class="info"><b>한 줄 요약:</b> 업스케일러(DLSS)가 "커다란 그림"을 그리면, NR 모델이 그 위에 "잔손질"을 얹는 겁니다. 프레임을 부드럽게 하는 게 아니라 <b>디테일을 합성</b>하는 기술이라, 효과는 확대하거나 움직임 속에서 더 드러납니다.</div>
-
-<h2 id="req"><span class="step">1</span>요구사항 확인</h2>
+<h2 id="req"><span class="step">2</span>요구사항 확인</h2>
 <table>
   <tr><th>항목</th><th>요구</th><th>비고</th></tr>
   <tr><td>GPU</td><td>RTX 50 — 그대로 지원<br>RTX 20/30/40 — <b>패치된 모델 DLL 필요</b></td><td>패치 DLL은 커뮤니티 배포(RHI 툴 등에서 다운로드), 공식 지원은 아님을 유의</td></tr>
@@ -147,7 +142,6 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
   <tr><td>게임</td><td>DLSS 2+를 쓰는 게임</td><td>DX12 · Vulkan 네이티브, DX11은 브리지 경유(제약 있음)</td></tr>
   <tr><td>온라인 게임</td><td>❌ 사용 금지</td><td>안티치트 위험 — 싱글/협동 전용</td></tr>
 </table>
-
 <h2 id="tools"><span class="step">3</span>어떤 도구를 쓸까 — 옵티스케일러를 우선하세요</h2>
 <div class="good"><b>결론부터: DX12 게임이면 옵티스케일러 NR 하나로 시작하세요.</b> 실제 사용 기준 성능 체감이 가장 좋았던 조합이고, 프레임 생성·업스케일러·오버레이까지 전부 하나에 들어 있습니다. DX12가 아닌 게임도 대부분 옵티스케일러를 <b>유지·혼합</b>해서 쓸 수 있습니다 — 방법은 아래 4번 섹션에 있습니다.</div>
 <p>DLSS5 NR을 돌리는 방법은 여러 진영으로 갈립니다. 검증 결과를 신뢰도와 함께 정리합니다(2026-09-02 기준, 전부 <b>오프라인/싱글 전용</b>).</p>
@@ -160,8 +154,7 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
   <tr><td><b>dlss5-aio</b><br><span class="tag t-y">주의 ★★☆</span></td><td>MIT 팩, 별 5 신생</td><td>공식 NVIDIA DLL과 커스텀 빌드를 <b>폴더별로 분리 표기</b> — 출처 표기 최선</td><td>Swapper 무서명(SmartScreen)<br><a href="https://github.com/ShugokiFable/dlss5-aio" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/ShugokiFable/dlss5-aio/releases" target="_blank" rel="noopener">다운로드</a></td></tr>
 </table>
 <p style="font-size:12.5px;color:var(--mut)">상세 근거(각 도구 해시·맬웨어 이력·README 인용)는 이 가이드 저장소의 리포트를 참고. 판정 기준: 소스 공개 + 빌드 재현성 + 커뮤니티 규모. 유튜브 영상은 근거로 채택하지 않습니다.</p>
-
-<h2 id="apis"><span class="step">4</span>내 게임에서 DLSS5가 되나? — API별 옵티스케일러 사용법</h2>
+<h2 id="apis"><span class="step">4</span>내 게임에서 DLSS5가 되나? — API별 사용법</h2>
 <div class="good"><b>추천 원칙: 되는 한 옵티스케일러를 끝까지 쓰세요.</b> 게임 API가 달라져도 대부분 옵티스케일러를 유지할 수 있고, 설정이나 도구만 바꾸면 됩니다.<br><br>
 <b>✅ DX12</b> — 설치 그대로, NR 켜기. 추가 작업 없음 (체감 최고 조합).<br>
 <b>✅ Vulkan</b> — v0.1.2부터 네이티브 지원. 설치 그대로, NR 켜기.<br>
@@ -187,7 +180,6 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
   <li><b>DXVK는 온라인 게임과 충돌</b> — DX9 경로는 싱글 구작용이라는 뜻이기도 합니다.</li>
   <li>RTX 20/30은 패치 DLL의 FP16 경로라 비용이 큽니다 — UI가 미리 알려주는 게 정상입니다.</li>
 </ul></div>
-
 <h2 id="dl"><span class="step">5</span>준비물 3가지</h2>
 <div class="card"><b class="t">① OptiScaler_DLSSNR 포크</b>
 <p style="margin-top:6px">공식 OptiScaler에 NR 패스를 통합한 빌드. GitHub <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">Dagherbou/OptiScaler_DLSSNR · Releases</a>에서 최신 zip 다운로드 (v0.1.2 이상 권장 — 색 매핑 수정 포함).</p></div>
@@ -210,7 +202,6 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
   <tr><td><b><a href="https://github.com/ShugokiFable/dlss5-aio/releases" target="_blank" rel="noopener">dlss5-aio</a></b></td><td><b>애드온 방식</b> 올인원 팩. DX12+DLSS 게임은 <b>DLSS5-Swapper</b> 원클릭(자동 백업·복원), DLSS 없는 게임은 Feeder, 32비트/DX9도 시나리오 표로 안내. 모델 DLL·애드온 전부 동봉</td><td>ReShade 애드온 방식으로 쉽게 설치하고 싶은 분 (단, NR은 RTX 40/50 · 7z 3분할 677MB)</td></tr>
 </table>
 <p style="margin-top:8px;font-size:12.5px;color:var(--mut)">"공식 NVIDIA 배포처는 없나?" → 없습니다. NR 모델은 드라이버 내장/리크 기원이라 공식 채널이 없고, <b>rhi-repo Releases가 커뮤니티 표준 배포처</b>입니다(위 ②의 링크). 위 런처들도 내부적으로는 같은 출처를 씁니다. 다만 어떤 도구도 NVIDIA 공식이 아니므로, 받은 DLL은 시그니처 검증 도구로 해시를 확인하면 더 안전합니다.</p></div>
-
 <h2 id="install"><span class="step">6</span>설치 (10분)</h2>
 <ol>
   <li><b>게임 폴더 찾기</b> — 실행 파일(.exe)이 있는 폴더. Steam이면 <code>.../steamapps/common/게임이름/bin64</code> 같은 하위 폴더일 수 있음 (exe 옆이 정답).</li>
@@ -224,7 +215,6 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
   <li><b>게임 실행 → Insert 키</b> → OptiScaler 오버레이 → <b>DLSS Neural Rendering → Enable</b> 체크 → <span style="color:var(--grn);font-weight:700">"Running — X ms per frame"</span> 초록 글자 확인.</li>
 </ol>
 <div class="warn"><b>setup_windows.bat 주의:</b> 이미 OptiScaler가 설치된 게임 폴더에서 실행하면 "구버전 발견 → 삭제?" 질문이 나옵니다. 지우고 싶지 않으면 <b>No</b>를 누르거나, 수동으로 <code>OptiScaler.dll</code>을 원하는 이름(version.dll 등)으로 바꾸고 bat을 건너뛰어도 됩니다. 바꾼 이름이 정답입니다.</div>
-
 <h2 id="enable"><span class="step">7</span>켜고 확인하기</h2>
 <ul>
   <li>오버레이: <b>Insert</b> (기본) → DLSS Neural Rendering → <b>Enable Neural Rendering</b> 체크</li>
@@ -232,9 +222,8 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
   <li><b>Keybinds</b>에서 "Neural Rendering" 키를 지정해두면 오버레이 없이 게임 중 토글 가능 — <b>강력 추천</b></li>
   <li>효과 확인은 <b>Compare (Side by side / Wipe)</b> + <b>Zoom 2.5~3배</b>로 하세요. 풀프레임 육안 비교로는 차이가 잘 안 보이는 게 정상입니다</li>
 </ul>
-
-<h2 id="options"><span class="step">8</span>오버레이 옵션 전체 해설</h2>
-<p>OptiScaler NR 섹션의 모든 슬라이더를 "현재 기본값 · 하는 일 · 언제 만지는지" 순으로 정리했습니다.</p>
+<h2 id="options"><span class="step">8</span>오버레이 옵션 요약표</h2>
+<p>OptiScaler NR 섹션의 모든 슬라이더를 "현재 기본값 · 하는 일 · 언제 만지는지" 순으로 정리했습니다. 각 옵션의 <b>상세 원리·주의사항</b>은 위 <b>🎛 옵션 상세</b> 탭에서 섹션별로 확인하세요.</p>
 
 <table>
   <tr><th style="width:200px">옵션</th><th style="width:90px">기본</th><th>설명</th></tr>
@@ -253,7 +242,6 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
 </table>
 
 <div class="warn"><b>Save Settings 주의:</b> 슬라이더는 즉시 적용되지만 저장은 "Save Settings" 버튼입니다. 안 누르면 재시작 시 초기화. 또한 저장 시 프레임 생성(FG) 관련 드롭다운 상태도 같이 저장되니, FG를 쓰는 게임이라면 저장 전 FG 설정이 안전한지 확인하세요(게임마다 다름 — 아래 문제 해결 참고).</div>
-
 <h2 id="noise"><span class="step">9</span>어두운 화면 노이즈 잡기 (실전 순서)</h2>
 <div class="card">
 <ol>
@@ -267,7 +255,6 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
 </ol>
 </div>
 <div class="info"><b>참고:</b> NR에는 전용 디노이즈 노브가 없습니다(코어링·시간축 누적은 시도 후 제거됨). 노이즈는 위 레버 조합으로만 관리합니다. 게임이 HDR로 렌더링하는 경우 v0.1.2부터 exposure texture를 읽어 색이 맞춰지므로, <b>v0.1.2 이상 사용을 권장</b>합니다.</div>
-
 <h2 id="trouble"><span class="step">10</span>문제 해결</h2>
 
 <div class="warn"><b>"the model would not initialise"</b><br>
@@ -284,8 +271,7 @@ h2, .opt, .sec { scroll-margin-top: 18px; }
 
 <div class="warn"><b>ReShade와 같이 쓰기</b><br>
 ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설치(공식 권장 조합)하면 공존됩니다. ReShade 애드온(RenoDX DLSS5 등)과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
-
-<h2 id="ext"><span class="step">11</span>선택 옵션 — iMMERSE 셰이더 팩</h2>
+<h2 id="ext"><span class="step">11</span>선택: iMMERSE 셰이더 팩</h2>
 
 
 
@@ -293,7 +279,6 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 <p style="margin-top:6px"><a href="https://github.com/martymcmodding/iMMERSE" target="_blank" rel="noopener">iMMERSE</a>는 Marty's Mods의 <b>ReShade 셰이더 컬렉션</b>입니다. 포함: MXAO(고급 SSAO), Anti-Aliasing(고속화된 SMAA), Sharpen(깊이 인식 샤픈), <b>Launchpad</b>(법선 벡터·옵티컬 플로우 모션 벡터를 미리 계산하는 전처리).</p>
 <p><b>DLSS5 NR과의 관계:</b> DLSS 없는 게임에서 NR(Feeder 방식)을 돌리려면 합성 모션 벡터가 필요한데, Launchpad의 옵티컬 플로우가 그 공급자 역할을 합니다(1-Click-DLSS5의 Lumenite Kernel과 같은 자리).</p>
 <p><b>필수는 아닌 선택 옵션입니다.</b> 게임에 자체 DLSS가 있으면(포크 NR 경로) Feeder 방식이 필요 없고, 무DLSS 게임에서 NR(Feeder 방식)을 돌릴 때 Launchpad의 옵티컬 플로우가 유용합니다. 화질 개선 셰이더(MXAO SSAO, 깊이 인식 샤픈) 목적으로도 쓸 수 있습니다.</p></div>
-
 <h2 id="links"><span class="step">12</span>링크 모음 — 전부</h2>
 <table>
   <tr><th>자원</th><th>주소</th></tr>
@@ -315,9 +300,9 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 
 <div id="tab-detail" class="tabpage" hidden>
 
-<h2 id="sec-left">왼쪽 열 — 업스케일러와 프레임 생성</h2>
-
-<h2 id="sec-up-dlss" style="font-size:14px">Upscalers · DLSS Settings</h2>
+<div class="subpage" id="sp-up">
+<h2>업스케일러 · DLSS</h2>
+<div class="optgrid">
 
 <div class="opt" id="d-upscaler">
   <div class="b"><span class="lbl">Upscaler (드롭다운, 왼쪽 위)</span> <span class="k">기본: 게임 설정 따름(auto)</span></div>
@@ -343,7 +328,12 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
   <p class="desc">DLSS 초기화 플래그(IsHdr, DepthInverted, JitteredMV 등)를 개별로 강제하는 고급 영역. <b>잘못 건드리면 화면이 깨지거나 게임이 죽습니다</b> — 현재값은 붉은사막에서 검증된 조합이므로 열어보지만 바꾸지 마세요.</p>
 </div>
 
-<h2 id="sec-fg" style="font-size:14px">Frame Generation</h2>
+</div>
+</div>
+
+<div class="subpage" id="sp-fg">
+<h2>프레임 생성 (FG)</h2>
+<div class="optgrid">
 
 <div class="opt" id="d-fginput">
   <div class="b"><span class="lbl">FG Input</span> <span class="k">확정값: DLSSG via Nvngx</span> <span class="warnline">크래시 조합 존재</span></div>
@@ -364,34 +354,38 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
   <p class="desc">FG 배율 강제(2x/3x/4x). Default = 인게임 설정 따름. 4x는 RTX 40 이상에서만 지원되고 프레임 품질이 떨어질 수 있음.</p>
 </div>
 
-<h2 id="sec-nukem" style="font-size:14px">Frame Generation (FSR3-FG via Nukem's DLSSG) — 상태/디버그</h2>
-
 <div class="opt" id="s-dlssgstate">
   <div class="b"><span class="lbl">Current DLSSG state: OFF/ON</span></div>
   <p class="desc">인게임 프레임 생성이 켜져 있어 게임의 DLSSG 호출이 흐르는 중인지 표시. <b>OFF면 인게임 옵션을 켜세요</b> — 켜지 않으면 FG가 시작되지 않습니다(이 안내문이 섹션에 그대로 표시됨).</p>
 </div>
+
 <div class="opt" id="s-fgdebug">
   <div class="b"><span class="lbl">Enable Debug View · Interpolated frames only · Disable HUDless</span> <span class="k">전부 끔 유지</span></div>
   <p class="desc">셋 다 FG 동작 검증용 디버그 도구입니다. 일반 플레이에서는 끔이 정답. HUDless는 FG가 UI를 처리하는 방식과 관련된 고급 옵션입니다.</p>
 </div>
 
-<h2 id="sec-fps" style="font-size:14px">Framerate · VRR Frame Cap Calculator</h2>
 <div class="opt" id="s-fpslimit">
   <div class="b"><span class="lbl">FPS Limit (0)</span> <span class="k">0 = 무제한</span></div>
   <p class="desc">가능하면 Reflex를 써서 FPS를 제한. 스트리밍 시 화면 찢김 방지가 필요하면 모니터 주파수 -5 정도를 걸기도 합니다. VRR 계산기는 리프레시 240 입력 시 223.9처럼 VRR 구간에 맞는 캡을 계산해 줍니다.</p>
 </div>
 
-<h2 id="sec-right">오른쪽 열</h2>
+</div>
+</div>
 
-<h2 id="sec-sharp" style="font-size:14px">Sharpness</h2>
+<div class="subpage" id="sp-sharp">
+<h2>Sharpness · 플래그</h2>
+<div class="optgrid">
+
 <div class="opt" id="s-sharpoverride">
   <div class="b"><span class="lbl">Override (샤프닝 덮어쓰기)</span> <span class="k">현재 OFF</span></div>
   <p class="desc">DLSS가 자체로 수행하는 샤프닝을 고정 값으로 덮어씁니다. OFF면 게임/DLSS 기본 샤프닝을 그대로 씁니다. 화면이 너무 물먹은 느낌이면 ON 후 0.8~1.0에서 시작.</p>
 </div>
+
 <div class="opt" id="s-rcas">
   <div class="b"><span class="lbl">Enable RCAS/DA · RCAS · Depth Aware</span> <span class="k">RCAS 선택 중</span></div>
   <p class="desc">RCAS = 업스케일 출력에 얹는 경량 샤프닝(AMD FSR1 계열 알고리즘). Depth Aware는 깊이 정보를 함께 써서 경계 인위감을 줄이는 방식입니다. Override OFF면 슬라이더가 회색(비활성)으로 보이는 게 정상입니다.</p>
 </div>
+
 <div class="opt" id="s-masharp">
   <div class="b"><span class="lbl">Enable Motion Adaptive Sharpness</span> <span class="k">OFF</span></div>
   <p class="desc">화면이 움직일 때만 샤프닝을 강화하는 기능(정지 화면은 약하게). 취향 옵션. Motion Adaptive Sharpness(▶) 안에 강도/한계를 개별 설정하는 항목이 더 있습니다.</p>
@@ -407,7 +401,12 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
   <p class="desc">렌더 해상도 비율과 초과 업스케일을 강제하는 옵션. <b>인게임 DLSS 품질 설정에 맡기는 중이므로 둘 다 OFF가 정답</b>. 켜면 DLSS 체인(1704x960 → 2560x1440)이 어긋나 화질이 오히려 나빠질 수 있습니다.</p>
 </div>
 
-<h2 id="sec-nr" style="font-size:14px">⭐ DLSS Neural Rendering — 슬라이더별 원리</h2>
+</div>
+</div>
+
+<div class="subpage" id="sp-nr">
+<h2>★ Neural Rendering</h2>
+<div class="optgrid">
 
 <div class="opt" id="d-nrenable">
   <div class="b"><span class="lbl">Enable Neural Rendering</span> <span class="k">기본: OFF</span> <span class="tag t-g">ON 유지</span></div>
@@ -484,7 +483,12 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
   <p class="desc">NR 모델이 내부에 쌓은 이력을 초기화하는 진단용 버튼. 화면이 이상해졌을 때 눌러보면 모델 히스토리 문제인지 즉시 구분됩니다.</p>
 </div>
 
-<h2 id="sec-extra">하단 펼침 메뉴 8종 — 하나씩</h2>
+</div>
+</div>
+
+<div class="subpage" id="sp-extra">
+<h2>하단 메뉴</h2>
+<div class="optgrid">
 
 <div class="opt" id="d-magnifier"><div class="b"><span class="lbl">Magnifier</span> 돋보기. 커서 따라다니는 확대경(크기 15%, 줌 4~20x, 테두리, 고정 위치 모드 지원). NR 디테일 확인에 유용. Enabled=ON이면 메뉴가 열렸을 때만 보입니다.</div></div>
 
@@ -502,58 +506,57 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 
 <div class="opt" id="s-mipmap"><div class="b"><span class="lbl">Mipmap Bias · Anisotropic Filtering</span> 텍스처 선명도 관련. 텍스처가 흐릿하면 Anisotropy 16x 강제를 시도해볼 수 있습니다. Mipmap Bias는 고급 영역이라 auto 유지.</div></div>
 
-<h2 id="sec-key" style="font-size:14px">Keybinds</h2>
+</div>
+</div>
+
+<div class="subpage" id="sp-key">
+<h2>Keybinds</h2>
+<div class="optgrid">
+
 <div class="opt" id="d-keybinds"><div class="b"><span class="lbl">단축키 목록</span> Menu(=0xBB '='), FG 토글(=0xDD ']'), FPS 표시, Neural Rendering(NR 토글 — 지정 추천), FpsCycle 등. 오버레이에서 클릭 후 원하는 키 입력으로 지정합니다.</div></div>
 
+</div>
+</div>
 
 </div>
 
 <footer>
   Crimson Desert · OptiScaler_DLSSNR v0.1.2 (v10.0.0-dev) · RTX 4090 / driver 616.56 · 2026-09-02 ·
-  근거: 포크 소스(ini 주석·dlssnr 모듈) + 실측 로그 + 커뮤니티 검증. 롤백: <code>bin64\.omo-backup-20260902\RESTORE.md</code>
+  근거: 포크 소스(ini 주석·dlssnr 모듈) + 실측 로그 + 커뮤니티 검증
 </footer>
-</div>
 </div>
 
 <script>
-let activeTab = 'guide';
-const tabBtns = [...document.querySelectorAll('[data-tabbtn]')];
 const pages = { guide: document.getElementById('tab-guide'), detail: document.getElementById('tab-detail') };
-function switchTab(name, scrollTarget) {
-  for (const [k, el] of Object.entries(pages)) pages[k].hidden = (k !== name);
-  tabBtns.forEach(b => b.classList.toggle('on', b.dataset.tabbtn === name));
-  if (scrollTarget) {
-    requestAnimationFrame(() => scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-  } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  spy();
-}
-tabBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tabbtn)));
+const chipBoxes = { guide: document.getElementById('chips-guide'), detail: document.getElementById('chips-detail') };
+let mainTab = 'guide';
 
-const links = [...document.querySelectorAll('.toc a')];
-const secs = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-const spy = () => {
-  let cur = null;
-  for (const sec of secs) {
-    if (sec.closest('.tabpage').hidden) continue;
-    if (sec.getBoundingClientRect().top <= 90) cur = sec;
-  }
-  if (!cur) cur = secs.find(s => !s.closest('.tabpage').hidden);
-  links.forEach(a => {
-    const active = a.getAttribute('href') === '#' + cur.id;
-    a.classList.toggle('on', active);
-    a.classList.toggle('dim', a.dataset.tab !== activeTab);
-  });
-};
-links.forEach(a => a.addEventListener('click', (e) => {
-  e.preventDefault();
-  const t = document.querySelector(a.getAttribute('href'));
-  if (!t) return;
-  if (a.dataset.tab !== activeTab) switchTab(a.dataset.tab, t);
-  else t.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  history.replaceState(null, '', a.getAttribute('href'));
+function showMain(name, target) {
+  for (const k of Object.keys(pages)) pages[k].hidden = (k !== name);
+  for (const k of Object.keys(chipBoxes)) chipBoxes[k].hidden = (k !== name);
+  document.querySelectorAll('.mt').forEach(b => b.classList.toggle('on', b.dataset.main === name));
+  if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  else window.scrollTo({ top: 0 });
+  mainTab = name;
+}
+document.querySelectorAll('.mt').forEach(b => b.addEventListener('click', () => showMain(b.dataset.main)));
+
+// 설치 가이드 칩: 해당 섹션으로 스크롤
+document.querySelectorAll('#chips-guide button').forEach(b => b.addEventListener('click', () => {
+  const t = document.getElementById(b.dataset.sec);
+  if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', '#' + b.dataset.sec); }
 }));
+
+// 옵션 상세 칩: 서브페이지 전환
+const subBtns = [...document.querySelectorAll('#chips-detail button')];
+const subPages = Object.fromEntries(subBtns.map(b => [b.dataset.sec, document.getElementById('sp-' + b.dataset.sec)]));
+function showSub(key) {
+  subBtns.forEach(b => b.classList.toggle('on', b.dataset.sec === key));
+  for (const [k, el] of Object.entries(subPages)) el.hidden = (k !== key);
+  window.scrollTo({ top: 0 });
+}
+subBtns.forEach(b => b.addEventListener('click', () => showSub(b.dataset.sec)));
+showSub('up');
 </script>
 </body>
 </html>
