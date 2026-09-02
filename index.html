@@ -14,7 +14,23 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--tx);
     font-family: "Pretendard","Malgun Gothic",-apple-system,sans-serif; line-height: 1.7; }
-  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 22px 100px; }
+  .shell { display: grid; grid-template-columns: 252px minmax(0,1fr); max-width: 1680px;
+  margin: 0 auto; gap: 26px; padding: 24px 20px 100px; }
+.toc { position: sticky; top: 14px; align-self: start; max-height: calc(100vh - 28px);
+  overflow-y: auto; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px 12px; }
+.toc b { display: block; font-size: 12px; color: var(--mut); margin: 0 0 8px 6px; }
+.toc a { display: block; color: var(--mut); text-decoration: none; font-size: 13px;
+  padding: 5px 10px; border-radius: 6px; border-left: 2px solid transparent; }
+.toc a:hover { color: var(--tx); background: var(--panel2); }
+.toc a.on { color: var(--acc); border-left-color: var(--acc); background: #1f6feb14; font-weight: 700; }
+.wrap { padding: 0 4px 90px; }
+h2 { scroll-margin-top: 18px; }
+@media (max-width: 1080px) {
+  .shell { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .toc a { display: inline-block; border-left: none; border: 1px solid var(--line); margin: 2px; padding: 3px 9px; }
+}
   header { text-align: center; padding: 30px 0 26px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
   h1 { font-size: 27px; letter-spacing: -0.02em; }
   .sub { color: var(--mut); font-size: 14px; margin-top: 10px; }
@@ -63,6 +79,21 @@
 </style>
 </head>
 <body>
+<div class="shell">
+<aside class="toc"><b>📑 목차</b>
+<a href="#what">0. NR이 뭐냐</a>
+<a href="#req">1. 요구사항</a>
+<a href="#tools">2½. 도구 선별</a>
+<a href="#apis">2¾. API 호환 매트릭스</a>
+<a href="#dl">2. 준비물</a>
+<a href="#install">3. 설치</a>
+<a href="#enable">4. 켌고 확인</a>
+<a href="#options">5. 옵션 해설</a>
+<a href="#noise">6. 노이즈 조정</a>
+<a href="#trouble">7. 문제 해결</a>
+<a href="#links">8. 링크 모읍</a>
+</aside>
+<div class="content">
 <div class="wrap">
 
 <header>
@@ -75,11 +106,6 @@
   </div>
 </header>
 
-<nav>
-  <a href="#what">NR이 뭐냐</a><a href="#req">요구사항</a><a href="#tools">도구 선별</a><a href="#apis">API 매트릭스</a><a href="#dl">준비물</a>
-  <a href="#install">설치</a><a href="#enable">켜기</a><a href="#options">옵션 해설</a>
-  <a href="#noise">노이즈 조정</a><a href="#trouble">문제 해결</a><a href="#links">링크</a>
-</nav>
 
 <h2 id="what"><span class="step">0</span>DLSS 5 Neural Rendering이 뭔가</h2>
 <p>NVIDIA가 공개한 신세대 기술로, DLSS 업스케일러가 만든 프레임 위에 <b>신경망 모델이 미세 디테일(모공, 천 직조, 금속 표면, 나뭇잎 등)을 다시 합성해 얹는</b> 기능입니다. 공식 지원은 RTX 50 시리즈 + 최신 드라이버이지만, 이 가이드는 <b>OptiScaler 포크</b>를 써서 그 이전 카드에서도 돌리는 방법을 다룹니다.</p>
@@ -239,5 +265,16 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </footer>
 
 </div>
+</div>
+<script>
+const links = [...document.querySelectorAll('.toc a')];
+const secs = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const spy = () => {
+  let cur = secs[0];
+  for (const sec of secs) { if (sec.getBoundingClientRect().top <= 90) cur = sec; }
+  links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur.id));
+};
+addEventListener('scroll', spy, { passive: true }); spy();
+</script>
 </body>
 </html>
