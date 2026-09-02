@@ -19,7 +19,7 @@ body { background: var(--bg); color: var(--tx);
 .topbar { position: sticky; top: 0; z-index: 100;
   background: rgba(11,14,20,.93); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line); padding: 10px 20px 9px; }
-.topbar .row, .chips { max-width: 1500px; margin: 0 auto; }
+.topbar .row { max-width: 1500px; margin: 0 auto; }
 .topbar .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .topbar .title { font-weight: 800; font-size: 15px; }
 .btns { display: flex; gap: 8px; }
@@ -27,13 +27,8 @@ body { background: var(--bg); color: var(--tx);
   background: var(--panel); color: var(--mut); border: 1px solid var(--line);
   padding: 7px 16px; border-radius: 8px; }
 .topbar .mt.on { background: var(--acc); color: #06121f; border-color: var(--acc); }
-.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
-.chips button { font: inherit; font-size: 12px; cursor: pointer; background: var(--panel);
-  color: var(--mut); border: 1px solid var(--line); padding: 4px 12px; border-radius: 20px; }
-.chips button:hover { color: var(--tx); border-color: var(--acc); }
-.chips button.on { background: #b48cff26; color: var(--purple); border-color: #b48cff66; font-weight: 700; }
 
-.wrap { max-width: 1180px; margin: 0 auto; padding: 26px 20px 90px; }
+.wrap { max-width: 1180px; padding: 0 0 60px; }
 .tabpage[hidden], .subpage[hidden] { display: none; }
 
 header { text-align: center; padding: 30px 0 26px; border-bottom: 1px solid var(--line); margin-bottom: 26px; }
@@ -42,7 +37,7 @@ h1 { font-size: 27px; letter-spacing: -0.02em; }
 .badges { margin-top: 14px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .badge { font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px;
   background: var(--panel2); border: 1px solid var(--line); color: var(--acc); }
-h2 { scroll-margin-top: 120px; font-size: 20px; margin: 40px 0 14px; padding: 10px 14px;
+h2 { scroll-margin-top: 70px; font-size: 20px; margin: 40px 0 14px; padding: 10px 14px;
   background: var(--panel2); border-left: 5px solid var(--acc); border-radius: 8px; }
 .subpage h2 { margin-top: 6px; }
 h2 .step { display: inline-block; background: var(--acc); color: #06121f;
@@ -78,6 +73,24 @@ td { color: #c9d3de; }
 .t-tune { background: #bb800922; color: var(--amb); border: 1px solid #bb800955; }
 .warnline { color: var(--red); font-weight: 700; }
 
+
+/* ===== 왼쪽 사이드바 목차 ===== */
+.shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); max-width: 1600px;
+  margin: 0 auto; gap: 24px; padding: 22px 20px 90px; align-items: start; }
+.content { min-width: 0; }
+.toc { position: sticky; top: 76px; max-height: calc(100vh - 92px); overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; }
+.toc b { display: block; font-size: 12px; color: var(--mut); margin: 0 0 8px 6px; }
+.toc a { display: block; color: var(--mut); text-decoration: none; font-size: 13px;
+  padding: 5px 10px; border-radius: 6px; border-left: 2px solid transparent; cursor: pointer; }
+.toc a:hover { color: var(--tx); background: var(--panel2); }
+.toc a.on { color: var(--acc); border-left-color: var(--acc); background: #1f6feb14; font-weight: 700; }
+@media (max-width: 1080px) {
+  .shell { grid-template-columns: 1fr; }
+  .toc { position: static; max-height: none; }
+  .toc a { display: inline-block; border-left: none; border: 1px solid var(--line); margin: 2px; padding: 3px 9px; }
+}
+
 /* ===== 옵션 상세 카드 ===== */
 .optgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(430px, 1fr)); gap: 14px; }
 @media (max-width: 980px) { .optgrid { grid-template-columns: 1fr; } }
@@ -100,34 +113,38 @@ a { color: var(--acc); }
 <div class="topbar"><div class="row">
 <span class="title">DLSS 5 NR 가이드</span>
 <div class="btns">
-<button class="mt on" data-main="guide">📖 설치 가이드</button>
-<button class="mt" data-main="detail">🎛 옵션 상세</button>
+<button type="button" class="mt on" data-main="guide">📖 설치 가이드</button>
+<button type="button" class="mt" data-main="detail">🎛 옵션 상세</button>
 </div>
-</div>
-<div class="chips" id="chips-guide">
-<button data-sec="what">DLSS 5 Neural Rendering이 뭔가</button>
-<button data-sec="req">요구사항 확인</button>
-<button data-sec="tools">어떤 도구를 쓸까</button>
-<button data-sec="apis">내 게임에서 DLSS5가 되나?</button>
-<button data-sec="dl">준비물 3가지</button>
-<button data-sec="install">설치</button>
-<button data-sec="enable">켜고 확인하기</button>
-<button data-sec="options">오버레이 옵션 요약표</button>
-<button data-sec="noise">어두운 화면 노이즈 잡기</button>
-<button data-sec="trouble">문제 해결</button>
-<button data-sec="ext">선택: iMMERSE 셰이더 팩</button>
-<button data-sec="links">링크 모음</button>
-</div>
-<div class="chips" id="chips-detail" hidden>
-<button data-sec="up">업스케일러 · DLSS</button>
-<button data-sec="fg">프레임 생성 (FG)</button>
-<button data-sec="sharp">Sharpness · 플래그</button>
-<button data-sec="nr">★ Neural Rendering</button>
-<button data-sec="extra">하단 메뉴</button>
-<button data-sec="key">Keybinds</button>
 </div>
 </div>
 
+<div class="shell">
+<aside class="toc"><b>📑 목차</b>
+<div id="toc-guide">
+<a href="#what">1. NR이 뭐냐</a>
+<a href="#req">2. 요구사항</a>
+<a href="#tools">3. 어떤 도구 쓸까</a>
+<a href="#apis">4. 내 게임 되나?</a>
+<a href="#dl">5. 준비물</a>
+<a href="#install">6. 설치</a>
+<a href="#enable">7. 켜고 확인</a>
+<a href="#options">8. 옵션 요약표</a>
+<a href="#noise">9. 노이즈 조정</a>
+<a href="#trouble">10. 문제 해결</a>
+<a href="#ext">11. iMMERSE (선택)</a>
+<a href="#links">12. 링크 모음</a>
+</div>
+<div id="toc-detail" hidden>
+<a href="#up">업스케일러 · DLSS</a>
+<a href="#fg">프레임 생성</a>
+<a href="#sharp">Sharpness · 플래그</a>
+<a href="#nr">★ Neural Rendering</a>
+<a href="#extra">하단 메뉴</a>
+<a href="#key">Keybinds</a>
+</div>
+</aside>
+<div class="content">
 <div class="wrap">
 
 <div id="tab-guide" class="tabpage">
@@ -525,37 +542,51 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
   근거: 포크 소스(ini 주석·dlssnr 모듈) + 실측 로그 + 커뮤니티 검증
 </footer>
 </div>
+</div>
+</div>
 
 <script>
 const pages = { guide: document.getElementById('tab-guide'), detail: document.getElementById('tab-detail') };
-const chipBoxes = { guide: document.getElementById('chips-guide'), detail: document.getElementById('chips-detail') };
+const tocs = { guide: document.getElementById('toc-guide'), detail: document.getElementById('toc-detail') };
 let mainTab = 'guide';
 
-function showMain(name, target) {
+function showMain(name) {
   for (const k of Object.keys(pages)) pages[k].hidden = (k !== name);
-  for (const k of Object.keys(chipBoxes)) chipBoxes[k].hidden = (k !== name);
-  document.querySelectorAll('.mt').forEach(b => b.classList.toggle('on', b.dataset.main === name));
-  if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-  else window.scrollTo({ top: 0 });
+  for (const k of Object.keys(tocs)) tocs[k].hidden = (k !== name);
+  document.querySelectorAll('.mt').forEach(b => { b.classList.toggle('on', b.dataset.main === name); });
+  window.scrollTo({ top: 0 });
   mainTab = name;
+  if (name === 'guide') spy();
 }
 document.querySelectorAll('.mt').forEach(b => b.addEventListener('click', () => showMain(b.dataset.main)));
 
-// 설치 가이드 칩: 해당 섹션으로 스크롤
-document.querySelectorAll('#chips-guide button').forEach(b => b.addEventListener('click', () => {
-  const t = document.getElementById(b.dataset.sec);
-  if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', '#' + b.dataset.sec); }
+// ===== 설치 가이드: 클릭 이동 + 실시간 스크롤 스파이 =====
+const gLinks = [...document.querySelectorAll('#toc-guide a')];
+const gSecs = gLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+gLinks.forEach(a => a.addEventListener('click', (e) => {
+  e.preventDefault();
+  const t = document.getElementById(a.getAttribute('href').slice(1));
+  if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', a.getAttribute('href')); }
 }));
+const spy = () => {
+  if (mainTab !== 'guide' || tocs.guide.hidden) return;
+  let cur = gSecs[0];
+  for (const sec of gSecs) if (sec.getBoundingClientRect().top <= 100) cur = sec;
+  gLinks.forEach(a => { a.classList.toggle('on', a.getAttribute('href') === '#' + cur.id); });
+};
+window.addEventListener('scroll', spy, { passive: true });
+spy();
 
-// 옵션 상세 칩: 서브페이지 전환
-const subBtns = [...document.querySelectorAll('#chips-detail button')];
-const subPages = Object.fromEntries(subBtns.map(b => [b.dataset.sec, document.getElementById('sp-' + b.dataset.sec)]));
+// ===== 옵션 상세: 목차 클릭 → 서브페이지 전환 =====
+const dLinks = [...document.querySelectorAll('#toc-detail a')];
+const subPages = Object.fromEntries(dLinks.map(a => [a.getAttribute('href').slice(1),
+  document.getElementById('sp-' + a.getAttribute('href').slice(1))]));
 function showSub(key) {
-  subBtns.forEach(b => b.classList.toggle('on', b.dataset.sec === key));
+  dLinks.forEach(x => { x.classList.toggle('on', x.getAttribute('href') === '#' + key); });
   for (const [k, el] of Object.entries(subPages)) el.hidden = (k !== key);
   window.scrollTo({ top: 0 });
 }
-subBtns.forEach(b => b.addEventListener('click', () => showSub(b.dataset.sec)));
+dLinks.forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); showSub(a.getAttribute('href').slice(1)); }));
 showSub('up');
 </script>
 </body>
