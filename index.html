@@ -188,7 +188,7 @@ a { color: var(--acc); }
 <h2 id="apis"><span class="step">4</span>내 게임에서 DLSS5가 되나? — API별 사용법</h2>
 <div class="good"><b>추천 원칙: 되는 한 옵티스케일러를 끝까지 쓰세요.</b> 게임 API가 달라져도 대부분 옵티스케일러를 유지할 수 있고, 설정이나 도구만 바꾸면 됩니다.<br><br>
 <b>✅ DX12</b> — 설치 그대로, NR 켜기. 추가 작업 없음 (체감 최고 조합).<br>
-<b>✅ Vulkan</b> — v0.1.2부터 네이티브 지원. 설치 그대로, NR 켜기.<br>
+<b>✅ Vulkan</b> — v0.1.2부터 네이티브 지원이며 현행 v0.2.0에서도 동일하게 작동하니, 설치 그대로 NR만 켜면 됩니다.<br>
 <b>⚠️ DX11</b> — 옵티스케일러 유지 + 오버레이 왼쪽 위 업스케일러를 <b>"FSR 3.X w/Dx12"</b>(또는 XeSS w/Dx12)로 변경해야 NR이 켜집니다. DLSS를 브리지로 통과시킬 수는 없어서입니다.<br>
 <b>❌ DX9 / DX10 / 32비트</b> — 옵티스케일러 단독으로는 불가 → <b>dlss5-launcher</b>가 DXVK 등 변환기를 자동 구성해 NR을 돌립니다(이때는 옵티스케일러를 제거해 충돌을 피하세요).</div>
 <p>"내 게임은 되나?"에 대한 답입니다. NR 자체는 DLSS가 받는 프레임이 필요하고, DLSS는 DX11/DX12/Vulkan만 지원합니다 — 그래서 오래된 API는 <b>변환 계층</b>이 끼어듭니다.</p>
@@ -213,7 +213,14 @@ a { color: var(--acc); }
 </ul></div>
 <h2 id="dl"><span class="step">5</span>준비물 3가지</h2>
 <div class="card"><b class="t">① OptiScaler_DLSSNR 포크</b>
-<p style="margin-top:6px">공식 OptiScaler에 NR 패스를 통합한 빌드. GitHub <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">Dagherbou/OptiScaler_DLSSNR · Releases</a>에서 최신 zip 다운로드 (v0.1.2 이상 권장 — 색 매핑 수정 포함).</p></div>
+<p style="margin-top:6px">공식 OptiScaler에 NR 패스를 통합한 빌드. GitHub <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">Dagherbou/OptiScaler_DLSSNR · Releases</a>에서 최신 zip 다운로드. 현재 <b>v0.2.0</b>(태그 v0.2.0-dlssnr, 2026-09-03, 빌드 v10.0.0-dev 9918b95) 이상 권장.</p>
+<ul style="font-size:13px">
+  <li>프록시 5모드 신설 — 모델에 보여줄 톤매핑 사본(밝기를 화면 범위에 눌러 담은 프레임)을 고르는 옵션, Hybrid+composed 권장</li>
+  <li>노출 앵커 다점 보정 — Anchor 버튼으로 조명별 화이트 보정점을 여러 개 찍고 게임별 저장</li>
+  <li>모델 슈퍼샘플링 — 해상도 슬라이더 200%까지, 축소 필터 선택 가능(기본 Lanczos3)</li>
+  <li>실시간 노출 반영 — 화이트 포인트가 장면 변화에 즉시 따라감</li>
+  <li>Hold frame — 프레임을 얼려 NR 켬/끔을 흔들림 없이 비교</li>
+</ul></div>
 
 <div class="card"><b class="t">② nvngx_dlssnr.dll — 모델 본체 (~165MB)</b>
 <p style="margin-top:6px">NVIDIA 드라이버 패키지에 들어있는 모델입니다. 배포 금지라 zip에 못 들어있고 <b>직접 구해서 게임 폴더에 넣어야</b> 합니다. NVIDIA 공식 GitHub 배포처는 없습니다(공식 DLSS SDK 저장소에는 NR 미포함) — 아래가 사실상 유일한 최신 획득 경로입니다.</p>
@@ -305,16 +312,17 @@ a { color: var(--acc); }
 
 <table>
   <tr><th style="width:200px">옵션</th><th style="width:90px">기본</th><th>설명</th></tr>
-  <tr><td><b>Model resolution</b></td><td>100%</td><td>모델 연산 해상도 비율. 프레임은 안 줄고 비용만 줄어듦(비용=비율²). 프레임 부족 시 80%까지</td></tr>
+  <tr><td><b>Model resolution</b></td><td>100%</td><td>모델 연산 해상도 비율, 범위 25~200%. 프레임은 안 줄고 모델 비용만 변함(비용=비율²). 100% 초과는 슈퍼샘플링(모델을 원본보다 크게 돌린 뒤 다시 줄여 노이즈를 줄이는 기법)이라 품질 여유 레버. 프레임 부족 시 80%까지</td></tr>
   <tr><td><b>Detail strength</b></td><td>1.0</td><td>모델 그림으로 갈아타는 양. 0=원본, 1=모델 그대로, 2 이상=과잉. <b>디테일 체감의 핵심 레버</b></td></tr>
   <tr><td><b>Colour strength</b></td><td>1.0</td><td>색 채용도. 0=밝기 판정만 반영(효과 절반 손실), 1=풀컬러</td></tr>
   <tr><td><b>Intensity</b></td><td>1.0</td><td>모델 내부 강도(0~2). <b>어두운 화면 노이즈 1차 조절판</b> — 자글거림 심하면 0.5~0.7</td></tr>
   <tr><td>Local structure / Local tone</td><td>1.0</td><td>구조/톤 세부 강도. 기본 유지</td></tr>
   <tr><td>Skin structure · Auto mask</td><td>-1 · ON</td><td>피부 전용 구조(-1=Local 따름)와 자동 피부 마스크</td></tr>
   <tr><td>Preset / Style</td><td>Default</td><td>모델 프로파일. Style: Default(콘트라스트 강조)/Natural(톤 보존)/Cinematic(과처리 억제). <b>변경 시 모델 재빌드(잠깐 끊김)</b></td></tr>
-  <tr><td><b>Paper white</b></td><td>1.0x</td><td>모델에게 보여줄 밝기 해석 배율. <b>어두운 화면 노이즈 2차 레버</b> — 0.8~1.2 탐색</td></tr>
+  <tr><td><b>Proxy</b> <span class="tag t-new">v0.2.0</span></td><td>—</td><td>모델에 보여줄 대체 프레임(원본을 톤매핑, 즉 밝기를 화면 표현 범위에 눌러 담은 사본)을 만드는 방식. 5가지 모드, 권장은 Hybrid+composed. 상세는 아래 ★ 섹션의 Proxy 카드</td></tr>
+  <tr><td><b>Paper white</b></td><td>1.0x</td><td>모델에게 보여줄 밝기 해석 배율. <b>어두운 화면 노이즈 2차 레버</b>. v0.2.0부터 화이트 포인트(게임이 알려주는 기준 흰색 밝기)를 프레임 안에서 즉시 읽어 장면 변화에 바로 따라감. 조명이 다른 장면마다 Anchor 버튼으로 보정점을 찍으면 그 사이를 부드럽게 보정</td></tr>
   <tr><td>Highlight guard</td><td>2.0x</td><td>픽셀 최대 밝기 상한(어두워짐 무제한). 불빛 색 깨짐 방지</td></tr>
-  <tr><td>Compare</td><td>Off</td><td>Before/After 분할 비교(Split/Wipe), 라벨 표시 지원</td></tr>
+  <tr><td>Compare</td><td>Off</td><td>Before/After 분할 비교(Split/Wipe), 라벨 표시 지원. Hold frame(모델이 보는 프레임을 얼려 고정)으로 흔들림 없는 정직한 A/B 비교 가능</td></tr>
   <tr><td>Debug view</td><td>0</td><td>0끔/1모델 입력/2모델 출력/3변화량 20배 — 평평한 회색이면 모델이 안 돌고 있는 것</td></tr>
   <tr><td>Capture 8 frames</td><td>—</td><td>전/후 프레임 8장을 <code>dlssnr-capture</code> 폴더에 저장</td></tr>
 </table>
@@ -331,8 +339,13 @@ a { color: var(--acc); }
 </div>
 
 <div class="opt" id="d-nrcost">
-  <div class="b"><span class="lbl">Model resolution (Cost)</span> <span class="k">기본 100% · 범위 25~100%</span></div>
-  <p class="desc">모델이 연산하는 내부 해상도 비율. <b>프레임 자체는 안 줄고 모델 비용만 줄어듦</b>. 비용은 비율의 제곱으로 변합니다(50% = 1/4 비용). 현재 6ms로 여유 있으니 100% 유지. 프레임이 부족해지면 80%까지 내려보세요.</p>
+  <div class="b"><span class="lbl">Model resolution (Cost)</span> <span class="k">기본 100% · 범위 25~200%</span> <span class="tag t-new">v0.2.0 — 200%까지</span></div>
+  <p class="desc">모델이 연산하는 내부 해상도 비율. 프레임 자체는 안 줄고 모델 비용만 변합니다(비용은 비율의 제곱).</p>
+  <ul>
+    <li><b>100% 이하</b> — 비용 절감 레버. 프레임이 부족하면 80%까지 내려보세요</li>
+    <li><b>100% 초과 = 슈퍼샘플링</b>(모델을 원본 해상도보다 크게 돌린 뒤 다운스케일러, 즉 줄일 때 쓰는 필터로 평균 내는 기법). 슬라이더를 넘기는 순간 필터 드롭다운이 생기고 기본값은 Lanczos3(부드럽게 줄이는 대표 축소 필터). ini 키는 <code>DlssNr ScalingDownscaler</code>. 제대로 된 축소 필터가 추가 해상도를 노이즈 감소로 바꿔줍니다</li>
+    <li>비용이 면적에 비례해 커지는 <b>품질 여유 레버</b>. 성능 여유가 있을 때 올리는 용도. DX12와 네이티브 Vulkan 지원이며 Output Scaling의 다운스케일러와는 별개</li>
+  </ul>
 </div>
 
 <div class="opt" id="d-nrenlargement">
@@ -343,6 +356,19 @@ a { color: var(--acc); }
 <div class="opt" id="d-transfer">
   <div class="b"><span class="lbl">Detail strength</span> <span class="k">TransferStrength · 기본 1.0 · 범위 0~2</span></div>
   <p class="desc"><b>모델의 그림으로 얼마나 갈아타는지.</b> 0 = 업스케일 원본 그대로(비트 단위 동일), 1.0 = 모델 그림 채용, 2.0 = 모델 너머 과잉 보정. <b>디테일 체감의 핵심 레버</b>이며 2.00은 과잉 영역이라 1.0~1.2 권장.</p>
+</div>
+
+<div class="opt" id="d-proxy">
+  <div class="b"><span class="lbl">Proxy (Colour 섹션)</span> <span class="k">5가지 모드</span> <span class="tag t-new">v0.2.0 신규</span> <span class="tag t-g">Hybrid+composed 권장</span></div>
+  <p class="desc">모델은 원본 프레임을 직접 보지 않고, 톤매핑(밝기를 화면 표현 범위에 눌러 담는 과정)된 사본인 프록시만 봅니다. 이 옵션은 그 사본을 만드는 곡선을 고릅니다. 뒤에 붙는 <b>+composed</b>는 모델 출력을 프록시에 합성, <b>+replace</b>는 모델 출력으로 통째로 교체한다는 뜻. Neutwo와 Hybrid는 곡선 조합 이름입니다.</p>
+  <ul>
+    <li><b>Off</b> — 구버전 방식. 부드러운 조명에선 이것으로 충분</li>
+    <li><b>Neutwo+composed</b> — 밝은 장면의 강자. 흐린 조명에선 오히려 나빠질 수 있고 paper white(화면 기준 흰색 밝기)도 흔들리니 바꾼 뒤 반드시 재확인</li>
+    <li><b>Neutwo+replace</b> — 모델 출력 그대로. 화려하지만 움직임에서 번쩍임. 매일 쓸 설정이 아니라 기준 비교용 레버</li>
+    <li><b>Hybrid+composed</b> — <b>권장</b>. 중간 톤은 원본 그대로, 하이라이트(가장 밝은 부분)만 잘리지 않는 롤오프(서서히 눌러 담기)를 적용. paper white도 거의 안 변함</li>
+    <li><b>Hybrid+replace</b> — Hybrid 곡선 위에 모델 출력 그대로. 번쩍임이 진짜 하이라이트 안으로 제한됨</li>
+  </ul>
+  <p class="desc">⚠️ replace 계열은 고강도에서 번쩍일 수 있으니 colour strength를 높이지 마세요.</p>
 </div>
 
 <div class="opt" id="d-colour">
@@ -376,8 +402,14 @@ a { color: var(--acc); }
 </div>
 
 <div class="opt" id="d-paperwhite">
-  <div class="b"><span class="lbl">Paper white (x exposure)</span> <span class="k">기본 1.0x · 범위 0.25~4x</span></div>
-  <p class="desc"><span class="tag t-tune">노이즈 2차</span> 자동 산출된 화이트 포인트에 곱하는 배율. &gt;1이면 모델이 프레임을 더 어둡게 받아 하이라이트가 덜 극단적으로 처리되고 &lt;1이면 반대. 어두운 화면 노이즈가 Intensity로 안 잡히면 0.8~1.2 탐색.</p>
+  <div class="b"><span class="lbl">Paper white (x exposure)</span> <span class="k">기본 1.0x · 범위 0.25~4x</span> <span class="tag t-new">v0.2.0 — 실시간 읽기</span></div>
+  <p class="desc"><span class="tag t-tune">노이즈 2차</span> 자동 산출된 화이트 포인트(게임이 알려주는 기준 흰색 밝기)에 곱하는 배율. &gt;1이면 모델이 프레임을 더 어둡게 받아 하이라이트가 덜 극단적으로 처리되고 &lt;1이면 반대.</p>
+  <ul>
+    <li><b>v0.2.0부터 프레임 안에서 즉시 읽음</b> — 몇 프레임 늦게 따라오던 구조가 사라져 장면이 바뀌면 화이트 포인트도 즉시 따라감</li>
+    <li><b>상태줄이 ~50x로 커 보이는 게 정상</b> — 계산 방식이 바뀐 눈금일 뿐, 판단은 눈으로 하세요</li>
+    <li><b>Anchor 버튼</b> — 조명이 다른 장면마다 화이트 보정점을 여러 개 찍으면 그 사이를 부드럽게 보정. 보정점 1개면 예전과 완전히 동일하게 동작하고, 보정점은 게임별로 저장됨</li>
+    <li>어두운 화면 노이즈가 Intensity로 안 잡히면 0.8~1.2 탐색</li>
+  </ul>
 </div>
 
 <div class="opt" id="d-maxratio">
@@ -391,8 +423,13 @@ a { color: var(--acc); }
 </div>
 
 <div class="opt" id="d-compare">
-  <div class="b"><span class="lbl">Compare · Debug view · Capture 8 frames</span></div>
+  <div class="b"><span class="lbl">Compare · Debug view · Capture 8 frames</span> <span class="tag t-new">v0.2.0 — Hold frame</span></div>
   <p class="desc">Compare: Before/After를 화면에서 분할 비교(Split/Wipe, 라벨 지원) — <b>효과 검증의 정답 도구</b>. Debug view: 1모델 입력/2모델 출력/3변화량 20배(평평한 회색 = 모델이 아무것도 안 함). Capture: 전/후 8프레임을 <code>dlssnr-capture</code> 폴더에 저장.</p>
+  <ul>
+    <li><b>Hold frame</b> — 모델이 작업하는 프레임을 얼려 고정. 메뉴를 숨겨도 고정이 유지되고, 토글을 끄면 풀림</li>
+    <li>같은 얼린 프레임 기준으로 NR 켬/끔을 비교하니 흔들림 없는 정직한 A/B가 됩니다. Hold 중 Apply the model(모델 출력 적용)을 끄면 같은 프레임을 NR 유무로 그대로 비교</li>
+    <li>한계: DLSS 프리셋 같은 상위 단계 변화는 보여주지 못하고, 게임 HUD나 후처리(포스트 이펙트)는 얼지 않음</li>
+  </ul>
 </div>
 
 <div class="opt" id="d-reset">
