@@ -117,6 +117,7 @@ a { color: var(--acc); }
 <div class="btns">
 <button type="button" class="mt on" data-main="nr">📥 NR 설치</button>
 <button type="button" class="mt" data-main="addon">🧩 애드온 설치</button>
+<button type="button" class="mt" data-main="rec">⭐ 애드온 추천</button>
 <button type="button" class="mt" data-main="nropt">🎛 NR 옵션</button>
 <button type="button" class="mt" data-main="opti">🎚 옵티 옵션</button>
 </div>
@@ -135,8 +136,11 @@ a { color: var(--acc); }
 <a href="#enable">7. 켜고 확인</a>
 </div>
 <div id="toc-addon" hidden>
-<a href="#addon-h">1. ReShade + 애드온 설치</a>
-<a href="#ext">2. iMMERSE (선택)</a>
+<a href="#addon-h">ReShade + 애드온 설치</a>
+</div>
+<div id="toc-rec" hidden>
+<a href="#rec-mfg">1. MFGUnlock (프레임 생성)</a>
+<a href="#rec-immerse">2. iMMERSE (선택)</a>
 </div>
 <div id="toc-nropt" hidden>
 <a href="#options">1. 옵션 요약표</a>
@@ -260,7 +264,12 @@ a { color: var(--acc); }
 </ol>
 <div class="warn"><b>ReShade 애드온과 포크 NR 동시 주의:</b> RenoDX DLSS 같은 NR 애드온과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
 
-<div class="opt" id="s-mfgunlock-addons" style="margin-top:14px">
+</div>
+
+<div id="tab-rec" class="tabpage" hidden>
+<h2 id="rec-mfg"><span class="step">1</span>MFGUnlock — 프레임 생성 (권장)</h2>
+
+<div class="opt" id="s-mfgunlock-addons">
   <div class="b"><span class="lbl">MFGUnlock — 40번대 MFG 열기</span> <span class="tag t-g">실측: 4x 성공</span></div>
   <p class="desc">ReShade 애드온(<code>renodx-mfgunlock.addon64</code> v0.3)이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줍니다. 옵티는 통과만 시키고 배율 결정은 게임에 맡기는 구조.</p>
   <p class="desc" style="font-size:12.5px;color:var(--mut)">출처: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">mavismmg/MFGAdaUnlock-RenoDx</a> (MIT) — 원작 <a href="https://github.com/ImDreamt/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">ImDreamt/Dreamt</a> 포크 + STALKER 2 호환 수정. RenoDX·ReShade 기반. 설치 파일: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx/releases" target="_blank" rel="noopener">Releases의 renodx-mfgunlock.addon64</a> (v0.3 SHA-256 <code>83D5EF4D…066EB</code>). NVIDIA 비공식 — 디스크 수정 없이 실행 중 메모리에만 패치, NVIDIA 파일 재배포 없음.</p>
@@ -273,9 +282,7 @@ a { color: var(--acc); }
   </ul>
 </div>
 
-<h2 id="ext"><span class="step">2</span>선택: iMMERSE 셰이더 팩</h2>
-
-
+<h2 id="rec-immerse"><span class="step">2</span>선택: iMMERSE 셰이더 팩</h2>
 
 <div class="card"><b class="t">iMMERSE (martymcmodding) — 뭐고 도움 되나?</b>
 <p style="margin-top:6px"><a href="https://github.com/martymcmodding/iMMERSE" target="_blank" rel="noopener">iMMERSE</a>는 Marty's Mods의 <b>ReShade 셰이더 컬렉션</b>입니다. 포함: MXAO(고급 SSAO), Anti-Aliasing(고속화된 SMAA), Sharpen(깊이 인식 샤픈), <b>Launchpad</b>(법선 벡터·옵티컬 플로우 모션 벡터를 미리 계산하는 전처리).</p>
@@ -475,10 +482,10 @@ a { color: var(--acc); }
 
 <div class="opt" id="s-mfgunlock">
   <div class="b"><span class="lbl">MFGUnlock 공존 (40번대 MFG 열기)</span> <span class="tag t-g">예시: 4090 실측 구성</span></div>
-  <p class="desc">ReShade 애드온이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줄 때 쓰는 공존 카드. 설치·실측 결과는 <b>🧩 애드온 설치</b> 탭의 MFGUnlock 카드를 보세요.</p>
+  <p class="desc">ReShade 애드온이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줄 때 쓰는 공존 카드. 설치·실측 결과는 <b>⭐ 애드온 추천</b> 탭의 MFGUnlock 카드를 보세요.</p>
   <ul>
     <li>원칙: <b>FG Input = DLSSG via Nvngx · FG Nvngx = None · Ratio = Default</b> — 옵티는 통과만, 배율 결정은 게임에 <span style="font-size:12px;color:var(--mut)">(예: 붉은사막 실측값)</span></li>
-    <li>애드온 측 설정(ForceMultiplier 등)은 <b>🧩 애드온 설치</b> 탭의 MFGUnlock 카드를 따름</li>
+    <li>애드온 측 설정(ForceMultiplier 등)은 <b>⭐ 애드온 추천</b> 탭의 MFGUnlock 카드를 따름</li>
     <li>전제: <code>nvngx_dlssg.dll</code> 310.x (MFG 코드 내장. 구 3.5.x 스니펫 게임은 310.x로 교체 필요). sl.dlss_g는 Streamline 2.11 이상 권장</li>
     <li>테스트 순서: NR 끈 상태 베이스/2x/4x → NR 켠 상태 동일. NR을 켰는데 출력 fps가 크게 안 떨어지면 생성 프레임엔 NR이 안 도는 것(공존 성공)</li>
   </ul>
@@ -645,6 +652,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 const PAGES = [
   { key: 'nr',    pageId: 'tab-nr',    tocId: 'toc-nr',    prefix: ''    },
   { key: 'addon', pageId: 'tab-addon', tocId: 'toc-addon', prefix: ''    },
+  { key: 'rec',   pageId: 'tab-rec',   tocId: 'toc-rec',   prefix: ''    },
   { key: 'nropt', pageId: 'tab-nropt', tocId: 'toc-nropt', prefix: ''    },
   { key: 'opti',  pageId: 'tab-opti',  tocId: 'toc-opti',  prefix: 'sp-' },
 ];
