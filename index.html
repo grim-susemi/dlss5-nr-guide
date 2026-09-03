@@ -263,6 +263,7 @@ a { color: var(--acc); }
 <div class="opt" id="s-mfgunlock-addons" style="margin-top:14px">
   <div class="b"><span class="lbl">MFGUnlock — 40번대 MFG 열기</span> <span class="tag t-g">실측: 4x 성공</span></div>
   <p class="desc">ReShade 애드온(<code>renodx-mfgunlock.addon64</code> v0.3)이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줍니다. 옵티는 통과만 시키고 배율 결정은 게임에 맡기는 구조.</p>
+  <p class="desc" style="font-size:12.5px;color:var(--mut)">출처: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">mavismmg/MFGAdaUnlock-RenoDx</a> (MIT) — 원작 <a href="https://github.com/ImDreamt/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">ImDreamt/Dreamt</a> 포크 + STALKER 2 호환 수정. RenoDX·ReShade 기반. 설치 파일: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx/releases" target="_blank" rel="noopener">Releases의 renodx-mfgunlock.addon64</a> (v0.3 SHA-256 <code>83D5EF4D…066EB</code>). NVIDIA 비공식 — 디스크 수정 없이 실행 중 메모리에만 패치, NVIDIA 파일 재배포 없음.</p>
   <ul>
     <li>옵티: <b>FG Input = DLSSG via Nvngx · FG Nvngx = None · Override DLSSG Ratio = Default</b> <span style="font-size:12px;color:var(--mut)">(예: 붉은사막 실측값)</span></li>
     <li>애드온: <b>Enabled 켬 · ForceMultiplier = 0(게임 결정)</b> — 게임 메뉴가 있으면 애드온에서 강제하지 않기 <span style="font-size:12px;color:var(--mut)">(예: 붉은사막은 reshade.ini MaxCount=4인데도 게임 메뉴에 6x까지 노출)</span></li>
@@ -623,6 +624,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
   <tr><td><b>dlss5-aio</b> (DLL 통합 팩)</td><td><a href="https://github.com/ShugokiFable/dlss5-aio" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/ShugokiFable/dlss5-aio/releases" target="_blank" rel="noopener">Releases</a></td></tr>
   <tr><td><b>RHI</b> (매니저 / DLL·애드온 배포)</td><td><a href="https://github.com/RankFTW/RHI" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/RankFTW/rhi-repo/releases" target="_blank" rel="noopener">Releases(DLL·애드온)</a></td></tr>
   <tr><td><b>DLSS5-Feeder</b> (무DLSS/32비트 게임용)</td><td><a href="https://github.com/jlrouzies-fr/DLSS5-Feeder" target="_blank" rel="noopener">저장소</a></td></tr>
+  <tr><td><b>MFGUnlock</b> (40번대 MFG 언락 애드온 — 권장)</td><td><a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">저장소</a> · <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx/releases" target="_blank" rel="noopener">Releases</a></td></tr>
   <tr><td><b>iMMERSE</b> (ReShade 셰이더 팩 — 선택)</td><td><a href="https://github.com/martymcmodding/iMMERSE" target="_blank" rel="noopener">저장소</a></td></tr>
   <tr><td><b>dlssnr-ada-patcher</b> (Ada 패처·소스)</td><td><a href="https://github.com/dev-camo/dlssnr-ada-patcher" target="_blank" rel="noopener">저장소</a></td></tr>
   <tr><td><b>dlssnr-signature-repair</b> (DLL 해시 검증)</td><td><a href="https://github.com/kayle2203/dlssnr-signature-repair" target="_blank" rel="noopener">저장소</a></td></tr>
