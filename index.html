@@ -357,25 +357,25 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 <div class="optgrid">
 
 <div class="opt" id="d-fginput">
-  <div class="b"><span class="lbl">FG Input (입력 소스)</span> <span class="k">확정값: DLSSG via Nvngx</span> <span class="warnline">바꾸면 Save 후 재시작 필수</span></div>
+  <div class="b"><span class="lbl">FG Input (입력 소스)</span> <span class="k">DLSS 게임: DLSSG via Nvngx 권장</span> <span class="warnline">바꾸면 Save 후 재시작 필수</span></div>
   <p class="desc">게임의 네이티브 FG 호출 중 무엇을 가로챌지 정합니다. <b>FG Input과 FG Output은 둘 다 골라야 동작</b>하고, 바꾸면 <b>Save Settings 후 게임 재시작</b>이 필요합니다(실시간 적용 안 됨). 인게임 프레임 생성이 꺼져 있으면 호출 자체가 안 흘러 FG가 시작되지 않습니다.</p>
   <ul>
-    <li><b>DLSSG via Nvngx</b> — 이 게임의 정답. 게임의 DLSSG 호출을 낮은 층위(Nvngx)에서 받아 그대로 통과시키거나 아래 FG Nvngx 엔진으로 넘김</li>
-    <li><b>DLSSG via Streamline</b> — Streamline 경유 입력. 구 SL1 게임(위처 3 등)은 미지원이라 이 게임에선 Nvngx 쪽이 안전</li>
+    <li><b>DLSSG via Nvngx</b> — DLSS FG가 있는 게임의 1순위. 게임의 DLSSG 호출을 낮은 층위(Nvngx)에서 받아 그대로 통과시키거나 아래 FG Nvngx 엔진으로 넘김 <span style="font-size:12px;color:var(--mut)">(예: 붉은사막의 확정값)</span></li>
+    <li><b>DLSSG via Streamline</b> — Streamline 경유 입력. 구 SL1 게임(위처 3 등)은 미지원이라 Nvngx 쪽이 안전한 경우가 많음</li>
     <li><b>OptiFG (Upscaler)</b> — FG 자체가 없는 게임용 최후 수단. HUDless 자원이 없어 UI 잔상이 생길 수 있음</li>
     <li><b>FSR 3.1 / 3.0 FG</b> — 게임에 FSR FG가 있을 때만. 인게임 FSR-FG를 먼저 켜야 함</li>
     <li><b>XeFG</b> — 보더리스 전용, Vulkan·HDR16·scRGB 미지원. 노란 재시작 문구가 뜨면 반드시 재시작</li>
     <li><b>None</b> — FG 입력 안 씀(FG 끔)</li>
-    <li>⚠️ 이 게임에서 Nvngx가 아닌 값으로 바꾸고 Save하면 <b>부팅 15초 뒤 검은 화면 크래시</b>가 날 수 있음(Streamline 플러그인 충돌). 크래시 나면 OptiScaler.ini의 <code>[FrameGen]</code>을 직접 되돌리면 복구됨</li>
+    <li>⚠️ 게임과 맞지 않는 입력으로 바꾸고 Save하면 <b>부팅 직후 검은 화면 크래시</b>가 날 수 있음 <span style="font-size:12px;color:var(--mut)">(예: 붉은사막은 Nvngx 외의 값에서 Streamline 플러그인 충돌로 부팅 15초 뒤 크래시 보고)</span>. 크래시 나면 OptiScaler.ini의 <code>[FrameGen]</code>을 직접 되돌리면 복구됨</li>
   </ul>
 </div>
 
 <div class="opt" id="d-fgnvngx">
-  <div class="b"><span class="lbl">FG Nvngx (치환 엔진)</span> <span class="k">MFGUnlock 사용 중: None · 구 조합: Nukem's</span></div>
+  <div class="b"><span class="lbl">FG Nvngx (치환 엔진)</span> <span class="k">기본: None</span></div>
   <p class="desc">가로챈 DLSSG 호출을 실제로 누가 처리할지 정합니다. FGInput=NvngxFG일 때만 의미가 있습니다.</p>
   <ul>
-    <li><b>None</b> — 치환 없이 게임의 네이티브 DLSSG 그대로 통과. <b>MFGUnlock으로 네이티브 MFG를 열었을 땐 이게 정답</b></li>
-    <li><b>Nukem's</b> — DLSSG 호출을 FSR3-FG로 바꿔치기(<code>dlssg_to_fsr3_amd_is_better.dll</code> 필요). MFGUnlock 이전의 구 표준 조합</li>
+    <li><b>None</b> — 치환 없이 게임의 네이티브 DLSSG 그대로 통과. 네이티브 FG/MFG를 그대로 쓸 때의 선택 <span style="font-size:12px;color:var(--mut)">(예: 붉은사막 + MFGUnlock 조합은 None)</span></li>
+    <li><b>Nukem's</b> — DLSSG 호출을 FSR3-FG로 바꿔치기(<code>dlssg_to_fsr3_amd_is_better.dll</code> 필요)</li>
     <li><b>Arturs</b> — dlss-enabler 헤드리스 필요, FSR3 MFG</li>
     <li><b>FFX</b> — AMD FidelityFX DLL 필요, FSR FG 3 또는 4</li>
     <li><b>Combo</b> — 중간 프레임은 FFX, 나머지는 Enabler. 4x·6x에서 FSR4 FG와 Enabler를 섞을 때</li>
@@ -383,41 +383,41 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </div>
 
 <div class="opt" id="s-dlssgratio">
-  <div class="b"><span class="lbl">Override DLSSG Ratio (배율 강제)</span> <span class="k">정답: Default</span></div>
+  <div class="b"><span class="lbl">Override DLSSG Ratio (배율 강제)</span> <span class="k">권장: Default</span></div>
   <p class="desc">게임이 Streamline에 보낸 배율을 덮어씁니다(ini <code>OverrideInterpolationCount</code>). <b>Default = 게임 설정 따름</b>, Off = 강제 끔, 2X~6X = 해당 배율로 고정.</p>
   <ul>
-    <li><b>MFGUnlock이 게임 메뉴에 "생성할 프레임 개수"를 열어줬다면 여기는 Default</b> — 배율은 게임 메뉴에서만 고름. 여기서 고정하면 게임 메뉴 선택과 충돌함</li>
+    <li>게임 메뉴에 배율 선택지가 열려 있다면(예: MFGUnlock류 애드온 사용 시) 여기는 <b>Default</b> — 배율은 게임 메뉴에서만 고름. 여기서 고정하면 게임 메뉴 선택과 충돌함</li>
     <li>내부 매핑: 1=2X · 2=3X · 3=4X · 4=5X · 5=6X</li>
   </ul>
 </div>
 
 <div class="opt" id="s-mfgunlock">
-  <div class="b"><span class="lbl">MFGUnlock 공존 (40번대 MFG 열기)</span> <span class="tag t-g">4090 실측 구성</span></div>
+  <div class="b"><span class="lbl">MFGUnlock 공존 (40번대 MFG 열기)</span> <span class="tag t-g">예시: 4090 실측 구성</span></div>
   <p class="desc">ReShade 애드온(<code>renodx-mfgunlock.addon64</code>)이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줍니다. 옵티는 통과만 시키고 배율 결정은 게임에 맡기는 구조.</p>
   <ul>
-    <li>옵티: <b>FG Input = DLSSG via Nvngx · FG Nvngx = None · Ratio = Default</b> 유지</li>
-    <li>애드온: <b>ForceMultiplier = 0(게임 결정)</b> 유지 — 게임 메뉴가 있으면 애드온에서 강제하지 않기. MaxCount는 노출 상한(6까지 노출 시 6)</li>
+    <li>원칙: <b>FG Input = DLSSG via Nvngx · FG Nvngx = None · Ratio = Default</b> — 옵티는 통과만, 배율 결정은 게임에 <span style="font-size:12px;color:var(--mut)">(예: 붉은사막 실측값)</span></li>
+    <li>애드온: <b>ForceMultiplier = 0(게임 결정)</b> — 게임 메뉴가 있으면 애드온에서 강제하지 않기. MaxCount는 노출 상한</li>
     <li>전제: <code>nvngx_dlssg.dll</code> 310.x (MFG 코드 내장. 구 3.5.x 스니펫 게임은 310.x로 교체 필요). sl.dlss_g는 Streamline 2.11 이상 권장</li>
     <li>테스트 순서: NR 끈 상태 베이스/2x/4x → NR 켠 상태 동일. NR을 켰는데 출력 fps가 크게 안 떨어지면 생성 프레임엔 NR이 안 도는 것(공존 성공)</li>
   </ul>
 </div>
 
 <div class="opt" id="s-dmfg">
-  <div class="b"><span class="lbl">Force Dynamic MFG · DMFG FPS Target</span> <span class="k">둘 다 끔 유지</span></div>
+  <div class="b"><span class="lbl">Force Dynamic MFG · DMFG FPS Target</span> <span class="k">보통 둘 다 끔</span></div>
   <p class="desc">모니터 주사율에 맞춰 배율을 자동 오가는 동적 MFG. <b>Blackwell 또는 Nvngx FG + Streamline 2.11 이상</b>에서만 동작. 목표 fps가 0이 아니면 수동 배율 조절이 잠깁니다.</p>
   <ul>
     <li>체크 = 게임의 네이티브 DLSSG에 동적 MFG 강제(ini <code>OverrideForceDMFG</code>). 기본 off</li>
-    <li>Target 0 = 모니터 주사율 기준. 고정 배율 테스트 중엔 0 유지</li>
+    <li>Target 0 = 모니터 주사율 기준. 고정 배율로 비교할 땐 0</li>
   </ul>
 </div>
 
 <div class="opt" id="s-hudcutoff">
-  <div class="b"><span class="lbl">Hud Cutoff (0.00)</span> <span class="k">0.00 유지</span></div>
-  <p class="desc">UI의 반투명 픽셀을 어디서 잘라낼지 정하는 값(0.0~1.0). <b>FSR FG 출력 + NvngxFG일 때만</b> 동작. 네이티브 DLSSG 통과 중엔 건드릴 필요 없음.</p>
+  <div class="b"><span class="lbl">Hud Cutoff (0.00)</span> <span class="k">기본 0.00</span></div>
+  <p class="desc">UI의 반투명 픽셀을 어디서 잘라낼지 정하는 값(0.0~1.0). <b>FSR FG 출력 + NvngxFG일 때만</b> 동작. 네이티브 DLSSG를 그대로 통과시키는 구성에선 건드릴 필요 없음.</p>
 </div>
 
 <div class="opt" id="s-fgdebug">
-  <div class="b"><span class="lbl">Enable Debug View · Interpolated frames only · Disable HUDless</span> <span class="k">전부 끔 유지</span></div>
+  <div class="b"><span class="lbl">Enable Debug View · Interpolated frames only · Disable HUDless</span> <span class="k">보통 전부 끔</span></div>
   <p class="desc">FG 검증용 디버그 도구(일반 플레이는 끔). Debug View = 보간 상태 시각화, Interpolated only = 생성 프레임만 보기, HUDless 관련 = UI를 생성 프레임에서 분리 처리하는 고급 경로. XeFG 판정은 분홍 세로선 + 프레임타임 두꺼워짐으로 확인.</p>
 </div>
 
@@ -431,8 +431,8 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
 </div>
 
 <div class="opt" id="s-fakenvapi">
-  <div class="b"><span class="lbl">fakenvapi — Force XeLL</span> <span class="k">OFF 유지</span></div>
-  <p class="desc">nvapi가 없을 때 대신 받아주는 층. Force XeLL은 FG 없이 XeLL(저지연)만 쓸 때 쓰는 스위치로, <b>켜면 FG 옵션 전체가 꺼짐</b>(최신 libxell·libxess_fg 필요). FG 테스트 중엔 OFF.</p>
+  <div class="b"><span class="lbl">fakenvapi — Force XeLL</span> <span class="k">보통 OFF</span></div>
+  <p class="desc">nvapi가 없을 때 대신 받아주는 층. Force XeLL은 FG 없이 XeLL(저지연)만 쓸 때 쓰는 스위치로, <b>켜면 FG 옵션 전체가 꺼짐</b>(최신 libxell·libxess_fg 필요). FG를 쓸 땐 OFF.</p>
 </div>
 
 <div class="opt" id="s-fgsave">
@@ -440,7 +440,7 @@ ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설�
   <p class="desc">FG Input·Nvngx·Ratio는 <b>고르고 → Save Settings → 게임 재시작</b>해야 반영됩니다. 오버레이에서 바꾼 직후엔 적용 안 된 게 정상.</p>
   <ul>
     <li>FG 켜기/끄기 단축키 기본값은 <b>End</b> (Keybinds에서 변경, ini <code>FGShortcutKey</code>)</li>
-    <li>Save는 ini 전체를 현재 오버레이 상태로 덮어쓰니, 저장 전 FG 3점(FG Input·FG Nvngx·Ratio)이 위 정답값인지 확인</li>
+    <li>Save는 ini 전체를 현재 오버레이 상태로 덮어쓰니, 저장 전 FG 3점(FG Input·FG Nvngx·Ratio)이 의도한 값인지 확인</li>
   </ul>
 </div>
 
