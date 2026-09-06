@@ -286,10 +286,10 @@ a { color: var(--acc); }
 <h3 id="drop">STEP 2 · DROP (놓기)</h3>
 <ol>
   <li><b>게임 폴더 찾기</b>: 실행 파일(.exe) 옆이 정답입니다. Steam이면 <code>.../steamapps/common/게임이름/bin64</code> 같은 하위 폴더일 수 있어요.</li>
-  <li><b>zip 내용 전부 + 모델 DLL 복사</b>: 받아 둔 합본 zip을 그 폴더에 풉니다(로더+DLSS·Streamline+개조 모델까지 전부 포함). <code>OptiScaler.dll</code>, <code>nvngx.dll_dlssnr.dll</code>(110KB 포워더), <code>OptiScaler/</code> 폴더, <code>setup_windows.bat</code>가 보이면 OK(풀기 직후엔 <code>version.dll</code>이 없는 게 정상 — 다음 단계 setup이 만듭니다).</li>
+  <li><b>zip 내용 전부 풀기</b>: 받아 둔 합본 zip을 그 폴더에 풉니다(로더+DLSS·Streamline+개조 모델까지 전부 포함). <code>OptiScaler.dll</code>, <code>nvngx.dll_dlssnr.dll</code>(110KB 포워더), <code>OptiScaler/</code> 폴더, <code>setup_windows.bat</code>가 보이면 OK(풀기 직후엔 <code>version.dll</code>이 없는 게 정상 — 다음 단계 setup이 만듭니다).</li>
   <li><b>setup_windows.bat 실행 → 로더 이름 선택</b>: 보통은 기본값 <b>dxgi.dll</b>. 같은 폴더에 ReShade(dxgi.dll)가 이미 설치돼 있으면 <b>version.dll</b>을 고르세요(자세한 사유는 부록).</li>
 </ol>
-<div class="warn"><b>파일 이름 한 글자 주의:</b> <code>nvngx_dlssnr.dll</code>(165MB, 모델 본체)과 <code>nvngx.dll_dlssnr.dll</code>(110KB, 포워더)은 이름이 거의 같습니다. 합본 그대로 풀었다면 모델이 이미 있으니 패스. 다른 모델로 바꿔 넣을 때만 파일 크기로 확인하세요.</div>
+<div class="warn"><b>파일 이름 한 글자 주의:</b> <code>nvngx_dlssnr.dll</code>(158MB, 모델 본체)과 <code>nvngx.dll_dlssnr.dll</code>(110KB, 포워더)은 이름이 거의 같습니다. 합본 그대로 풀었다면 모델이 이미 있으니 패스. 다른 모델로 바꿔 넣을 때만 파일 크기로 확인하세요.</div>
 
 <h3 id="enable">STEP 3 · ENABLE (켜고 확인)</h3>
 <ol>
@@ -325,7 +325,7 @@ a { color: var(--acc); }
 <ul>
   <li><b>Multipass 내장 언록(권장)</b>: 오버레이에서 <b>Unlock MFG on RTX 40</b> 체크 후 재시작하면 게임 메뉴 배율이 열립니다</li>
   <li><b>MFGUnlock 애드온</b>: ReShade 애드온(<code>renodx-mfgunlock.addon64</code>)이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줍니다. 구 애드온 방식의 설치·실측 기록은 <b>⑤ 애드온 · 문제해결</b> 탭에 접어 두었습니다. 내장 언록을 쓰는 지금은 볼 필요 없습니다</li>
-  <li>공통 전제: <code>nvngx_dlssg.dll</code> 310.9(Multipass with_DLSS판 동봉) + 인게임 프레임 생성 ON</li>
+  <li>공통 전제: <code>nvngx_dlssg.dll</code> 310.9(합본에 동봉) + 인게임 프레임 생성 ON</li>
 </ul></div>
 
 <div class="card" id="mfg-50"><b class="t">RTX 50 · 네이티브 MFG, 언록 불필요</b>
@@ -561,7 +561,7 @@ a { color: var(--acc); }
   <ul>
     <li>원칙: <b>FG Input = DLSSG via Nvngx · FG Nvngx = None · Ratio = Default</b> — 옵티는 통과만, 배율 결정은 게임에 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 실측값)</span></li>
     <li>구 애드온 측 설정(ForceMultiplier 등)은 <b>⑤ 애드온 · 문제해결</b> 탭의 구 MFGUnlock 기록을 따름(현행 아님)</li>
-    <li>전제: <code>nvngx_dlssg.dll</code> 310.9 (Multipass with_DLSS 판에 동봉. 구 3.5.x 스니펫 게임은 310.9로 교체 필요). sl.dlss_g는 Streamline 2.14 동봉(최소 2.11 이상)</li>
+    <li>전제: <code>nvngx_dlssg.dll</code> 310.9 (합본에 동봉. 구 3.5.x 스니펫 게임은 310.9로 교체 필요). sl.dlss_g는 Streamline 2.14 동봉(최소 2.11 이상)</li>
     <li>테스트 순서: NR 끈 상태 베이스/2x/4x → NR 켠 상태 동일. NR을 켰는데 출력 fps가 크게 안 떨어지면 생성 프레임엔 NR이 안 도는 것(공존 성공)</li>
   </ul>
 </div>
@@ -712,7 +712,7 @@ a { color: var(--acc); }
   <ul>
     <li>옵티: <b>FG Input = DLSSG via Nvngx · FG Nvngx = None · Override DLSSG Ratio = Default</b> <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 실측값)</span></li>
     <li>애드온: <b>Enabled 켬 · ForceMultiplier = 0(게임 결정)</b> — 게임 메뉴가 있으면 애드온에서 강제하지 않기 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막은 reshade.ini MaxCount=4인데도 게임 메뉴에 6x까지 노출)</span></li>
-    <li>전제: <code>nvngx_dlssg.dll</code> 310.9 (Multipass with_DLSS 판에 동봉. 구 3.5.x 스니펫 게임은 310.9로 교체 필요). sl.dlss_g는 Streamline 2.14 동봉(최소 2.11 이상)</li>
+    <li>전제: <code>nvngx_dlssg.dll</code> 310.9 (합본에 동봉. 구 3.5.x 스니펫 게임은 310.9로 교체 필요). sl.dlss_g는 Streamline 2.14 동봉(최소 2.11 이상)</li>
     <li>순서: 인게임 프레임 생성 ON → 게임 메뉴의 배율(예: "생성할 프레임 개수")에서 2x → 4x 순으로 올림. 6x는 베이스 fps가 충분할 때만</li>
     <li><b>실측 결과: 4x 성공 — UI 잔상 없음, 프레임 성능 매우 좋음</b> <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막, 2026-09-03)</span></li>
   </ul>
@@ -739,7 +739,7 @@ a { color: var(--acc); }
 모델 DLL이 카드에 맞지 않음. RTX 20/30/40이면 패치 빌드(SF-v2 등)인지 확인 — 순정 310.8.0.0은 RTX 50 전용이며 Ada에서 FAIL_PlatformError가 납니다.</div>
 
 <div class="warn"><b>"nvngx_dlssnr.dll was not found"</b><br>
-모델 DLL이 게임 실행 파일과 같은 폴더에 없는 것. 한 글자 차이 주의: <code>nvngx.dll_dlssnr.dll</code>(포워더, 110KB)와 <code>nvngx_dlssnr.dll</code>(모델, 165MB)을 착각하기 쉽습니다.</div>
+모델 DLL이 게임 실행 파일과 같은 폴더에 없는 것. 한 글자 차이 주의: <code>nvngx.dll_dlssnr.dll</code>(포워더, 110KB)와 <code>nvngx_dlssnr.dll</code>(모델, 158MB)을 착각하기 쉽습니다.</div>
 
 <div class="warn"><b>화면이 통째로 초록색</b><br>
 구버전(v0.1.1 이하)의 HDR 색 변환 문제. <b>v0.1.2 이상으로 업데이트</b>하세요. (HDR 모니터 유무와 무관하게 게임의 프레임버퍼 방식이 변수입니다)</div>
