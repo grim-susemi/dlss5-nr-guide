@@ -752,7 +752,7 @@ a { color: var(--acc); }
 <div class="warn"><b>프레임 생성(FG) 켠 뒤 부팅 크래시</b><br>
 오버레이 저장 시 FG Input/Output 조합이 게임과 맞지 않으면 크래시가 날 수 있습니다. 저장 전 FG 설정이 정상 부팅되던 조합인지 확인, 크래시 시 <code>OptiScaler.ini</code>의 <code>[FrameGen]</code> 섹션을 직접 수정(원래 값으로)하면 복구됩니다.</div>
 
-<div class="warn"><b>ReShade와 같이 쓰기</b><br>
+<div class="warn"><b>아무리 해도 안 되면: bin64 비우고 무결성 후 재설치 (최후 수단)</b><br> 예전 모드 잔재(구 로더·ini·충돌 dll)가 remove 후에도 남아 꼬이는 사례 확인됨(실제 해결 사례 있음). 순서: 게임 bin64 폴더 내용 백업 → 비우기 → 스팀 무결성 검사 → 게임 실행 확인 → 최신 fix2 zip 1개(en/ko)만 풀기 → <code>setup_windows.bat</code> → FG 고르고 Save → 재시작. 무결성 후에는 게임이 vanilla인지 먼저 켜보고, 되면 그때 모드 까세요.</div> <div class="warn"><b>ReShade와 같이 쓰기</b><br>
 ReShade가 <code>dxgi.dll</code>을 점유 중이면 OptiScaler를 <code>version.dll</code>로 설치(공식 권장 조합)하면 공존됩니다. ReShade 애드온(RenoDX DLSS5 등)과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
 </div>
 
