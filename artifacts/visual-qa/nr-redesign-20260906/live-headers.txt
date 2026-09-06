@@ -1,25 +1,25 @@
 HTTP/1.1 200 OK
 Connection: keep-alive
-Content-Length: 80221
+Content-Length: 80212
 Server: GitHub.com
 Content-Type: text/html; charset=utf-8
-Last-Modified: Sun, 06 Sep 2026 00:34:49 GMT
+Last-Modified: Sun, 06 Sep 2026 00:40:32 GMT
 Access-Control-Allow-Origin: *
 Strict-Transport-Security: max-age=31556952
-ETag: "6a9cb529-1395d"
-expires: Sun, 06 Sep 2026 00:45:02 GMT
+ETag: "6a9cb680-13954"
+expires: Sun, 06 Sep 2026 00:50:43 GMT
 Cache-Control: max-age=600
 x-proxy-cache: MISS
-X-GitHub-Request-Id: 867E:31E2D7:115565:152F3E:6A9CB536
+X-GitHub-Request-Id: 3282:1DE311:116385:1540D0:6A9CB68A
 x-github-edge-region: koreacentral
 Accept-Ranges: bytes
 Age: 0
-Date: Sun, 06 Sep 2026 00:35:02 GMT
+Date: Sun, 06 Sep 2026 00:40:43 GMT
 Via: 1.1 varnish
-X-Served-By: cache-icn1450056-ICN
+X-Served-By: cache-icn1450044-ICN
 X-Cache: MISS
 X-Cache-Hits: 0
-X-Timer: S1788654902.233450,VS0,VE194
+X-Timer: S1788655243.324928,VS0,VE197
 Vary: Accept-Encoding
-X-Fastly-Request-ID: 28bda034afe2e08b0c2a981f876cbc50e1dfb85a
+X-Fastly-Request-ID: 486273f9c8b01316311cf3d0641b1eb1ca337eec
 
