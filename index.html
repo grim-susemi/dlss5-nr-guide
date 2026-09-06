@@ -24,7 +24,7 @@ html { scroll-padding-top: var(--scroll-off); }
 .topbar { position: sticky; top: 0; z-index: 100;
   background: rgba(11,14,20,.93); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line); padding: 10px 20px 9px; }
-.topbar .row { max-width: 1500px; margin: 0 auto; }
+.topbar .row { max-width: none; margin: 0 auto; }
 .topbar .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .topbar .title { font-weight: 800; font-size: 15px; }
 .btns { display: flex; gap: 8px; }
@@ -33,7 +33,7 @@ html { scroll-padding-top: var(--scroll-off); }
   padding: 7px 16px; border-radius: 8px; }
 .topbar .mt.on { background: var(--acc); color: #06121f; border-color: var(--acc); }
 
-.wrap { max-width: 720px; margin: 0 auto; padding: 0 0 60px; }
+.wrap { max-width: none; margin: 0; padding: 0 0 60px; }
 .tabpage[hidden], .subpage[hidden] { display: none; }
 .subpage { scroll-margin-top: var(--scroll-off); }
 
@@ -84,8 +84,8 @@ td { color: #c9d3de; }
 
 
 /* ===== 왼쪽 사이드바 목차 ===== */
-.shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); max-width: 1600px;
-  margin: 0 auto; gap: 24px; padding: 22px 20px 90px; align-items: start; }
+.shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); max-width: none;
+  margin: 0 auto; gap: 24px; padding: 22px 28px 90px; align-items: start; }
 .content { min-width: 0; }
 .toc { position: sticky; top: var(--scroll-off); max-height: calc(100vh - var(--scroll-off) - 16px); overflow-y: auto;
   background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 12px; }
@@ -281,7 +281,7 @@ a { color: var(--acc); }
   <tr><td><b><a href="https://github.com/ShugokiFable/dlss5-aio/releases" target="_blank" rel="noopener">dlss5-aio</a></b></td><td><b>애드온 방식</b> 올인원 팩. DX12+DLSS 게임은 <b>DLSS5-Swapper</b> 원클릭(자동 백업·복원), DLSS 없는 게임은 Feeder, 32비트/DX9도 시나리오 표로 안내. 모델 DLL·애드온 전부 동봉</td><td>ReShade 애드온 방식으로 쉽게 설치하고 싶은 분 (단, NR은 RTX 40/50 · 7z 3분할 677MB)</td></tr>
 </table>
 </div>
-<p style="margin-top:8px;font-size:0.875rem;color:var(--mut)>"공식 NVIDIA 배포처는 없나?" → 없습니다. NR 모델은 드라이버 내장/리크 기원이라 공식 채널이 없고, <b>rhi-repo Releases가 커뮤니티 표준 배포처</b>입니다(STEP 1의 링크). 위 도구들도 내부적으로는 같은 출처를 씁니다. 다만 어떤 도구도 NVIDIA 공식이 아니므로, 받은 DLL은 <a href="https://github.com/kayle2203/dlssnr-signature-repair" target="_blank" rel="noopener">dlssnr-signature-repair</a> 같은 시그니처 검증 도구로 해시를 확인하면 더 안전합니다.</p></div>
+<p style="margin-top:8px;font-size:0.875rem;color:var(--mut)">"공식 NVIDIA 배포처는 없나?" → 없습니다. NR 모델은 드라이버 내장/리크 기원이라 공식 채널이 없고, <b>rhi-repo Releases가 커뮤니티 표준 배포처</b>입니다(STEP 1의 링크). 위 도구들도 내부적으로는 같은 출처를 씁니다. 다만 어떤 도구도 NVIDIA 공식이 아니므로, 받은 DLL은 <a href="https://github.com/kayle2203/dlssnr-signature-repair" target="_blank" rel="noopener">dlssnr-signature-repair</a> 같은 시그니처 검증 도구로 해시를 확인하면 더 안전합니다.</p></div>
 
 <h3>로더 이름(dxgi / version) 자세히</h3>
 <p><code>setup_windows.bat</code>는 <code>OptiScaler.dll</code>을 선택한 로더 이름으로 바꿔치기해 게임이 대신 로드하게 합니다. DX12 게임은 <b>dxgi.dll</b>이 기본값이고, 같은 폴더에 ReShade가 이미 dxgi.dll을 점유 중이면 <b>version.dll</b>로 설치하는 게 ReShade와 공존하는 공식 방법입니다.</p>
