@@ -286,7 +286,7 @@ a { color: var(--acc); }
 <h3 id="drop">STEP 2 · DROP (놓기)</h3>
 <ol>
   <li><b>게임 폴더 찾기</b>: 실행 파일(.exe) 옆이 정답입니다. Steam이면 <code>.../steamapps/common/게임이름/bin64</code> 같은 하위 폴더일 수 있어요.</li>
-  <li><b>zip 내용 전부 + 모델 DLL 복사</b>: 받아 둔 zip을 그 폴더에 풀고, <code>nvngx_dlssnr.dll</code>(165MB 모델)도 같이 넣습니다. <code>OptiScaler.dll</code>, <code>nvngx.dll_dlssnr.dll</code>(110KB 포워더), <code>OptiScaler/</code> 폴더, <code>setup_windows.bat</code>가 보이면 OK.</li>
+  <li><b>zip 내용 전부 + 모델 DLL 복사</b>: 받아 둔 zip(<b>with_DLSS</b>면 로더+DLSS·Streamline 동봉)을 그 폴더에 풀고, <code>nvngx_dlssnr.dll</code>(165MB 모델, 어느 상자에도 없음)도 같이 넣습니다. <code>OptiScaler.dll</code>, <code>nvngx.dll_dlssnr.dll</code>(110KB 포워더), <code>OptiScaler/</code> 폴더, <code>setup_windows.bat</code>가 보이면 OK(풀기 직후엔 <code>version.dll</code>이 없는 게 정상 — 다음 단계 setup이 만듭니다).</li>
   <li><b>setup_windows.bat 실행 → 로더 이름 선택</b>: 보통은 기본값 <b>dxgi.dll</b>. 같은 폴더에 ReShade(dxgi.dll)가 이미 설치돼 있으면 <b>version.dll</b>을 고르세요(자세한 사유는 부록).</li>
 </ol>
 <div class="warn"><b>파일 이름 한 글자 주의:</b> <code>nvngx_dlssnr.dll</code>(165MB, 모델 본체)과 <code>nvngx.dll_dlssnr.dll</code>(110KB, 포워더)은 이름이 거의 같습니다. 모델이 빠지면 NR이 켜지지 않으니 복사 후 파일 크기로 한 번 확인하세요.</div>
