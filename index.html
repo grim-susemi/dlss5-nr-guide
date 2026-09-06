@@ -271,7 +271,7 @@ a { color: var(--acc); }
 
 <h3 id="get">STEP 1 · GET (받기)</h3>
 <ol>
-  <li><b>옵티스케일러 zip</b>: <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG/releases/tag/v4-nr200-holdframe" target="_blank" rel="noopener">grim 포크 릴리스</a>에서 <b>OptiScaler_v4-nr200-holdframe_20260906_full.zip</b> 하나를 받습니다. 로더 + DLSS 310.9 + Streamline 2.14 + 개조 모델 <code>nvngx_dlssnr.dll</code>(310.8)까지 전부 들어 있어 DLL 교체도, 별도 애드온 설치도 필요 없습니다.</li>
+  <li><b>옵티스케일러 zip</b>: <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG/releases/tag/v5-fg-dll" target="_blank" rel="noopener">grim 포크 릴리스</a>에서 <b>OptiScaler_v5-fg-dll_20260907_full.zip</b> 하나를 받습니다. 로더 + DLSS 310.9 + Streamline 2.14 + 개조 모델 <code>nvngx_dlssnr.dll</code>(310.8) + FG 동봉 DLL 2종(<code>dlss-enabler-headless.dll</code> · <code>dlssg_to_fsr3_amd_is_better.dll</code>, 20/30번대용)까지 전부 들어 있어 DLL 교체도, 별도 애드온 설치도 필요 없습니다.</li>
   <li><b>모델 DLL</b>: 위 합본에 동봉(<code>nvngx_dlssnr.dll</code> 310.8 개조판, 158MB)이라 따로 구할 필요 없습니다. 다른 버전을 쓰고 싶을 때만 아래에서 고르세요:
     <div class="tbl">
 <table style="margin-top:8px">
@@ -315,7 +315,7 @@ a { color: var(--acc); }
 <p style="margin-top:6px">20/30번대는 MFG 언록 대상이 아닙니다(언록은 40번대 전용). 게임과 상황에 따라 아래 중 하나로 프레임 생성을 돌립니다.</p>
 <ul>
   <li><b>게임에 FSR 3 FG가 있으면</b>: FG Input에서 FSR 3.1 / 3.0 FG를 고르고 인게임 FSR-FG를 먼저 켭니다</li>
-  <li><b>DLSS FG 게임이면</b>: FG Nvngx를 Nukem's로 바꿔 DLSSG 호출을 FSR3-FG로 변환(<code>dlssg_to_fsr3_amd_is_better.dll</code> 필요)</li>
+  <li><b>DLSS FG 게임이면</b>: FG Nvngx를 Nukem's로 바꿔 DLSSG 호출을 FSR3-FG로 변환(<code>dlssg_to_fsr3_amd_is_better.dll</code> — v5 합본에 동봉)</li>
   <li><b>FG 자체가 없는 게임이면</b>: OptiFG(Upscaler)가 최후 수단. HUDless 자원이 없어 UI 잔상이 생길 수 있습니다</li>
   <li>NR은 패치 모델 DLL로 동작하되 20/30은 FP16 경로라 비용이 큽니다. UI가 미리 알려주는 게 정상입니다</li>
 </ul></div>
@@ -539,8 +539,8 @@ a { color: var(--acc); }
   <p class="desc">가로챈 DLSSG 호출을 실제로 누가 처리할지 정합니다. FGInput=NvngxFG일 때만 의미가 있습니다.</p>
   <ul>
     <li><b>None</b> — 치환 없이 게임의 네이티브 DLSSG 그대로 통과. 네이티브 FG/MFG를 그대로 쓸 때의 선택 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 + MFGUnlock 조합은 None)</span></li>
-    <li><b>Nukem's</b> — DLSSG 호출을 FSR3-FG로 바꿔치기(<code>dlssg_to_fsr3_amd_is_better.dll</code> 필요)</li>
-    <li><b>Arturs</b> — dlss-enabler 헤드리스 필요, FSR3 MFG</li>
+    <li><b>Nukem's</b> — DLSSG 호출을 FSR3-FG로 바꿔치기(<code>dlssg_to_fsr3_amd_is_better.dll</code> — v5 합본에 동봉)</li>
+    <li><b>Arturs</b> — FSR3 MFG(<code>dlss-enabler-headless.dll</code> — v5 합본에 동봉)</li>
     <li><b>FFX</b> — AMD FidelityFX DLL 필요, FSR FG 3 또는 4</li>
     <li><b>Combo</b> — 중간 프레임은 FFX, 나머지는 Enabler. 4x·6x에서 FSR4 FG와 Enabler를 섞을 때</li>
   </ul>
