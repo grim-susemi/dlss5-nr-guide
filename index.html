@@ -541,7 +541,7 @@ a { color: var(--acc); }
     <li><b>None</b> — 치환 없이 게임의 네이티브 DLSSG 그대로 통과. 네이티브 FG/MFG를 그대로 쓸 때의 선택 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 + MFGUnlock 조합은 None)</span></li>
     <li><b>Nukem's</b> — DLSSG 호출을 FSR3-FG로 바꿔치기(<code>dlssg_to_fsr3_amd_is_better.dll</code> — v5 합본에 동봉)</li>
     <li><b>Arturs</b> — FSR3 MFG(<code>dlss-enabler-headless.dll</code> — v5 합본에 동봉)</li>
-    <li><b>FFX</b> — AMD FidelityFX DLL 필요, FSR FG 3 또는 4</li>
+    <li><b>FFX</b> — FSR FG 3 또는 4(필요한 FidelityFX 파일은 합본·게임에 있음)</li>
     <li><b>Combo</b> — 중간 프레임은 FFX, 나머지는 Enabler. 4x·6x에서 FSR4 FG와 Enabler를 섞을 때</li>
   </ul>
 </div>
@@ -596,7 +596,7 @@ a { color: var(--acc); }
 
 <div class="opt" id="s-fakenvapi">
   <div class="b"><span class="lbl">fakenvapi — Force XeLL</span> <span class="k">보통 OFF</span></div>
-  <p class="desc">nvapi가 없을 때 대신 받아주는 층. Force XeLL은 FG 없이 XeLL(저지연)만 쓸 때 쓰는 스위치로, <b>켜면 FG 옵션 전체가 꺼짐</b>(최신 libxell·libxess_fg 필요). FG를 쓸 땐 OFF.</p>
+  <p class="desc">nvapi가 없을 때 대신 받아주는 층. Force XeLL은 FG 없이 XeLL(저지연)만 쓸 때 쓰는 스위치로, <b>켜면 FG 옵션 전체가 꺼짐</b>(필요한 libxell·libxess_fg는 합본·게임에 있음). FG를 쓸 땐 OFF.</p>
 </div>
 
 <div class="opt" id="s-fgsave">
