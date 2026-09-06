@@ -217,11 +217,9 @@ a { color: var(--acc); }
 <p style="margin-top:6px">NR + 프레임 생성(MFG 언록 내장) + 업스케일러 + 오버레이가 하나로 통합된 빌드. GitHub <a href="https://github.com/y4my4my4m/OptiScaler_DLSSNR_Multipass_MFG/releases" target="_blank" rel="noopener">Multipass_MFG · Releases</a>에서 <b>v4</b>(오버레이 타이틀 <code>10.0.0-dev-fork-y4my4my4m-v4</code>) zip 다운로드. <b>with_DLSS 판</b>이면 DLSS 310.9 · Streamline 2.14가 동봉이라 DLL 교체가 따로 필요 없습니다. 설치 후 오버레이 → Frame Generation → <b>Unlock MFG on RTX 40</b> 체크 → 재시작이면 40번대 게임 메뉴에 2x~6x가 열립니다(별도 MFGUnlock 애드온 불필요).</p>
 <p style="margin-top:6px;font-size:12.5px;color:var(--mut)">대안: 원조 포크 <a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">Dagherbou/OptiScaler_DLSSNR · Releases</a>(v0.2.0 이상)도 같은 NR 뿌리입니다. Multipass_MFG는 여기서 MFG 언록·최신 DLL 동봉을 얹은 파생판입니다.</p>
 <ul style="font-size:13px">
-  <li>프록시 5모드 신설 — 모델에 보여줄 톤매핑 사본(밝기를 화면 범위에 눌러 담은 프레임)을 고르는 옵션, Hybrid+composed 권장</li>
-  <li>노출 앵커 다점 보정 — Anchor 버튼으로 조명별 화이트 보정점을 여러 개 찍고 게임별 저장</li>
-  <li>모델 슈퍼샘플링 — 해상도 슬라이더 200%까지, 축소 필터 선택 가능(기본 Lanczos3)</li>
+  <li>멀티패스 — 한 프레임에 모델을 여러 번 돌려 디테일을 덧칠(Passes 카드 참고, 비용은 배수)</li>
+  <li>화이트 포인트 3택 — 게임 노출값 / Paper white only / 스캔 추정+Anchor 다점 보정(최대 8점)</li>
   <li>실시간 노출 반영 — 화이트 포인트가 장면 변화에 즉시 따라감</li>
-  <li>Hold frame — 프레임을 얼려 NR 켬/끔을 흔들림 없이 비교</li>
 </ul></div>
 
 <div class="card"><b class="t">② nvngx_dlssnr.dll — 모델 본체 (~165MB)</b>
@@ -311,21 +309,23 @@ a { color: var(--acc); }
 
 <div id="tab-nropt" class="tabpage" hidden>
 <h2 id="options"><span class="step">1</span>오버레이 옵션 요약표</h2>
-<p>NR 옵션 12개를 "현재 기본값 · 하는 일 · 언제 만지는지" 순으로 정리했습니다. 각 옵션의 <b>상세 원리·주의사항</b>은 아래 <b>★ Neural Rendering</b> 섹션에서 확인하세요.</p>
+<p>NR 옵션들을 "현재 기본값 · 하는 일 · 언제 만지는지" 순으로 정리했습니다. 각 옵션의 <b>상세 원리·주의사항</b>은 아래 <b>★ Neural Rendering</b> 섹션에서 확인하세요.</p>
 
 <table>
   <tr><th style="width:200px">옵션</th><th style="width:90px">기본</th><th>설명</th></tr>
-  <tr><td><b>Model resolution</b></td><td>100%</td><td>모델 연산 해상도 비율, 범위 25~200%. 프레임은 안 줄고 모델 비용만 변함(비용=비율²). 100% 초과는 슈퍼샘플링(모델을 원본보다 크게 돌린 뒤 다시 줄여 노이즈를 줄이는 기법)이라 품질 여유 레버. 프레임 부족 시 80%까지</td></tr>
+  <tr><td><b>Model resolution</b></td><td>100%</td><td>모델 연산 해상도 비율, 범위 25~100%. 프레임은 안 줄고 모델 비용만 변함(비용=비율²). 프레임 부족 시 80%까지. 구버전 200% 슈퍼샘플링은 Multipass판에 없음 — 고화질은 Passes 담당</td></tr>
+  <tr><td><b>Passes · Lift · Per pass</b></td><td>1 (native)</td><td>한 프레임에 모델 몇 번 돌릴지. 비용이 정확히 배수(5패스=5번 값). 상한 5, Lift 체크 시 30. 3 초과면 Highlight guard도 같이. 아래 ★ 섹션의 Passes 카드</td></tr>
+  <tr><td><b>Run inside/before the upscaler</b></td><td>둘 다 끔</td><td>모델을 업스케일러 안·앞에서 돌리는 실험 옵션. 평소엔 끔. 아래 ★ 섹션의 Dual 카드</td></tr>
   <tr><td><b>Detail strength</b></td><td>1.0</td><td>모델 그림으로 갈아타는 양. 0=원본, 1=모델 그대로, 2 이상=과잉. <b>디테일 체감의 핵심 레버</b></td></tr>
   <tr><td><b>Colour strength</b></td><td>1.0</td><td>색 채용도. 0=밝기 판정만 반영(효과 절반 손실), 1=풀컬러</td></tr>
   <tr><td><b>Intensity</b></td><td>1.0</td><td>모델 내부 강도(0~2). <b>어두운 화면 노이즈 1차 조절판</b> — 자글거림 심하면 0.5~0.7</td></tr>
   <tr><td>Local structure / Local tone</td><td>1.0</td><td>구조/톤 세부 강도. 기본 유지</td></tr>
   <tr><td>Skin structure · Auto mask</td><td>-1 · ON</td><td>피부 전용 구조(-1=Local 따름)와 자동 피부 마스크</td></tr>
   <tr><td>Preset / Style</td><td>Default</td><td>모델 프로파일. Style: Default(콘트라스트 강조)/Natural(톤 보존)/Cinematic(과처리 억제). <b>변경 시 모델 재빌드(잠깐 끊김)</b></td></tr>
-  <tr><td><b>Proxy</b> <span class="tag t-new">v0.2.0</span></td><td>—</td><td>모델에 보여줄 대체 프레임(원본을 톤매핑, 즉 밝기를 화면 표현 범위에 눌러 담은 사본)을 만드는 방식. 5가지 모드, 권장은 Hybrid+composed. 상세는 아래 ★ 섹션의 Proxy 카드</td></tr>
-  <tr><td><b>Paper white</b></td><td>1.0x</td><td>모델에게 보여줄 밝기 해석 배율. <b>어두운 화면 노이즈 2차 레버</b>. v0.2.0부터 화이트 포인트(게임이 알려주는 기준 흰색 밝기)를 프레임 안에서 즉시 읽어 장면 변화에 바로 따라감. 조명이 다른 장면마다 Anchor 버튼으로 보정점을 찍으면 그 사이를 부드럽게 보정</td></tr>
-  <tr><td>Highlight guard</td><td>2.0x</td><td>픽셀 최대 밝기 상한(어두워짐 무제한). 불빛 색 깨짐 방지</td></tr>
-  <tr><td>Compare</td><td>Off</td><td>Before/After 분할 비교(Split/Wipe), 라벨 표시 지원. Hold frame(모델이 보는 프레임을 얼려 고정)으로 흔들림 없는 정직한 A/B 비교 가능</td></tr>
+  <tr><td><b>White point from</b></td><td>게임 노출값</td><td>밝기 기준 출처 3택: 게임 노출값 / Paper white only / 스캔 추정+Anchor 보정. 아래 ★ 섹션의 White point 카드</td></tr>
+  <tr><td><b>Paper white · Trim · Anchor</b></td><td>1.0x · 1.00 · —</td><td>세부 조정 3종. Trim은 자동 출처용 미세 배율(1.00이 정답). Anchor는 스캔 출처용 보정(최대 8점). <b>어두운 화면 노이즈 2차 레버</b>. 아래 ★ 섹션의 Paper white 카드</td></tr>
+  <tr><td>Highlight guard</td><td>2.0x</td><td>픽셀 밝기 변화 상한(양쪽, 범위 1~30x). 불빛 색 깨짐 방지. 패스 수와 같이 올리기(패스 수 ≈ 가드 배수)</td></tr>
+  <tr><td>Compare</td><td>Off</td><td>Before/After 분할 비교(Side by side/Wipe). Swap sides·Label 표시 지원. 구버전 Hold frame은 Multipass판에 없음</td></tr>
   <tr><td>Debug view</td><td>0</td><td>0끔/1모델 입력/2모델 출력/3변화량 20배 — 평평한 회색이면 모델이 안 돌고 있는 것</td></tr>
   <tr><td>Capture 8 frames</td><td>—</td><td>전/후 프레임 8장을 <code>dlssnr-capture</code> 폴더에 저장</td></tr>
 </table>
@@ -342,36 +342,40 @@ a { color: var(--acc); }
 </div>
 
 <div class="opt" id="d-nrcost">
-  <div class="b"><span class="lbl">Model resolution (Cost)</span> <span class="k">기본 100% · 범위 25~200%</span> <span class="tag t-new">v0.2.0 — 200%까지</span></div>
+  <div class="b"><span class="lbl">Model resolution (Cost)</span> <span class="k">기본 100% · 범위 25~100%</span> <span class="tag t-new">Multipass판 — 200% 슈퍼샘플링 사라짐</span></div>
   <p class="desc">모델이 연산하는 내부 해상도 비율. 프레임 자체는 안 줄고 모델 비용만 변합니다(비용은 비율의 제곱).</p>
   <ul>
     <li><b>100% 이하</b> — 비용 절감 레버. 프레임이 부족하면 80%까지 내려보세요</li>
-    <li><b>100% 초과 = 슈퍼샘플링</b>(모델을 원본 해상도보다 크게 돌린 뒤 다운스케일러, 즉 줄일 때 쓰는 필터로 평균 내는 기법). 슬라이더를 넘기는 순간 필터 드롭다운이 생기고 기본값은 Lanczos3(부드럽게 줄이는 대표 축소 필터). ini 키는 <code>DlssNr ScalingDownscaler</code>. 제대로 된 축소 필터가 추가 해상도를 노이즈 감소로 바꿔줍니다</li>
-    <li>비용이 면적에 비례해 커지는 <b>품질 여유 레버</b>. 성능 여유가 있을 때 올리는 용도. DX12와 네이티브 Vulkan 지원이며 Output Scaling의 다운스케일러와는 별개</li>
+    <li>⚠️ 구버전의 100% 초과 슈퍼샘플링(모델을 원본보다 크게 돌리는 품질 여유 레버)은 Multipass판에 없습니다. 대신 아래 <b>Passes</b>가 고화질 담당입니다</li>
+  </ul>
+</div>
+
+<div class="opt" id="d-passes">
+  <div class="b"><span class="lbl">Passes · Lift the pass limit · Per pass</span> <span class="k">기본 1 (native) · 상한 5 → 해제 시 30</span> <span class="tag t-new">Multipass판 신규 — 가장 비싼 옵션</span></div>
+  <p class="desc">모델을 한 프레임에 몇 번 돌릴지. 1이면 학습된 그대로(초록색), 2~3이면 자기 출력 위에 덧칠(주황색), 4~5는 과잉 영역(빨강). <b>비용이 정확히 배수</b> — 5패스면 모델 5번 값, 매 프레임. 올리기 전에 Detail strength·Intensity·Model resolution을 먼저 써보세요.</p>
+  <ul>
+    <li><b>Lift the pass limit</b> — 체크하면 슬라이더 상한이 5에서 30까지 열립니다(보라색). 30 근처는 게임이 사실상 멈추니 실용 영역은 5 이하. 3을 넘기면 아래 Highlight guard도 같이 올려야(패스 수 ≈ 가드 배수) 추가 패스가 잘리지 않습니다</li>
+    <li><b>Per pass</b> — 패스가 2 이상이면 나타나는 패스별 미세 조정(2패스째는 약하게 등). 건드리지 않은 패스는 위 전체 설정을 그대로 따릅니다</li>
+  </ul>
+</div>
+
+<div class="opt" id="d-dualpre">
+  <div class="b"><span class="lbl">Run inside the upscaler · Run before the upscaler (둘 다 실험적)</span> <span class="k">기본 둘 다 끔</span> <span class="tag t-new">Multipass판 신규</span></div>
+  <p class="desc">모델을 <b>어디서</b> 돌릴지 바꾸는 실험 옵션. 평소엔 둘 다 끄고 쓰세요(끄면 업스케일 끝난 화면에서 동작 = 지금 검증된 방식).</p>
+  <ul>
+    <li><b>Run inside the upscaler</b> — 업스케일러를 반으로 쪼개 그 사이에 모델을 끼웁니다(재시작 필요). 화면이 작을 때 싸게 돌리는 방식. <b>Enlarged by</b>에서 확대 담당(DLSS/FSR/XeSS 등)을 고릅니다</li>
+    <li><b>Run before the upscaler</b> — 업스케일 전 작은 화면에서 먼저 돌립니다(값이 싸짐). 단 카메라 움직일 때 반짝임이 생길 수 있는 미검증 영역</li>
   </ul>
 </div>
 
 <div class="opt" id="d-nrenlargement">
-  <div class="b"><span class="lbl">Enlargement</span> <span class="k">기본: Matched residual</span> <span class="tag t-new">실험적</span></div>
-  <p class="desc">모델 결과물을 화면 크기로 확대하는 방식 선택. 기본값 유지 권장 — 다른 값은 실험 목적(개발 노트에 명시)입니다.</p>
+  <div class="b"><span class="lbl">Enlargement</span> <span class="k">기본: Matched residual · 100%에선 회색(선택 불가)</span></div>
+  <p class="desc">모델을 100%보다 작게 돌릴 때, 작은 결과물을 화면 크기로 어떻게 올릴지. <b>100%에 두면 회색으로 잠기고 둘은 같은 동작</b>이니 신경 쓸 필요 없습니다. 100% 미만에서 색이 어긋나면 Matched residual 쪽이 정답인 경우가 많습니다.</p>
 </div>
 
 <div class="opt" id="d-transfer">
   <div class="b"><span class="lbl">Detail strength</span> <span class="k">TransferStrength · 기본 1.0 · 범위 0~2</span></div>
   <p class="desc"><b>모델의 그림으로 얼마나 갈아타는지.</b> 0 = 업스케일 원본 그대로(비트 단위 동일), 1.0 = 모델 그림 채용, 2.0 = 모델 너머 과잉 보정. <b>디테일 체감의 핵심 레버</b>이며 2.00은 과잉 영역이라 1.0~1.2 권장.</p>
-</div>
-
-<div class="opt" id="d-proxy">
-  <div class="b"><span class="lbl">Proxy (Colour 섹션)</span> <span class="k">5가지 모드</span> <span class="tag t-new">v0.2.0 신규</span> <span class="tag t-g">Hybrid+composed 권장</span></div>
-  <p class="desc">모델은 원본 프레임을 직접 보지 않고, 톤매핑(밝기를 화면 표현 범위에 눌러 담는 과정)된 사본인 프록시만 봅니다. 이 옵션은 그 사본을 만드는 곡선을 고릅니다. 뒤에 붙는 <b>+composed</b>는 모델 출력을 프록시에 합성, <b>+replace</b>는 모델 출력으로 통째로 교체한다는 뜻. Neutwo와 Hybrid는 곡선 조합 이름입니다.</p>
-  <ul>
-    <li><b>Off</b> — 구버전 방식. 부드러운 조명에선 이것으로 충분</li>
-    <li><b>Neutwo+composed</b> — 밝은 장면의 강자. 흐린 조명에선 오히려 나빠질 수 있고 paper white(화면 기준 흰색 밝기)도 흔들리니 바꾼 뒤 반드시 재확인</li>
-    <li><b>Neutwo+replace</b> — 모델 출력 그대로. 화려하지만 움직임에서 번쩍임. 매일 쓸 설정이 아니라 기준 비교용 레버</li>
-    <li><b>Hybrid+composed</b> — <b>권장</b>. 중간 톤은 원본 그대로, 하이라이트(가장 밝은 부분)만 잘리지 않는 롤오프(서서히 눌러 담기)를 적용. paper white도 거의 안 변함</li>
-    <li><b>Hybrid+replace</b> — Hybrid 곡선 위에 모델 출력 그대로. 번쩍임이 진짜 하이라이트 안으로 제한됨</li>
-  </ul>
-  <p class="desc">⚠️ replace 계열은 고강도에서 번쩍일 수 있으니 colour strength를 높이지 마세요.</p>
 </div>
 
 <div class="opt" id="d-colour">
@@ -400,44 +404,39 @@ a { color: var(--acc); }
 </div>
 
 <div class="opt" id="d-takewhitepoint">
-  <div class="b"><span class="lbl">✅ Take the white point from the game</span> <span class="tag t-new">v0.1.2 신규 — 반드시 ON</span></div>
-  <p class="desc">게임이 DLSS에 넘기는 <b>exposure texture를 직접 읽어</b> 화이트 포인트를 자동 산출합니다. 아래 초록 상태줄(<span style="color:var(--grn)">Game exposure 0.0451 → white point 106.18</span>)이 그 결과. 이 기능 덕에 HDR 게임(붉은사막)에서도 색이 정상 — <b>끄면 이전 버전의 초록 화면/색 중화 문제로 돌아갑니다.</b></p>
+  <div class="b"><span class="lbl">White point from (어디서 흰색 기준을 가져올지)</span> <span class="k">기본: The game's own exposure</span> <span class="tag t-new">Multipass판 — 3개 중 고르기</span></div>
+  <p class="desc">모델에게 보여줄 밝기 기준(화이트 포인트)의 출처를 고릅니다. 예전의 ON/OFF 스위치가 3개 선택지로 바뀐 것입니다.</p>
+  <ul>
+    <li><b>The game's own exposure</b> — 게임이 넘기는 노출값을 직접 읽음. 초록 상태줄(Game exposure → white point)이 뜨면 정상. 붉은사막은 이것</li>
+    <li><b>Paper white only</b> — 아래 Paper white 숫자만 씀. 노출값이 안 움직이는 게임용</li>
+    <li><b>A buffer the scan found</b> — 노출값을 안 넘기는 게임에서 화면 버퍼를 뒤져 추정. <b>Anchor here</b>로 한 번 보정해야 쓸 만해집니다(아래 Paper white 카드 참고)</li>
+  </ul>
 </div>
 
 <div class="opt" id="d-paperwhite">
-  <div class="b"><span class="lbl">Paper white (x exposure)</span> <span class="k">기본 1.0x · 범위 0.25~4x</span> <span class="tag t-new">v0.2.0 — 실시간 읽기</span></div>
-  <p class="desc"><span class="tag t-tune">노이즈 2차</span> 자동 산출된 화이트 포인트(게임이 알려주는 기준 흰색 밝기)에 곱하는 배율. &gt;1이면 모델이 프레임을 더 어둡게 받아 하이라이트가 덜 극단적으로 처리되고 &lt;1이면 반대.</p>
+  <div class="b"><span class="lbl">Paper white · Trim · Anchor here</span> <span class="k">Paper white 범위 0.25~2000x(로그 눈금)</span> <span class="tag t-tune">노이즈 2차</span></div>
+  <p class="desc">화이트 포인트의 세부 조정 3종. 위에서 고른 출처에 따라 보이는 게 달라집니다.</p>
   <ul>
-    <li><b>v0.2.0부터 프레임 안에서 즉시 읽음</b> — 몇 프레임 늦게 따라오던 구조가 사라져 장면이 바뀌면 화이트 포인트도 즉시 따라감</li>
-    <li><b>상태줄이 ~50x로 커 보이는 게 정상</b> — 계산 방식이 바뀐 눈금일 뿐, 판단은 눈으로 하세요</li>
-    <li><b>Anchor 버튼</b> — 조명이 다른 장면마다 화이트 보정점을 여러 개 찍으면 그 사이를 부드럽게 보정. 보정점 1개면 예전과 완전히 동일하게 동작하고, 보정점은 게임별로 저장됨</li>
-    <li>어두운 화면 노이즈가 Intensity로 안 잡히면 0.8~1.2 탐색</li>
+    <li><b>Paper white</b> — 직접 기준값 정하기(Paper white only일 때의 본체). 범위가 넓어진 건 어두운 게임 대응용. 어두운 화면 노이즈가 Intensity로 안 잡히면 0.8~1.2 탐색</li>
+    <li><b>Trim (x the game's exposure / x the scan)</b> — 자동 출처에 곱하는 미세 배율. <b>1.00이 정답</b>이고 0.8~1.25가 솔직한 조정 범위. 4까지 올려야 보이면 읽은 값 자체가 틀린 것이니 출처를 의심하세요. 옆 Reset 버튼이 1.00으로 돌립니다</li>
+    <li><b>Anchor here</b> — 스캔 출처용 보정. Paper white를 눈으로 맞춘 뒤 누르면 그 점을 기억하고, 조명 다른 곳에서 한 번 더 누르면 두 점 사이를 자동 보정(최대 8점, 게임별 저장). 표의 <b>x</b>는 점 삭제, 행 클릭은 그 점 다시 손보기</li>
+    <li><b>Show the light meter on screen</b>(스캔 출처에서만) — 구석 조명 램프. 어두우면 빨강·밝으면 초록. 반대로 움직이면 <b>The number runs the other way</b> 체크</li>
   </ul>
 </div>
 
 <div class="opt" id="d-maxratio">
-  <div class="b"><span class="lbl">Highlight guard</span> <span class="k">MaxRatio · 기본 2.0x · 범위 1~8x</span></div>
-  <p class="desc">한 픽셀이 최대로 밝아질 수 있는 배수 상한. 어두워지는 데는 제한 없음. 램프·불빛이 색색의 셀 띄로 깨지는 고장을 방지하는 가드입니다.</p>
-</div>
-
-<div class="opt" id="d-workingscale">
-  <div class="b"><span class="lbl">Working scale (Model resolution)</span> <span class="k">WorkingScale · 기본 1.0</span></div>
-  <p class="desc">모델이 작업하는 프레임 비율. 비용이 제곱으로 줄어들지만 첫 패스가 낮은 해상도에서 시작되므로 확대 시작점의 디테일이 줄어듭니다. 성능 컨트롤이지 품질 컨트롤이 아님.</p>
+  <div class="b"><span class="lbl">Highlight guard</span> <span class="k">MaxRatio · 기본 2.0x · 범위 1~30x</span></div>
+  <p class="desc">한 픽셀 밝기 변화 상한(밝아짐·어두워짐 양쪽). 램프·불빛이 색색의 셀 띠로 깨지는 고장을 막는 가드입니다. <b>패스 수와 같이 올리기</b> — 패스 3개면 3x 근처(패스 수 ≈ 가드 배수). 그대로 두면 추가 패스가 돈만 들고 잘립니다.</p>
 </div>
 
 <div class="opt" id="d-compare">
-  <div class="b"><span class="lbl">Compare · Debug view · Capture 8 frames</span> <span class="tag t-new">v0.2.0 — Hold frame</span></div>
-  <p class="desc">Compare: Before/After를 화면에서 분할 비교(Split/Wipe, 라벨 지원) — <b>효과 검증의 정답 도구</b>. Debug view: 1모델 입력/2모델 출력/3변화량 20배(평평한 회색 = 모델이 아무것도 안 함). Capture: 전/후 8프레임을 <code>dlssnr-capture</code> 폴더에 저장.</p>
+  <div class="b"><span class="lbl">Compare · Debug view · Capture 8 frames</span> <span class="tag t-new">Multipass판 — Hold frame 사라짐</span></div>
+  <p class="desc">Compare: Before/After를 화면에서 분할 비교(Side by side/Wipe) — <b>효과 검증의 정답 도구</b>. ⚠️ 구버전의 <b>Hold frame</b>(프레임 얼려 고정 비교)은 Multipass판에 없습니다. Debug view: Proxy(모델이 보는 그림)/Model output(날것)/Difference 20배(평평한 회색 = 모델이 안 돌고 있는 것). Capture: 전/후 8프레임을 <code>dlssnr-capture</code> 폴더에 저장.</p>
   <ul>
-    <li><b>Hold frame</b> — 모델이 작업하는 프레임을 얼려 고정. 메뉴를 숨겨도 고정이 유지되고, 토글을 끄면 풀림</li>
-    <li>같은 얼린 프레임 기준으로 NR 켬/끔을 비교하니 흔들림 없는 정직한 A/B가 됩니다. Hold 중 Apply the model(모델 출력 적용)을 끄면 같은 프레임을 NR 유무로 그대로 비교</li>
-    <li>한계: DLSS 프리셋 같은 상위 단계 변화는 보여주지 못하고, 게임 HUD나 후처리(포스트 이펙트)는 얼지 않음</li>
+    <li><b>Swap sides</b> — 편집본을 반대편에. 같은 쪽이 계속 이기면 배치 탓일 수 있으니 한 번 뒤집어 확인</li>
+    <li><b>Label the sides</b> — 화면에 어느 쪽이 편집본인지 표시(스크린샷에도 남음). <b>Label size</b>로 크기 조절</li>
+    <li><b>Zoom</b>(Side by side에서만) — 절반씩 나누다 보니 생기는 화면 맞춤. <b>Split</b>(Wipe에서만) — 자르는 위치</li>
   </ul>
-</div>
-
-<div class="opt" id="d-reset">
-  <div class="b"><span class="lbl">Reset NR Feature and Clear History</span></div>
-  <p class="desc">NR 모델이 내부에 쌓은 이력을 초기화하는 진단용 버튼. 화면이 이상해졌을 때 눌러보면 모델 히스토리 문제인지 즉시 구분됩니다.</p>
 </div>
 
 </div>
@@ -447,7 +446,7 @@ a { color: var(--acc); }
 <div class="card">
 <ol>
   <li><b>Keybinds에서 NR 토글 키 지정</b> → 끄고/켜고 빠르게 비교</li>
-  <li><b>Compare → Split</b> 켜서 좌우 대조 (가장 정확한 판정)</li>
+  <li><b>Compare → Side by side/Wipe</b> 켜서 좌우 대조 (가장 정확한 판정)</li>
   <li><b>Intensity 1.0 → 0.7 → 0.5</b> 단계적으로 하향 (즉시 적용)</li>
   <li>그래도 심하면 <b>Paper white 0.8 ↔ 1.2</b> 탐색</li>
   <li>스타일이 과하면 <b>Style → Natural / Cinematic</b></li>
