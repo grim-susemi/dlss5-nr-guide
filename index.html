@@ -45,7 +45,9 @@ h1 { font-size: 27px; letter-spacing: -0.02em; }
   background: var(--panel2); border: 1px solid var(--line); color: var(--acc); }
 h2 { scroll-margin-top: var(--scroll-off); font-size: 20px; margin: 40px 0 14px; padding: 10px 14px;
   background: var(--panel2); border-left: 5px solid var(--acc); border-radius: 8px; }
-.subpage h2 { margin-top: 42px; }
+.subpage { border-top: 2px solid var(--line); margin-top: 34px; padding-top: 6px; }
+.subpage:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+.subpage h2 { margin-top: 26px; }
 .subpage:first-of-type h2 { margin-top: 8px; }
 h2 .step { display: inline-block; background: var(--acc); color: #06121f;
   border-radius: 6px; padding: 0 10px; margin-right: 10px; font-size: 16px; }
@@ -106,6 +108,7 @@ td { color: #c9d3de; }
   .toc summary::after { content: " ▾"; }
   .toc details[open] summary::after { content: " ▴"; }
   .toc details[open] summary { margin-bottom: 12px; }
+  .toc .toc-note { font-size: 0.8125rem; color: var(--mut); padding: 4px 11px 8px; }
   .toc a { display: inline-block; border-left: none; border: 1px solid var(--line); margin: 2px; padding: 5px 11px; }
 }
 
@@ -141,6 +144,7 @@ a { color: var(--acc); }
 
 <div class="shell">
 <aside class="toc"><details class="toc-d" open><summary>📑 목차</summary>
+<div class="toc-note">현재 탭의 목차만 표시됩니다 · 항목을 누르면 해당 위치로 이동합니다</div>
 <div id="toc-nr">
 <a href="#what">1. 개요</a>
 <a href="#req">2. 요구사항</a>
@@ -192,7 +196,7 @@ a { color: var(--acc); }
 <table>
   <tr><th>항목</th><th>요구</th><th>비고</th></tr>
   <tr><td>GPU</td><td>RTX 50 — 그대로 지원<br>RTX 20/30/40 — <b>패치된 모델 DLL 필요</b></td><td>패치 DLL은 커뮤니티 배포(RHI 툴 등에서 다운로드), 공식 지원은 아님을 유의</td></tr>
-  <tr><td>드라이버</td><td>616.56 이상</td><td>nvngx_dlssnr.dll이 드라이버에 포함되기 시작한 버전</td></tr>
+  <tr><td>드라이버</td><td>616.56 이상</td><td><code>nvngx_dlssnr.dll</code>이 드라이버에 포함되기 시작한 버전</td></tr>
   <tr><td>게임</td><td>DLSS 2+를 쓰는 게임</td><td>DX12 · Vulkan 네이티브, DX11은 브리지 경유(제약 있음)</td></tr>
   <tr><td>온라인 게임</td><td>❌ 사용 금지</td><td>안티치트 위험 — 싱글/협동 전용</td></tr>
 </table>
@@ -286,9 +290,9 @@ a { color: var(--acc); }
 
 <h3 id="drop">STEP 2 · DROP (놓기)</h3>
 <ol>
-  <li><b>게임 폴더 찾기</b>: 실행 파일(.exe) 옆이 정답입니다. Steam이면 <code>.../steamapps/common/게임이름/bin64</code> 같은 하위 폴더일 수 있어요.</li>
+  <li><b>게임 폴더 찾기</b>: 실행 파일(<code>.exe</code>) 옆이 정답입니다. Steam이면 <code>.../steamapps/common/게임이름/bin64</code> 같은 하위 폴더일 수 있습니다.</li>
   <li><b>zip 내용 전부 풀기</b>: 받아 둔 합본 zip을 그 폴더에 풉니다(로더+DLSS·Streamline+개조 모델까지 전부 포함). <code>OptiScaler.dll</code>, <code>nvngx.dll_dlssnr.dll</code>(110KB 포워더), <code>OptiScaler/</code> 폴더, <code>setup_windows.bat</code>가 보이면 OK(풀기 직후엔 <code>version.dll</code>이 없는 게 정상 — 다음 단계 setup이 만듭니다).</li>
-  <li><b>setup_windows.bat 실행 → 로더 이름 선택</b>: 보통은 기본값 <b>dxgi.dll</b>. 같은 폴더에 ReShade(dxgi.dll)가 이미 설치돼 있으면 <b>version.dll</b>을 고르세요(자세한 사유는 부록).</li>
+  <li><code>setup_windows.bat</code> 실행 → 로더 이름 선택: 보통은 기본값 <code>dxgi.dll</code>. 같은 폴더에 ReShade(<code>dxgi.dll</code>)가 이미 설치돼 있으면 <code>version.dll</code>을 고르십시오(자세한 사유는 부록).</li>
 </ol>
 <div class="warn"><b>파일 이름 한 글자 주의:</b> <code>nvngx_dlssnr.dll</code>(158MB, 모델 본체)과 <code>nvngx.dll_dlssnr.dll</code>(110KB, 포워더)은 이름이 거의 같습니다. 합본 그대로 풀었다면 모델이 이미 있으니 패스. 다른 모델로 바꿔 넣을 때만 파일 크기로 확인하세요.</div>
 
@@ -304,8 +308,8 @@ a { color: var(--acc); }
 <div class="card"><b class="t">원조 포크: Dagherbou/OptiScaler_DLSSNR</b>
 <p style="margin-top:6px"><a href="https://github.com/Dagherbou/OptiScaler_DLSSNR/releases" target="_blank" rel="noopener">Dagherbou/OptiScaler_DLSSNR · Releases</a>(v0.2.0 이상)가 같은 NR 뿌리입니다. Multipass_MFG는 여기서 MFG 언록과 최신 DLL 동봉을 얹은 파생판이라, 둘을 같이 설치할 필요는 없습니다. Multipass판 NR 옵션의 특징은 세 가지입니다: 멀티패스(한 프레임에 모델을 여러 번 돌려 디테일을 덧칠, 비용은 배수), 화이트 포인트 3택(게임 노출값 / Paper white only / 스캔 추정+Anchor 다점 보정 최대 8점), 실시간 노출 반영. 자세한 조작은 <b>④ NR · 옵틱 옵션</b> 탭에 있습니다.</p></div>
 <h3>로더 이름(dxgi / version) 자세히</h3>
-<p><code>setup_windows.bat</code>는 <code>OptiScaler.dll</code>을 선택한 로더 이름으로 바꿔치기해 게임이 대신 로드하게 합니다. DX12 게임은 <b>dxgi.dll</b>이 기본값이고, 같은 폴더에 ReShade가 이미 dxgi.dll을 점유 중이면 <b>version.dll</b>로 설치하는 게 ReShade와 공존하는 공식 방법입니다.</p>
-<div class="warn"><b>setup_windows.bat 재실행 주의:</b> 이미 OptiScaler가 설치된 게임 폴더에서 실행하면 "구버전 발견 → 삭제?" 질문이 나옵니다. 지우고 싶지 않으면 <b>No</b>를 누르거나, 수동으로 <code>OptiScaler.dll</code>을 원하는 이름(version.dll 등)으로 바꾸고 bat을 건너뛰어도 됩니다. 바꾼 이름이 정답입니다.</div>
+<p><code>setup_windows.bat</code>는 <code>OptiScaler.dll</code>을 선택한 로더 이름으로 바꿔치기해 게임이 대신 로드하게 합니다. DX12 게임은 <code>dxgi.dll</code>이 기본값이고, 같은 폴더에 ReShade가 이미 <code>dxgi.dll</code>을 점유 중이면 <code>version.dll</code>로 설치하는 게 ReShade와 공존하는 공식 방법입니다.</p>
+<div class="warn"><b><code>setup_windows.bat</code> 재실행 주의:</b> 이미 OptiScaler가 설치된 게임 폴더에서 실행하면 "구버전 발견 → 삭제?" 질문이 나옵니다. 지우고 싶지 않으면 <b>No</b>를 누르거나, 수동으로 <code>OptiScaler.dll</code>을 원하는 이름(<code>version.dll</code> 등)으로 바꾸고 bat을 건너뛰어도 됩니다. 바꾼 이름이 정답입니다.</div>
 </div>
 
 <div id="tab-mfg" class="tabpage" hidden>
@@ -316,7 +320,7 @@ a { color: var(--acc); }
 <p style="margin-top:6px">20/30번대는 MFG 언록 대상이 아닙니다(언록은 40번대 전용). 게임과 상황에 따라 아래 중 하나로 프레임 생성을 돌립니다.</p>
 <ul>
   <li><b>게임에 FSR 3 FG가 있으면</b>: FG Input에서 FSR 3.1 / 3.0 FG를 고르고 인게임 FSR-FG를 먼저 켭니다</li>
-  <li><b>DLSS FG 게임이면</b>: FG Nvngx를 Nukem's로 바꿔 DLSSG 호출을 FSR3-FG로 변환. Nukem's는 FSR3 FG 자체가 2x이므로 고배율은 Enabler·Combo 사용</li>
+  <li><b>DLSS FG 게임이면</b>: FG Nvngx를 Nukem's로 바꿔 DLSSG 호출을 FSR3-FG로 변환. Nukem's는 FSR3 FG 자체가 2x이므로 고배율은 Enabler·Combo 사용. <b>이미 OptiScaler가 깔린 게임이면</b> 위 합본 zip을 같은 폴더에 덮어풀기 + <code>setup_windows.bat</code> 재실행(구버전 삭제 질문에 기존 로더 유지 또는 정리)으로 교체 가능합니다</li>
   <li><b>FG 자체가 없는 게임이면</b>: OptiFG(Upscaler)가 최후 수단. HUDless 자원이 없어 UI 잔상이 생길 수 있습니다</li>
   <li>NR은 패치 모델 DLL로 동작하되 20/30은 FP16 경로라 비용이 큽니다. UI가 미리 알려주는 게 정상입니다</li>
 </ul></div>
@@ -531,7 +535,7 @@ a { color: var(--acc); }
     <li><b>FSR 3.1 / 3.0 FG</b> — 게임에 FSR FG가 있을 때만. 인게임 FSR-FG를 먼저 켜야 함</li>
     <li><b>XeFG</b> (입력) — 선택 불가. 입력용으로 미구현되어 있으며, XeFG는 FG Output(출력)에서 선택하십시오</li>
     <li><b>None</b> — FG 입력 안 씀(FG 끔)</li>
-    <li>⚠️ 게임과 맞지 않는 입력으로 바꾸고 Save하면 <b>부팅 직후 검은 화면 크래시</b>가 날 수 있음 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막은 Nvngx 외의 값에서 Streamline 플러그인 충돌로 부팅 15초 뒤 크래시 보고)</span>. 크래시 나면 OptiScaler.ini의 <code>[FrameGen]</code>을 직접 되돌리면 복구됨</li>
+    <li>⚠️ 게임과 맞지 않는 입력으로 바꾸고 Save하면 <b>부팅 직후 검은 화면 크래시</b>가 날 수 있음 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막은 Nvngx 외의 값에서 Streamline 플러그인 충돌로 부팅 15초 뒤 크래시 보고)</span>. 크래시 나면 <code>OptiScaler.ini</code>의 <code>[FrameGen]</code>을 직접 되돌리면 복구됨</li>
   </ul>
 </div>
 
@@ -709,10 +713,10 @@ a { color: var(--acc); }
 <div class="opt" id="s-mfgunlock-addons">
   <div class="b"><span class="lbl">MFGUnlock — 40번대 MFG 열기</span> <span class="tag t-g">실측: 4x 성공</span></div>
   <p class="desc">ReShade 애드온(<code>renodx-mfgunlock.addon64</code> v0.3)이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줍니다. 옵티는 통과만 시키고 배율 결정은 게임에 맡기는 구조.</p>
-  <p class="desc" style="font-size:0.875rem;color:var(--mut)">출처: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">mavismmg/MFGAdaUnlock-RenoDx</a> (MIT) — 원작 <a href="https://github.com/ImDreamt/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">ImDreamt/Dreamt</a> 포크 + STALKER 2 호환 수정. RenoDX·ReShade 기반. 설치 파일: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx/releases" target="_blank" rel="noopener">Releases의 renodx-mfgunlock.addon64</a> (v0.3 SHA-256 <code>83D5EF4D…066EB</code>). NVIDIA 비공식 — 디스크 수정 없이 실행 중 메모리에만 패치, NVIDIA 파일 재배포 없음.</p>
+  <p class="desc" style="font-size:0.875rem;color:var(--mut)">출처: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">mavismmg/MFGAdaUnlock-RenoDx</a> (MIT) — 원작 <a href="https://github.com/ImDreamt/MFGAdaUnlock-RenoDx" target="_blank" rel="noopener">ImDreamt/Dreamt</a> 포크 + STALKER 2 호환 수정. RenoDX·ReShade 기반. 설치 파일: <a href="https://github.com/mavismmg/MFGAdaUnlock-RenoDx/releases" target="_blank" rel="noopener">Releases의 <code>renodx-mfgunlock.addon64</code></a> (v0.3 SHA-256 <code>83D5EF4D…066EB</code>). NVIDIA 비공식 — 디스크 수정 없이 실행 중 메모리에만 패치, NVIDIA 파일 재배포 없음.</p>
   <ul>
     <li>옵티: <b>FG Input = DLSSG via Nvngx · FG Nvngx = None · Override DLSSG Ratio = Default</b> <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 실측값)</span></li>
-    <li>애드온: <b>Enabled 켬 · ForceMultiplier = 0(게임 결정)</b> — 게임 메뉴가 있으면 애드온에서 강제하지 않기 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막은 reshade.ini MaxCount=4인데도 게임 메뉴에 6x까지 노출)</span></li>
+    <li>애드온: <b>Enabled 켬 · ForceMultiplier = 0(게임 결정)</b> — 게임 메뉴가 있으면 애드온에서 강제하지 않기 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막은 <code>reshade.ini</code> MaxCount=4인데도 게임 메뉴에 6x까지 노출)</span></li>
     <li>전제: <code>nvngx_dlssg.dll</code> 310.9 (합본에 동봉. 구 3.5.x 스니펫 게임은 310.9로 교체 필요). sl.dlss_g는 Streamline 2.14 동봉(최소 2.11 이상)</li>
     <li>순서: 인게임 프레임 생성 ON → 게임 메뉴의 배율(예: "생성할 프레임 개수")에서 2x → 4x 순으로 올림. 6x는 베이스 fps가 충분할 때만</li>
     <li><b>실측 결과: 4x 성공 — UI 잔상 없음, 프레임 성능 매우 좋음</b> <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막, 2026-09-03)</span></li>
@@ -724,7 +728,7 @@ a { color: var(--acc); }
 
 <div class="card"><b class="t">TMO (Tone Mapping Overhaul) — 뭐고 도움 되나?</b>
 <p style="margin-top:6px">게임별 RenoDX 톤매핑 모드입니다. HDR 톤매퍼 선택(바닐라 / 커스텀), SDR 블랙 크러시 보정, 노출·하이라이트·섀도·대비·채도 그레이딩 슬라이더, 오토 익스포저·필름 그레인·CA·샤픈·블룸·비네팅 조절, 렌더링 개선(스펙트럴 스카이, 태양/달, VRS 끄기 등)을 한 애드온에서 다룹니다. 프레임 생성이 아니라 <b>화면 색·밝기 다듬기</b> 담당이라 MFGUnlock과 역할이 겹치지 않습니다.</p>
-<p><b>설치:</b> 애드온 지원 켠 ReShade 설치 → <code>renodx-*.addon64</code>를 게임 실행 파일과 같은 폴더에 복사 → 게임 실행 → ReShade 오버레이 Add-ons 탭에서 Generic Depth·Effect Runtime Sync 끄기 → 재시작 → Home으로 설정. <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 — renodx-crimsondesert.addon64 설치됨, 인게임 확인 전)</span></p>
+<p><b>설치:</b> 애드온 지원 켠 ReShade 설치 → <code>renodx-*.addon64</code>를 게임 실행 파일과 같은 폴더에 복사 → 게임 실행 → ReShade 오버레이 Add-ons 탭에서 Generic Depth·Effect Runtime Sync 끄기 → 재시작 → Home으로 설정. <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 — <code>renodx-crimsondesert.addon64</code> 설치됨, 인게임 확인 전)</span></p>
 <p><b>공식 출처에서만 받기:</b> RenoDX 토론 페이지·위키·RenoDX Discord와 제작자가 올린 Nexus 페이지가 공식 경로입니다. 이 모드는 EXE를 포함하지 않으니 <b>EXE 실행을 요구하는 배포물은 가짜(악성코드 주의)</b> — 절대 실행 금지. <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 TMO — <a href="https://www.nexusmods.com/crimsondesert/mods/7" target="_blank" rel="noopener">Nexus Mods 7번</a> · <a href="https://github.com/clshortfuse/renodx/discussions/535" target="_blank" rel="noopener">제작자 안내</a>)</span></p>
 <p><b>충돌 주의:</b> OptiScaler·SpecialK 같은 외부 DLL 인젝션과는 충돌할 수 있다는 게 제작자 안내입니다. 같이 쓰다가 튕기면 TMO 애드온 파일 하나만 빼고 부팅해서 원인 좁히기.</p></div>
 
@@ -746,10 +750,10 @@ a { color: var(--acc); }
 구버전(v0.1.1 이하)의 HDR 색 변환 문제. <b>v0.1.2 이상으로 업데이트</b>하세요. (HDR 모니터 유무와 무관하게 게임의 프레임버퍼 방식이 변수입니다)</div>
 
 <div class="warn"><b>프레임 생성(FG) 켠 뒤 부팅 크래시</b><br>
-오버레이 저장 시 FG Input/Output 조합이 게임과 맞지 않으면 크래시가 날 수 있습니다. 저장 전 FG 설정이 정상 부팅되던 조합인지 확인, 크래시 시 OptiScaler.ini의 <code>[FrameGen]</code> 섹션을 직접 수정(원래 값으로)하면 복구됩니다.</div>
+오버레이 저장 시 FG Input/Output 조합이 게임과 맞지 않으면 크래시가 날 수 있습니다. 저장 전 FG 설정이 정상 부팅되던 조합인지 확인, 크래시 시 <code>OptiScaler.ini</code>의 <code>[FrameGen]</code> 섹션을 직접 수정(원래 값으로)하면 복구됩니다.</div>
 
 <div class="warn"><b>ReShade와 같이 쓰기</b><br>
-ReShade가 dxgi.dll을 점유 중이면 OptiScaler를 <b>version.dll</b>로 설치(공식 권장 조합)하면 공존됩니다. ReShade 애드온(RenoDX DLSS5 등)과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
+ReShade가 <code>dxgi.dll</code>을 점유 중이면 OptiScaler를 <code>version.dll</code>로 설치(공식 권장 조합)하면 공존됩니다. ReShade 애드온(RenoDX DLSS5 등)과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
 </div>
 
 <h2 id="links"><span class="step">6</span>링크 모음 — 전부</h2>
