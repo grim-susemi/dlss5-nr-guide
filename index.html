@@ -133,8 +133,8 @@ a { color: var(--acc); }
 <button type="button" class="mt on" data-main="nr">① 시작</button>
 <button type="button" class="mt" data-main="install">② 설치 3단계</button>
 <button type="button" class="mt" data-main="mfg">③ FG · MFG</button>
-<button type="button" class="mt" data-main="addon">⑤ 애드온 · 문제해결</button>
 <button type="button" class="mt" data-main="opts">④ NR · 옵틱 옵션</button>
+<button type="button" class="mt" data-main="addon">⑤ 애드온 · 문제해결</button>
 </div>
 </div>
 </div>
@@ -315,7 +315,7 @@ a { color: var(--acc); }
 <p style="margin-top:6px">20/30번대는 MFG 언록 대상이 아닙니다(언록은 40번대 전용). 게임과 상황에 따라 아래 중 하나로 프레임 생성을 돌립니다.</p>
 <ul>
   <li><b>게임에 FSR 3 FG가 있으면</b>: FG Input에서 FSR 3.1 / 3.0 FG를 고르고 인게임 FSR-FG를 먼저 켭니다</li>
-  <li><b>DLSS FG 게임이면</b>: FG Nvngx를 Nukem's로 바꿔 DLSSG 호출을 FSR3-FG로 변환</li>
+  <li><b>DLSS FG 게임이면</b>: FG Nvngx를 Nukem's로 바꿔 DLSSG 호출을 FSR3-FG로 변환. Nukem's는 FSR3 FG 자체가 2x이므로 고배율은 Enabler·Combo 사용</li>
   <li><b>FG 자체가 없는 게임이면</b>: OptiFG(Upscaler)가 최후 수단. HUDless 자원이 없어 UI 잔상이 생길 수 있습니다</li>
   <li>NR은 패치 모델 DLL로 동작하되 20/30은 FP16 경로라 비용이 큽니다. UI가 미리 알려주는 게 정상입니다</li>
 </ul></div>
@@ -323,7 +323,7 @@ a { color: var(--acc); }
 <div class="card" id="mfg-40"><b class="t">RTX 40 · 언록 후 게임 메뉴 배율 (2x~6x)</b>
 <p style="margin-top:6px">현행은 내장 언록 하나입니다. Multipass_MFG를 썼다면 아래 첫 번째로 끝나고 애드온 설치가 필요 없습니다.</p>
 <ul>
-  <li><b>Multipass 내장 언록(권장)</b>: 오버레이에서 <b>Unlock MFG on RTX 40</b> 체크 후 재시작하면 게임 메뉴 배율이 열립니다</li>
+  <li><b>Multipass 내장 언록(권장)</b>: 오버레이에서 <b>Unlock MFG on RTX 40</b> 체크 후 재시작하면 게임 메뉴 배율이 열립니다. 성공 판정은 초록 상태줄("both gates patched" + 커널 컨테이너 수 — 기기·드라이버에 따라 숫자가 다름)으로 확인합니다</li>
   <li><b>MFGUnlock 애드온</b>: ReShade 애드온(<code>renodx-mfgunlock.addon64</code>)이 40번대에 잠긴 배율 선택지를 게임 메뉴에 열어줍니다. 구 애드온 방식의 설치·실측 기록은 <b>⑤ 애드온 · 문제해결</b> 탭에 접어 두었습니다. 내장 언록을 쓰는 지금은 볼 필요 없습니다</li>
   <li>공통 전제: <code>nvngx_dlssg.dll</code> 310.9(합본에 동봉) + 인게임 프레임 생성 ON</li>
 </ul></div>
@@ -416,7 +416,7 @@ a { color: var(--acc); }
 
 <div class="opt" id="d-intensity">
   <div class="b"><span class="lbl">Intensity</span> <span class="k">기본 1.0 · 범위 0~2</span></div>
-  <p class="desc">모델 내부 파라미터의 강도. <b>어두운 화면 자글거림(노이즈) 1차 조절판</b> — 즉시 적용. 0.5~0.6이면 노이즈가 눈에 띄게 줄고 2.0은 과잉(콘트라스트 과다).</p>
+  <p class="desc">모델 내부 파라미터의 강도. <b>어두운 화면 자글거림(노이즈) 1차 조절판</b> — 슬라이더를 놓으면 적용됩니다(Deferred). 0.5~0.6이면 노이즈가 눈에 띄게 줄고 2.0은 과잉(콘트라스트 과다).</p>
 </div>
 
 <div class="opt" id="d-local">
@@ -478,7 +478,7 @@ a { color: var(--acc); }
 <ol>
   <li><b>Keybinds에서 NR 토글 키 지정</b> → 끄고/켜고 빠르게 비교</li>
   <li><b>Compare → Side by side/Wipe</b> 켜서 좌우 대조 (가장 정확한 판정)</li>
-  <li><b>Intensity 1.0 → 0.7 → 0.5</b> 단계적으로 하향 (즉시 적용)</li>
+  <li><b>Intensity 1.0 → 0.7 → 0.5</b> 단계적으로 하향 (슬라이더를 놓으면 적용)</li>
   <li>그래도 심하면 <b>Paper white 0.8 ↔ 1.2</b> 탐색</li>
   <li>스타일이 과하면 <b>Style → Natural / Cinematic</b></li>
   <li>디테일이 죽었다 싶으면 <b>Detail strength 0.8~0.9</b></li>
@@ -491,7 +491,7 @@ a { color: var(--acc); }
 
 <div class="opt" id="d-upscaler">
   <div class="b"><span class="lbl">Upscaler (드롭다운, 왼쪽 위)</span> <span class="k">기본: 게임 설정 따름(auto)</span></div>
-  <p class="desc"><b>최종 프레임을 만들 업스케일러 기술</b>을 고릅니다. 게임이 DLSS 입력을 주면 OptiScaler가 그걸 받아서 여기서 선택한 기술로 처리합니다. 선택지: DLSS / FSR 3.X / FSR 4(RDNA만) / XeSS.</p>
+  <p class="desc"><b>최종 프레임을 만들 업스케일러 기술</b>을 고릅니다. 게임이 DLSS 입력을 주면 OptiScaler가 그걸 받아서 여기서 선택한 기술로 처리합니다. 선택지(메뉴 기준): DLSS / DLSSD / XeSS / FSR 2.1·2.2 / FSR 3.1 / FSR 4(RDNA4에서 자동 승격) 및 DX12 브리지 변형(w/Dx12).</p>
   <ul>
     <li><b>DLSS 유지 권장</b> — NR(뉴럴 렌더링)은 DLSS 출력 위에서 돌아가므로 DLSS가 아니면 NR 자체가 꺼집니다</li>
     <li>AMD/인텔 카드 사용자만 FSR/XeSS가 의미 있음</li>
@@ -510,7 +510,7 @@ a { color: var(--acc); }
 
 <div class="opt" id="d-advdlss">
   <div class="b"><span class="lbl">Advanced DLSS Settings (▶)</span> <span class="k">위험도 높음</span></div>
-  <p class="desc">DLSS 초기화 플래그(IsHdr, DepthInverted, JitteredMV 등)를 개별로 강제하는 고급 영역. <b>잘못 건드리면 화면이 깨지거나 게임이 죽습니다</b> — 현재값은 붉은사막에서 검증된 조합이므로 열어보지만 바꾸지 마세요.</p>
+  <p class="desc">DLAA부터 Ultra Performance까지 6단계마다 DLSS 프리셋을 따로 지정하는 영역(메뉴의 6개 프리셋 행). 게임에서 퀄리티→퍼포먼스로 바꾸면 해당 단계 값이 적용됩니다. 단계별 화질이 제각각이 되므로 기본값 유지를 권장합니다.</p>
 </div>
 
 </div>
@@ -528,7 +528,7 @@ a { color: var(--acc); }
     <li><b>DLSSG via Streamline</b> — Streamline 경유 입력. 구 SL1 게임(위처 3 등)은 미지원이라 Nvngx 쪽이 안전한 경우가 많음</li>
     <li><b>OptiFG (Upscaler)</b> — FG 자체가 없는 게임용 최후 수단. HUDless 자원이 없어 UI 잔상이 생길 수 있음</li>
     <li><b>FSR 3.1 / 3.0 FG</b> — 게임에 FSR FG가 있을 때만. 인게임 FSR-FG를 먼저 켜야 함</li>
-    <li><b>XeFG</b> — 보더리스 전용, Vulkan·HDR16·scRGB 미지원. 노란 재시작 문구가 뜨면 반드시 재시작</li>
+    <li><b>XeFG</b> (입력) — 선택 불가. 입력용으로 미구현되어 있으며, XeFG는 FG Output(출력)에서 선택하십시오</li>
     <li><b>None</b> — FG 입력 안 씀(FG 끔)</li>
     <li>⚠️ 게임과 맞지 않는 입력으로 바꾸고 Save하면 <b>부팅 직후 검은 화면 크래시</b>가 날 수 있음 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막은 Nvngx 외의 값에서 Streamline 플러그인 충돌로 부팅 15초 뒤 크래시 보고)</span>. 크래시 나면 OptiScaler.ini의 <code>[FrameGen]</code>을 직접 되돌리면 복구됨</li>
   </ul>
@@ -540,9 +540,9 @@ a { color: var(--acc); }
   <ul>
     <li><b>None</b> — 치환 없이 게임의 네이티브 DLSSG 그대로 통과. 네이티브 FG/MFG를 그대로 쓸 때의 선택 <span style="font-size:0.8125rem;color:var(--mut)">(예: 붉은사막 + MFGUnlock 조합은 None)</span></li>
     <li><b>Nukem's</b> — DLSSG 호출을 FSR3-FG로 바꿔치기</li>
-    <li><b>Arturs</b> — FSR3 MFG</li>
+    <li><b>Enabler</b> (구 Arturs 표기) — FSR3 MFG. 메뉴에 표시되는 선택 이름은 Enabler입니다</li>
     <li><b>FFX</b> — FSR FG 3 또는 4</li>
-    <li><b>Combo</b> — 중간 프레임은 FFX, 나머지는 Enabler. 4x·6x에서 FSR4 FG와 Enabler를 섞을 때</li>
+    <li><b>Combo</b> — 배율별 분담: 2x-FFX / 3x-Enabler / 4x-FFX+Enabler / 5x-Enabler / 6x-FFX+Enabler (메뉴 툴팁 기준)</li>
   </ul>
 </div>
 
@@ -823,6 +823,7 @@ function showMain(name) {
   document.querySelectorAll('.mt').forEach(b => { b.classList.toggle('on', b.dataset.main === name); });
   window.scrollTo({ top: 0 });
   mainTab = name;
+  try { history.replaceState(null, '', '#' + name); } catch (e) {}
   spy();
 }
 document.querySelectorAll('.mt').forEach(b => { b.addEventListener('click', () => showMain(b.dataset.main)); });
@@ -855,6 +856,17 @@ const spy = () => {
   allLinks.forEach(a => { a.classList.toggle('on', a.getAttribute('href') === '#' + curKey); });
 };
 window.addEventListener('scroll', spy, { passive: true });
+window.addEventListener('hashchange', () => {
+  const h = (location.hash || '').replace('#', '');
+  const aliased = { nr: 'opts', options: 'opts', fg: 'opts', up: 'opts', sharp: 'opts', extra: 'opts', key: 'opts', noise: 'opts', install: 'install', get: 'install', drop: 'install', enable: 'install', manual: 'install', mfg: 'mfg' };
+  if (pages[h]) showMain(h);
+  else if (aliased[h]) { showMain(aliased[h]); const t = document.getElementById(h) || document.getElementById('sp-' + h); if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); }
+});
+(function () {
+  const h = (location.hash || '').replace('#', '');
+  if (pages[h]) showMain(h);
+  else if (h === 'nr') { showMain('opts'); const t = document.getElementById('nr'); if (t) setTimeout(() => t.scrollIntoView({ block: 'start' }), 60); }
+})();
 spy();
 </script>
 </body>
