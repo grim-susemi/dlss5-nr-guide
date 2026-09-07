@@ -276,7 +276,7 @@ a { color: var(--acc); }
 
 <h3 id="get">STEP 1 · GET (받기)</h3>
 <ol>
-  <li><b>옵티스케일러 zip</b>: <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG" target="_blank" rel="noopener">grim 포크 저장소</a>의 Latest 글(v5-fix2)에서 <b>OptiScaler-current-en.zip</b>(영어판) 또는 <b>OptiScaler-current-ko.zip</b>(한국어판) 둘 중 하나를 받습니다. 직접 받기: <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG/releases/latest/download/OptiScaler-current-en.zip" target="_blank" rel="noopener">영어판</a> · <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG/releases/latest/download/OptiScaler-current-ko.zip" target="_blank" rel="noopener">한국어판</a>. 로더 + DLSS 310.9 + Streamline 2.14 + 개조 모델 <code>nvngx_dlssnr.dll</code>(310.8) + FG 동봉 DLL 2종(<code>dlss-enabler-headless.dll</code> · <code>dlssg_to_fsr3_amd_is_better.dll</code>, 20/30번대용)까지 전부 들어 있어 DLL 교체도, 별도 애드온 설치도 필요 없습니다. 한국어판은 내용물은 영어판과 같고, 여기에 한국어 툴팁, Malgun Gothic 폴백, 키별 해제(Unbind) 버튼이 얹혀 있습니다. 맨 밑 Source code 2개는 소스코드라 받지 마세요.</li>
+  <li><b>옵티스케일러 zip</b>: <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG" target="_blank" rel="noopener">grim 포크 저장소</a>의 Latest 글(v6)에서 <b>OptiScaler-current-en.zip</b>(영어판) 또는 <b>OptiScaler-current-ko.zip</b>(한국어판) 둘 중 하나를 받습니다. 직접 받기: <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG/releases/latest/download/OptiScaler-current-en.zip" target="_blank" rel="noopener">영어판</a> · <a href="https://github.com/grim-susemi/OptiScaler_DLSSNR_Multipass_MFG/releases/latest/download/OptiScaler-current-ko.zip" target="_blank" rel="noopener">한국어판</a>. 로더 + DLSS 310.9 + Streamline 2.14 + 개조 모델 <code>nvngx_dlssnr.dll</code>(310.8) + FG 동봉 DLL 2종(<code>dlss-enabler-headless.dll</code> · <code>dlssg_to_fsr3_amd_is_better.dll</code>, 20/30번대용)까지 전부 들어 있어 DLL 교체도, 별도 애드온 설치도 필요 없습니다. 한국어판은 내용물은 영어판과 같고, 여기에 한국어 툴팁, Malgun Gothic 폴백, 키별 해제(Unbind) 버튼이 얹혀 있습니다. v6부터 MFG 3배 이상 거절 문제 수정(복사본 전체 패치) 포함. 맨 밑 Source code 2개는 소스코드라 받지 마세요.</li>
   <li><b>모델 DLL</b>: 위 합본에 동봉(<code>nvngx_dlssnr.dll</code> 310.8 개조판, 158MB)이라 따로 구할 필요 없습니다. 다른 버전을 쓰고 싶을 때만 아래에서 고르세요:
     <div class="tbl">
 <table style="margin-top:8px">
@@ -752,7 +752,7 @@ a { color: var(--acc); }
 <div class="warn"><b>프레임 생성(FG) 켠 뒤 부팅 크래시</b><br>
 오버레이 저장 시 FG Input/Output 조합이 게임과 맞지 않으면 크래시가 날 수 있습니다. 저장 전 FG 설정이 정상 부팅되던 조합인지 확인, 크래시 시 <code>OptiScaler.ini</code>의 <code>[FrameGen]</code> 섹션을 직접 수정(원래 값으로)하면 복구됩니다.</div>
 
-<div class="warn"><b>아무리 해도 안 되면: bin64 비우고 무결성 후 재설치 (최후 수단)</b><br> 예전 모드 잔재(구 로더·ini·충돌 dll)가 remove 후에도 남아 꼬이는 사례 확인됨(실제 해결 사례 있음). 순서: 게임 bin64 폴더 내용 백업 → 비우기 → 스팀 무결성 검사 → 게임 실행 확인 → 최신 fix2 zip 1개(en/ko)만 풀기 → <code>setup_windows.bat</code> → FG 고르고 Save → 재시작. 무결성 후에는 게임이 vanilla인지 먼저 켜보고, 되면 그때 모드 까세요.</div> <div class="warn"><b>ReShade와 같이 쓰기</b><br>
+<div class="warn"><b>아무리 해도 안 되면: bin64 비우고 무결성 후 재설치 (최후 수단)</b><br> 예전 모드 잔재(구 로더·ini·충돌 dll)가 remove 후에도 남아 꼬이는 사례 확인됨(실제 해결 사례 있음). 순서: 게임 bin64 폴더 내용 백업 → 비우기 → 스팀 무결성 검사 → 게임 실행 확인 → 최신 v6 zip 1개(en/ko)만 풀기 → <code>setup_windows.bat</code> → FG 고르고 Save → 재시작. 무결성 후에는 게임이 vanilla인지 먼저 켜보고, 되면 그때 모드 까세요.</div> <div class="warn"><b>ReShade와 같이 쓰기</b><br>
 ReShade가 <code>dxgi.dll</code>을 점유 중이면 OptiScaler를 <code>version.dll</code>로 설치(공식 권장 조합)하면 공존됩니다. ReShade 애드온(RenoDX DLSS5 등)과 포크 NR을 동시에 켜면 <b>이중 NR</b>이 되니 둘 중 하나만 쓰세요.</div>
 </div>
 
